@@ -19,5 +19,8 @@
   },
   "dependencies": {
     "pdfjs-dist": "^6.4.299"
+  },
+  "allowScripts": {
+    "esbuild@0.28.2": true
   }
 }
