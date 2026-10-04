@@ -97,6 +97,10 @@ The app uses the same theme as Windows (*Settings > Personalization > Colors*). 
 
 **The PDF doesn't open and a message appears.** The file is damaged or password-protected. Password-protected PDFs can't be opened yet: remove the protection with the program you created it with and try again.
 
+## License
+
+PDF Presenter is free software: you can redistribute it and/or modify it under the terms of the [GNU General Public License](LICENSE) as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+
 ## Credits
 
-Icons by [Phosphor Icons](https://phosphoricons.com), MIT license.
+PDF Presenter is built with [PDF.js](https://github.com/mozilla/pdf.js) (Apache 2.0), [Electron](https://www.electronjs.org) (MIT) and icons by [Phosphor Icons](https://phosphoricons.com) (MIT). See [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md) for the full list and their licenses.

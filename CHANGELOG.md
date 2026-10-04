@@ -7,6 +7,9 @@ The app's interface is currently in Spanish; button names are quoted as they app
 
 ## [Unreleased]
 
+### Added
+- The project is now licensed under the GNU GPL v3.0 or later, with a list of third-party licenses and credits.
+
 ## [0.4.1] - 2026-10-04
 
 ### Added
