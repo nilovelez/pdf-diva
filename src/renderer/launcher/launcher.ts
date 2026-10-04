@@ -120,7 +120,7 @@ async function openFile(file: PdfFile): Promise<void> {
   window.presenter.pdfOpened();
   notice.hidden = true;
   // The window title carries the full path of the open PDF (there is no status bar).
-  document.title = `PDF Presenter - ${file.path}`;
+  document.title = `PDF Diva - ${file.path}`;
   welcome.hidden = true;
   reader.hidden = false;
   thumbnails.load(next);

@@ -16,7 +16,7 @@ import {
 import { applyTheme, getSettings, loadSettings, updateSettings } from './settings';
 import { createWindow } from './windows';
 
-const REPOSITORY_URL = 'https://github.com/nilovelez/pdf-presenter';
+const REPOSITORY_URL = 'https://github.com/nilovelez/pdf-diva';
 
 // The PDF to present is the last one that opened fine; `pending` is one just read that may still fail.
 let openedPdf: PdfFile | null = null;
@@ -45,7 +45,7 @@ async function pickPdf(event: Electron.IpcMainInvokeEvent): Promise<PdfFile | nu
 }
 
 function createLauncherWindow(): void {
-  const win = createWindow('launcher', { width: 1000, height: 680, title: 'PDF Presenter' });
+  const win = createWindow('launcher', { width: 1000, height: 680, title: 'PDF Diva' });
   win.on('closed', endPresentation);
   launcherWindow = win;
 }

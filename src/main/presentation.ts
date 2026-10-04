@@ -113,7 +113,7 @@ function createAudienceWindow(p: Presentation, display: Display): BrowserWindow 
     fullscreen: true,
     backgroundColor: '#000000',
     show: false,
-    title: 'PDF Presenter - Público',
+    title: 'PDF Diva - Público',
   });
   win.once('ready-to-show', () => win.show());
   win.on('closed', () => {
@@ -265,7 +265,7 @@ export function startPresentation(
       width: 1100,
       height: 700,
       show: false,
-      title: 'PDF Presenter - Orador',
+      title: 'PDF Diva - Orador',
     });
     presenter.on('closed', () => {
       if (!presentation.quiet.has(presenter)) endPresentation();
