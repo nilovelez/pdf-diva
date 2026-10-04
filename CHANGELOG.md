@@ -7,6 +7,11 @@ The app's interface is currently in Spanish; button names are quoted as they app
 
 ## [Unreleased]
 
+## [0.5.2] - 2026-10-04
+
+### Changed
+- New PDF Diva color palette: warm neutrals with a fuchsia accent in the light theme and a gold accent in the dark theme. Warnings stay orange, and errors red.
+
 ## [0.5.1] - 2026-10-04
 
 ### Changed
