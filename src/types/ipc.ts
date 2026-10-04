@@ -8,6 +8,8 @@ export const IPC = {
   action: 'action',
   state: 'state',
   presentationEnded: 'presentation-ended',
+  getDisplayCount: 'get-display-count',
+  displayCount: 'display-count',
 } as const;
 
 export interface PdfFile {
@@ -15,6 +17,12 @@ export interface PdfFile {
   name: string;
   data: Uint8Array;
 }
+
+/**
+ * presenter: público en el monitor secundario y vista del orador en el principal.
+ * mirror: la misma diapositiva a pantalla completa en todos los monitores, sin vista del orador.
+ */
+export type PresentationMode = 'presenter' | 'mirror';
 
 export interface PresentationState {
   page: number;
@@ -41,10 +49,13 @@ export interface PresenterApi {
   /** Ruta real de un archivo soltado en la ventana. */
   pathForFile(file: File): string;
   /** Inicia la presentación del último PDF abierto, desde la página `page`. */
-  startPresentation(total: number, page: number): Promise<void>;
+  startPresentation(total: number, page: number, mode: PresentationMode): Promise<void>;
   getSession(): Promise<PresentationSession>;
   sendAction(action: PresentAction): void;
   onState(callback: (state: PresentationState) => void): void;
   /** Se llama con la última página mostrada cuando termina la presentación. */
   onPresentationEnded(callback: (page: number) => void): void;
+  getDisplayCount(): Promise<number>;
+  /** Se llama cada vez que se conecta o desconecta un monitor. */
+  onDisplayCount(callback: (count: number) => void): void;
 }

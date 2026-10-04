@@ -5,7 +5,8 @@ const api: PresenterApi = {
   openPdf: () => ipcRenderer.invoke(IPC.openPdf),
   readPdf: (path) => ipcRenderer.invoke(IPC.readPdf, path),
   pathForFile: (file) => webUtils.getPathForFile(file),
-  startPresentation: (total, page) => ipcRenderer.invoke(IPC.startPresentation, total, page),
+  startPresentation: (total, page, mode) =>
+    ipcRenderer.invoke(IPC.startPresentation, total, page, mode),
   getSession: () => ipcRenderer.invoke(IPC.getSession),
   sendAction: (action) => ipcRenderer.send(IPC.action, action),
   onState: (callback) => {
@@ -13,6 +14,10 @@ const api: PresenterApi = {
   },
   onPresentationEnded: (callback) => {
     ipcRenderer.on(IPC.presentationEnded, (_event, page) => callback(page));
+  },
+  getDisplayCount: () => ipcRenderer.invoke(IPC.getDisplayCount),
+  onDisplayCount: (callback) => {
+    ipcRenderer.on(IPC.displayCount, (_event, count) => callback(count));
   },
 };
 

@@ -1,4 +1,4 @@
-import { BrowserWindow } from 'electron';
+import { BrowserWindow, nativeTheme } from 'electron';
 import path from 'node:path';
 
 /** Crea una ventana con la página de `src/renderer/<name>` y el preload común. */
@@ -7,6 +7,8 @@ export function createWindow(
   options: Electron.BrowserWindowConstructorOptions = {},
 ): BrowserWindow {
   const win = new BrowserWindow({
+    // Evita el destello blanco al abrir en tema oscuro.
+    backgroundColor: nativeTheme.shouldUseDarkColors ? '#1c1e23' : '#ffffff',
     ...options,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),

@@ -3,6 +3,7 @@ import {
   IPC,
   type PdfFile,
   type PresentAction,
+  type PresentationMode,
   type PresentationSession,
   type PresentationState,
 } from '../types/ipc';
@@ -12,8 +13,8 @@ interface Presentation {
   pdf: PdfFile;
   state: PresentationState;
   launcher: BrowserWindow;
-  presenter: BrowserWindow;
-  audience: BrowserWindow | null;
+  presenter: BrowserWindow | null;
+  audiences: BrowserWindow[];
 }
 
 let current: Presentation | null = null;
@@ -25,6 +26,10 @@ export function isPresentAction(value: unknown): value is PresentAction {
   const { type, page } = value as { type?: unknown; page?: unknown };
   if (typeof type !== 'string' || !ACTIONS.has(type)) return false;
   return type !== 'goto' || (typeof page === 'number' && Number.isFinite(page));
+}
+
+export function isPresentationMode(value: unknown): value is PresentationMode {
+  return value === 'presenter' || value === 'mirror';
 }
 
 function clamp(page: number, total: number): number {
@@ -51,7 +56,9 @@ function reduce(state: PresentationState, action: PresentAction): PresentationSt
 }
 
 function windows(p: Presentation): BrowserWindow[] {
-  return [p.presenter, p.audience].filter((w): w is BrowserWindow => w !== null && !w.isDestroyed());
+  return [p.presenter, ...p.audiences].filter(
+    (w): w is BrowserWindow => w !== null && !w.isDestroyed(),
+  );
 }
 
 /** Solo las ventanas de la presentación pueden consultarla o controlarla. */
@@ -59,42 +66,56 @@ export function isPresentationSender(sender: WebContents): boolean {
   return current !== null && windows(current).some((w) => w.webContents === sender);
 }
 
-export function startPresentation(launcher: BrowserWindow, pdf: PdfFile, total: number, page: number): void {
+function createAudienceWindow(display: Electron.Display): BrowserWindow {
+  const win = createWindow('audience', {
+    ...display.bounds,
+    frame: false,
+    fullscreen: true,
+    backgroundColor: '#000000',
+    show: false,
+    title: 'PDF Presenter - Público',
+  });
+  win.once('ready-to-show', () => win.show());
+  return win;
+}
+
+export function startPresentation(
+  launcher: BrowserWindow,
+  pdf: PdfFile,
+  total: number,
+  page: number,
+  mode: PresentationMode,
+): void {
   if (current) {
-    current.presenter.focus();
+    (current.presenter ?? current.audiences[0])?.focus();
     return;
   }
   const primary = screen.getPrimaryDisplay();
   const secondary = screen.getAllDisplays().find((d) => d.id !== primary.id);
 
-  // Con un solo monitor solo se abre la vista del orador, en ventana normal.
-  const presenter = secondary
-    ? createWindow('presenter', { ...primary.workArea, title: 'PDF Presenter - Orador' })
-    : createWindow('presenter', { width: 1100, height: 700, title: 'PDF Presenter - Orador' });
-  if (secondary) presenter.maximize();
-
-  const audience = secondary
-    ? createWindow('audience', {
-        ...secondary.bounds,
-        frame: false,
-        fullscreen: true,
-        backgroundColor: '#000000',
-        show: false,
-        title: 'PDF Presenter - Público',
-      })
-    : null;
-  audience?.once('ready-to-show', () => audience.show());
+  let presenter: BrowserWindow | null = null;
+  let audiences: BrowserWindow[];
+  if (mode === 'mirror') {
+    audiences = screen.getAllDisplays().map(createAudienceWindow);
+  } else {
+    // Con un solo monitor solo se abre la vista del orador, en ventana normal.
+    presenter = secondary
+      ? createWindow('presenter', { ...primary.workArea, title: 'PDF Presenter - Orador' })
+      : createWindow('presenter', { width: 1100, height: 700, title: 'PDF Presenter - Orador' });
+    if (secondary) presenter.maximize();
+    audiences = secondary ? [createAudienceWindow(secondary)] : [];
+  }
 
   const presentation: Presentation = {
     pdf,
     state: { page: clamp(page, total), total, blank: false },
     launcher,
     presenter,
-    audience,
+    audiences,
   };
   current = presentation;
   for (const w of windows(presentation)) w.on('closed', endPresentation);
-  presenter.focus();
+  (presenter ?? audiences[0])?.focus();
 }
 
 export function getSession(): PresentationSession | null {
