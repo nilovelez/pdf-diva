@@ -1,0 +1,456 @@
+<title>Maqueta PDF Presenter 0.4</title>
+<style>
+/* Maqueta: una ventana de la app a 1280x800 (el monitor de 11" de BOB), escalada para caber en la página.
+   La página sigue el tema del visor; la ventana simulada tiene su propio interruptor claro/oscuro,
+   como haría la app siguiendo a Windows. */
+:root {
+  --page-bg: #eceef2; --page-fg: #1b2029; --page-muted: #5b6474; --page-line: #d3d8e0; --page-card: #ffffff; --page-acc: #2453c7;
+  --ui: "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif;
+  --ui-display: "Segoe UI Variable Display", "Segoe UI", system-ui, sans-serif;
+  --mono: "Cascadia Mono", Consolas, ui-monospace, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --page-bg: #0f1115; --page-fg: #e3e6ec; --page-muted: #98a1b0; --page-line: #2a2e36; --page-card: #171a20; --page-acc: #86a3ff; color-scheme: dark; } }
+:root[data-theme="dark"] { --page-bg: #0f1115; --page-fg: #e3e6ec; --page-muted: #98a1b0; --page-line: #2a2e36; --page-card: #171a20; --page-acc: #86a3ff; color-scheme: dark; }
+
+body { background: var(--page-bg); color: var(--page-fg); font-family: var(--ui); font-size: 15px; line-height: 1.5; }
+.wrap { max-width: 1320px; margin: 0 auto; padding-inline: 16px; padding-block: 28px 56px; display: grid; gap: 18px; }
+.intro h1 { font-family: var(--ui-display); font-size: 26px; font-weight: 600; margin: 0 0 4px; text-wrap: balance; }
+.intro p { margin: 0; color: var(--page-muted); max-width: 72ch; }
+
+.bar { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; }
+.seg { display: inline-flex; border: 1px solid var(--page-line); border-radius: 8px; background: var(--page-card); padding: 3px; gap: 2px; flex-wrap: wrap; }
+.seg button { font: inherit; font-size: 14px; color: var(--page-fg); background: transparent; border: 0; border-radius: 6px; padding: 5px 12px; cursor: pointer; }
+.seg button[aria-pressed="true"] { background: var(--page-acc); color: var(--page-card); }
+.seg button:focus-visible { outline: 2px solid var(--page-acc); outline-offset: 1px; }
+
+.frame { position: relative; width: 100%; aspect-ratio: 1280 / 800; max-width: 100%; border-radius: 10px; overflow: hidden;
+  box-shadow: 0 0 0 1px var(--page-line), 0 12px 36px rgb(0 0 0 / .18); background: #000; }
+.notes { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; }
+.note { background: var(--page-card); border: 1px solid var(--page-line); border-radius: 8px; padding: 14px 16px; min-width: 0; }
+.note h2 { font-size: 15px; margin: 0 0 6px; font-weight: 600; }
+.note ul { margin: 0; padding-left: 18px; color: var(--page-muted); font-size: 14px; }
+.note li + li { margin-top: 4px; }
+kbd { font-family: var(--mono); font-size: 12px; border: 1px solid var(--page-line); border-bottom-width: 2px; border-radius: 4px; padding: 0 4px; color: var(--page-fg); }
+
+/* ===================== La app (escala 1:1 a 1280x800) ===================== */
+.app {
+  /* Paleta clara de la app: neutros con un toque azul, acento azul Windows. */
+  --bg: #ffffff; --surface: #f4f6f9; --surface-2: #e9edf2; --line: #dbe0e7; --text: #1c212b; --muted: #5e6776;
+  --accent: #2453c7; --on-accent: #ffffff; --accent-soft: #e3ebff; --hover: #e7ebf1;
+  --reader-stage: #e4e7ec; --presenter-stage: #0b0c0e; --paper-shadow: rgb(16 24 40 / .22);
+  --warn: #b5560b; --on-warn: #ffffff; --danger: #c0262d;
+  position: absolute; top: 0; left: 0; width: 1280px; height: 800px; transform-origin: 0 0;
+  background: var(--bg); color: var(--text); font-family: var(--ui); font-size: 14px; display: grid; grid-template-rows: 32px 1fr;
+}
+.app.dark {
+  --bg: #1c1e23; --surface: #22252b; --surface-2: #2b2f37; --line: #343943; --text: #e6e9ee; --muted: #9ba3b1;
+  --accent: #7d9cff; --on-accent: #0e1320; --accent-soft: #263255; --hover: #2f343d;
+  --reader-stage: #131518; --presenter-stage: #000000; --paper-shadow: rgb(0 0 0 / .6);
+  --warn: #f0a24b; --on-warn: #1d1206; --danger: #ff7a7f;
+}
+.app svg { width: 18px; height: 18px; flex: none; fill: currentColor; }
+.app button { font: inherit; color: inherit; cursor: pointer; }
+.app button:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+/* Barra de título de Windows (la dibuja el sistema; aquí solo como referencia). */
+.titlebar { display: flex; align-items: center; justify-content: space-between; background: var(--surface); border-bottom: 1px solid var(--line); padding-left: 12px; font-size: 12px; color: var(--muted); user-select: none; }
+.titlebar .caps { display: flex; height: 100%; }
+.titlebar .caps span { width: 46px; display: grid; place-items: center; font-size: 13px; }
+
+.view { min-height: 0; display: none; }
+.view.on { display: grid; }
+
+/* ---- Inicio ---- */
+.welcome { padding: 20px; }
+.drop { border: 2px dashed var(--line); border-radius: 14px; display: grid; place-content: center; justify-items: center; gap: 18px; cursor: pointer; background: var(--bg); transition: border-color .15s, background .15s; }
+.drop:hover, .drop.drag { border-color: var(--accent); background: var(--accent-soft); }
+.drop .big { color: var(--muted); }
+.app .drop .big svg { width: 76px; height: 76px; }
+.drop p { margin: 0; font-size: 20px; }
+.btn { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--line); background: var(--bg); border-radius: 6px; padding: 7px 14px; font-size: 14px; }
+.btn:hover { background: var(--hover); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.btn.primary:hover { filter: brightness(1.08); }
+.btn.big-text { font-size: 15px; padding: 9px 18px; }
+
+/* ---- Lector ---- */
+.reader { grid-template-rows: 48px 1fr 28px; }
+.toolbar { display: flex; align-items: center; gap: 6px; padding: 0 10px; background: var(--surface); border-bottom: 1px solid var(--line); }
+.toolbar .tb { display: inline-flex; align-items: center; gap: 7px; border: 1px solid transparent; background: transparent; border-radius: 6px; padding: 6px 11px; }
+.toolbar .tb:hover { background: var(--hover); }
+.toolbar .tb.primary { background: var(--accent); color: var(--on-accent); }
+.toolbar .tb.primary:hover { filter: brightness(1.08); }
+.toolbar .spacer { flex: 1; }
+.toolbar .divider { width: 1px; height: 24px; background: var(--line); margin-inline: 6px; }
+.toolbar .group-label { font-size: 13px; color: var(--muted); margin-right: 2px; }
+.toolbar .tb.outline { border-color: var(--line); background: var(--bg); }
+.toolbar .tb.outline:hover { background: var(--hover); }
+.app:not(.multi) .multi-only, .app.multi .single-only { display: none; }
+.toolbar .pager { display: inline-flex; align-items: center; gap: 2px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.toolbar .pager button { border: 0; background: transparent; border-radius: 6px; width: 30px; height: 30px; display: grid; place-items: center; }
+.toolbar .pager button:hover { background: var(--hover); }
+.toolbar .pager span { min-width: 104px; text-align: center; color: var(--text); }
+.rbody { display: grid; grid-template-columns: 184px 1fr; min-height: 0; }
+.thumbs { background: var(--surface); border-right: 1px solid var(--line); overflow-y: auto; padding: 10px 12px; display: grid; align-content: start; gap: 10px; }
+.thumb { border: 0; background: transparent; padding: 6px; border-radius: 8px; display: grid; gap: 4px; justify-items: center; }
+.thumb:hover { background: var(--hover); }
+.thumb .slide { width: 144px; box-shadow: 0 1px 3px var(--paper-shadow); outline: 2px solid transparent; outline-offset: 2px; }
+.thumb.current { background: var(--accent-soft); }
+.thumb.current .slide { outline-color: var(--accent); }
+.thumb small { font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.thumb.current small { color: var(--text); font-weight: 600; }
+.rstage { background: var(--reader-stage); display: grid; place-items: center; padding: 28px; min-width: 0; }
+.rstage .slide { width: 100%; max-width: 860px; box-shadow: 0 4px 18px var(--paper-shadow); }
+.status { display: flex; align-items: center; gap: 8px; padding: 0 12px; background: var(--surface); border-top: 1px solid var(--line); font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; }
+.status svg { width: 14px; height: 14px; }
+.status span { overflow: hidden; text-overflow: ellipsis; }
+
+/* ---- Orador ---- */
+.presenter { grid-template-rows: 64px 1fr 72px; background: var(--surface); }
+.ptop { display: flex; align-items: center; gap: 14px; padding: 0 16px; border-bottom: 1px solid var(--line); background: var(--bg); }
+.timer { display: flex; align-items: center; gap: 10px; }
+.timer .clock { font-family: var(--ui-display); font-size: 34px; font-weight: 600; letter-spacing: .5px; font-variant-numeric: tabular-nums; min-width: 150px; }
+.timer.paused .clock { color: var(--muted); }
+.timer .state { font-size: 12px; color: var(--warn); font-weight: 600; text-transform: uppercase; letter-spacing: .6px; visibility: hidden; }
+.timer.paused .state { visibility: visible; }
+.ptop .spacer { flex: 1; }
+.app .timer > [data-icon] svg { width: 34px; height: 34px; }
+.pcount { text-align: center; font-family: var(--ui-display); font-size: 34px; font-weight: 400; font-variant-numeric: tabular-nums; color: var(--muted); }
+.pcount b { font-weight: 600; color: var(--text); }
+.pmain { display: grid; grid-template-columns: 1fr 320px; gap: 16px; padding: 16px; min-height: 0; align-items: start; }
+.current { background: var(--presenter-stage); border-radius: 8px; display: grid; place-items: center; padding: 12px; position: relative; min-width: 0; overflow: hidden; aspect-ratio: 16 / 9; }
+.current .slide { width: 100%; max-height: 100%; }
+.current.black .slide { opacity: .25; }
+.badge { position: absolute; top: 14px; left: 50%; transform: translateX(-50%); display: none; align-items: center; gap: 8px; background: var(--warn); color: var(--on-warn); border-radius: 999px; padding: 6px 14px; font-weight: 600; font-size: 14px; }
+.badge svg { width: 16px; height: 16px; }
+.current.black .badge { display: inline-flex; }
+.maincol { display: grid; gap: 4px; min-width: 0; }
+.side { display: grid; gap: 8px; min-width: 0; }
+.next { aspect-ratio: 16 / 9; display: grid; place-items: center; }
+.side h3 { margin: 0; text-align: center; font-size: 12px; font-weight: 600; letter-spacing: .7px; text-transform: uppercase; color: var(--muted); }
+.next { background: var(--presenter-stage); border-radius: 8px; padding: 8px; }
+.next .slide { width: 100%; }
+.next .end { aspect-ratio: 16 / 9; display: grid; place-items: center; color: #9aa1ad; font-size: 15px; }
+.pbottom { display: flex; align-items: center; gap: 10px; padding: 0 16px; border-top: 1px solid var(--line); background: var(--bg); }
+.pbottom .spacer { flex: 1; }
+.nav { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--line); background: var(--bg); border-radius: 8px; padding: 10px 20px; font-size: 16px; min-width: 150px; justify-content: center; }
+.nav:hover { background: var(--hover); }
+.nav.go { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.nav.go:hover { filter: brightness(1.08); }
+.nav svg { width: 22px; height: 22px; }
+.tool[aria-pressed="true"] { background: var(--warn); border-color: var(--warn); color: var(--on-warn); }
+.tool.exit:hover { color: var(--danger); border-color: var(--danger); }
+
+/* ---- Público ---- */
+.audience { background: #000; place-items: center; }
+.audience .slide { width: 100%; }
+.audience.black .slide { visibility: hidden; }
+
+/* ---- Diapositivas de ejemplo (16:9; el texto escala con el ancho) ---- */
+.slide { aspect-ratio: 16 / 9; container-type: inline-size; position: relative; overflow: hidden; font-family: var(--ui-display); background: #fbfaf7; color: #1d2433; }
+.slide .in { position: absolute; inset: 0; padding: 7cqw 8cqw; display: flex; flex-direction: column; gap: 2.4cqw; }
+.slide h4 { margin: 0; font-size: 6cqw; line-height: 1.05; font-weight: 700; letter-spacing: -.02em; }
+.slide p { margin: 0; font-size: 2.6cqw; color: #55607a; }
+.slide ul { margin: 0; padding-left: 4cqw; font-size: 3cqw; display: grid; gap: 1.4cqw; }
+.slide.s-title { background: #14324f; color: #f6f3ea; }
+.slide.s-title .in { justify-content: flex-end; }
+.slide.s-title h4 { font-size: 8cqw; }
+.slide.s-title p { color: #c8d3e0; }
+.slide.s-title .stripe { position: absolute; top: 0; right: 0; width: 34%; height: 100%; background: linear-gradient(160deg, #f2a541, #e0663b); clip-path: polygon(30% 0, 100% 0, 100% 100%, 0 100%); }
+.slide .bars { display: flex; align-items: flex-end; gap: 3cqw; height: 22cqw; margin-top: 1cqw; }
+.slide .bars i { flex: 1; background: #2f6fb0; border-radius: .6cqw .6cqw 0 0; }
+.slide .bars i:nth-child(4) { background: #e0663b; }
+.slide.s-quote { background: #f2a541; color: #2a1a05; }
+.slide.s-quote .in { justify-content: center; }
+.slide.s-quote h4 { font-size: 5.4cqw; font-weight: 600; }
+.slide.s-portrait { aspect-ratio: 3 / 4; }
+.slide .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.4cqw; margin-top: 1cqw; }
+.slide .grid3 div { aspect-ratio: 1; border-radius: 1cqw; background: #dfe7f1; }
+.slide .grid3 div:nth-child(2) { background: #f6d9b5; }
+.slide .grid3 div:nth-child(3) { background: #cfe3d2; }
+.slide.s-end { background: #14324f; color: #f6f3ea; }
+.slide.s-end .in { justify-content: center; align-items: center; text-align: center; }
+.slide.s-end p { color: #c8d3e0; }
+
+@media (prefers-reduced-motion: reduce) { .drop { transition: none; } }
+</style>
+
+<div class="wrap">
+  <div class="intro">
+    <h1>Maqueta PDF Presenter 0.4</h1>
+    <p>Propuesta de diseño para la versión 0.4: ventana a tamaño real del monitor de 11" (1280×800), con los iconos Phosphor y tema claro u oscuro. Es interactiva: navega con los botones o con las teclas, y el cronómetro funciona. Las diapositivas son de ejemplo.</p>
+  </div>
+
+  <div class="bar">
+    <div class="seg" role="group" aria-label="Vista">
+      <button type="button" id="v-welcome" data-view="welcome" aria-pressed="false">Inicio</button>
+      <button type="button" id="v-reader" data-view="reader" aria-pressed="false">Lector</button>
+      <button type="button" id="v-presenter" data-view="presenter" aria-pressed="true">Orador</button>
+      <button type="button" id="v-audience" data-view="audience" aria-pressed="false">Público</button>
+    </div>
+    <div class="seg" role="group" aria-label="Monitores conectados">
+      <button type="button" id="m-1" data-monitors="1" aria-pressed="false">1 monitor</button>
+      <button type="button" id="m-2" data-monitors="2" aria-pressed="true">2 monitores</button>
+    </div>
+    <div class="seg" role="group" aria-label="Tema de la app">
+      <button type="button" id="t-light" data-app-theme="light" aria-pressed="true">Claro</button>
+      <button type="button" id="t-dark" data-app-theme="dark" aria-pressed="false">Oscuro</button>
+    </div>
+  </div>
+
+  <div class="frame" id="frame">
+    <div class="app multi" id="app">
+      <div class="titlebar"><span id="wintitle">PDF Presenter - Orador</span><span class="caps"><span>—</span><span>▢</span><span>✕</span></span></div>
+
+      <section class="view welcome" data-v="welcome">
+        <div class="drop" id="drop">
+          <span class="big" data-icon="file-pdf"></span>
+          <p>Haz clic o arrastra un fichero pdf para abrirlo</p>
+          <button type="button" class="btn primary big-text"><span data-icon="folder-open"></span>Abrir archivo...</button>
+        </div>
+      </section>
+
+      <section class="view reader" data-v="reader">
+        <div class="toolbar">
+          <button type="button" class="tb outline" data-go="welcome"><span data-icon="folder-open"></span>Abrir</button>
+          <button type="button" class="tb outline single-only" data-go="presenter"><span data-icon="presentation-chart"></span>Presentar</button>
+          <span class="divider multi-only" aria-hidden="true"></span>
+          <span class="group-label multi-only">Presentar</span>
+          <button type="button" class="tb outline multi-only" data-go="presenter"><span data-icon="presentation-chart"></span>Con vista del orador</button>
+          <button type="button" class="tb outline multi-only" data-go="mirror"><span data-icon="copy"></span>Duplicar pantalla</button>
+          <span class="spacer"></span>
+          <span class="pager">
+            <button type="button" data-step="-1" title="Página anterior"><span data-icon="caret-left"></span></button>
+            <span data-count>Página 1 de 6</span>
+            <button type="button" data-step="1" title="Página siguiente"><span data-icon="caret-right"></span></button>
+          </span>
+        </div>
+        <div class="rbody">
+          <aside class="thumbs" id="thumbs"></aside>
+          <main class="rstage" id="rstage"></main>
+        </div>
+        <div class="status"><span data-icon="file-pdf"></span><span>C:\Users\manolito\Documents\Charlas\Ejemplo de presentación.pdf</span></div>
+      </section>
+
+      <section class="view presenter" data-v="presenter">
+        <div class="ptop">
+          <div class="timer" id="timer">
+            <span data-icon="timer"></span>
+            <span class="clock" id="clock">00:00:00</span>
+            <button type="button" class="btn" id="pause"><span data-icon="pause"></span><span>Pausar</span></button>
+            <button type="button" class="btn" id="reset"><span data-icon="arrow-counter-clockwise"></span>Reiniciar</button>
+            <span class="state">En pausa</span>
+          </div>
+          <span class="spacer"></span>
+        </div>
+        <div class="pmain">
+          <div class="maincol">
+            <div class="current" id="current"><span class="badge"><span data-icon="eye-slash"></span>Pantalla del público en negro</span></div>
+            <div class="pcount" data-count-big><b>1</b> de 6</div>
+          </div>
+          <div class="side">
+            <div class="next" id="next"></div>
+            <h3>Siguiente</h3>
+          </div>
+        </div>
+        <div class="pbottom">
+          <button type="button" class="nav" data-step="-1"><span data-icon="caret-left"></span>Anterior</button>
+          <button type="button" class="nav go" data-step="1">Siguiente<span data-icon="caret-right"></span></button>
+          <span class="spacer"></span>
+          <button type="button" class="btn tool" id="black" aria-pressed="false"><span data-icon="eye-slash"></span>Pantalla en negro</button>
+          <button type="button" class="btn tool exit" data-go="reader"><span data-icon="x"></span>Salir</button>
+        </div>
+      </section>
+
+      <section class="view audience" data-v="audience" id="audience"></section>
+    </div>
+  </div>
+
+  <div class="notes">
+    <div class="note">
+      <h2>Cronómetro, como en Google Slides</h2>
+      <ul>
+        <li>Empieza a contar al pulsar <b>Presentar</b>.</li>
+        <li><b>Pausar</b> lo detiene y el botón pasa a <b>Reanudar</b>.</li>
+        <li><b>Reiniciar</b> lo pone a cero y vuelve a contar.</li>
+        <li>Sin hora actual, solo el tiempo.</li>
+      </ul>
+    </div>
+    <div class="note">
+      <h2>Vista del orador</h2>
+      <ul>
+        <li>Página actual grande y la siguiente a la derecha. En la última página, «Fin de la presentación».</li>
+        <li>Botones grandes de anterior y siguiente, fáciles de pulsar sin mirar.</li>
+        <li><b>Pantalla en negro</b> se queda marcada en naranja mientras está activa.</li>
+      </ul>
+    </div>
+    <div class="note">
+      <h2>Lector</h2>
+      <ul>
+        <li>Con dos monitores: <b>Abrir</b> | Presentar <b>Con vista del orador</b> y <b>Duplicar pantalla</b>. Con uno: <b>Abrir</b> y <b>Presentar</b>. Cámbialo con el selector de monitores de arriba.</li>
+        <li>Propuesta: fondo gris en vez de negro, con la página «en papel» y sombra, como un lector normal. El negro queda solo para presentar.</li>
+        <li>Flechas de página y «Página X de Y» en la barra superior.</li>
+        <li>Icono de PDF y ruta en la barra de estado.</li>
+      </ul>
+    </div>
+    <div class="note">
+      <h2>Teclas en la maqueta</h2>
+      <ul>
+        <li><kbd>→</kbd> <kbd>AvPág</kbd> <kbd>Espacio</kbd> siguiente; <kbd>←</kbd> <kbd>RePág</kbd> anterior.</li>
+        <li><kbd>Inicio</kbd> <kbd>Fin</kbd> primera y última; <kbd>B</kbd> pantalla en negro.</li>
+        <li><kbd>Esc</kbd> en el orador vuelve al lector.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script>
+const ICONS = {"folder-open":"<svg aria-hidden=\"true\" focusable=\"false\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 256 256\" fill=\"currentColor\"><path d=\"M245,110.64A16,16,0,0,0,232,104H216V88a16,16,0,0,0-16-16H130.67L102.94,51.2a16.14,16.14,0,0,0-9.6-3.2H40A16,16,0,0,0,24,64V208h0a8,8,0,0,0,8,8H211.1a8,8,0,0,0,7.59-5.47l28.49-85.47A16.05,16.05,0,0,0,245,110.64ZM93.34,64,123.2,86.4A8,8,0,0,0,128,88h72v16H69.77a16,16,0,0,0-15.18,10.94L40,158.7V64Zm112,136H43.1l26.67-80H232Z\"/></svg>","presentation-chart":"<svg aria-hidden=\"true\" focusable=\"false\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 256 256\" fill=\"currentColor\"><path d=\"M216,40H136V24a8,8,0,0,0-16,0V40H40A16,16,0,0,0,24,56V176a16,16,0,0,0,16,16H79.36L57.75,219a8,8,0,0,0,12.5,10l29.59-37h56.32l29.59,37a8,8,0,1,0,12.5-10l-21.61-27H216a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40Zm0,136H40V56H216V176ZM104,120v24a8,8,0,0,1-16,0V120a8,8,0,0,1,16,0Zm32-16v40a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Zm32-16v56a8,8,0,0,1-16,0V88a8,8,0,0,1,16,0Z\"/></svg>","caret-left":"<svg aria-hidden=\"true\" focusable=\"false\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 256 256\" fill=\"currentColor\"><path d=\"M165.66,202.34a8,8,0,0,1-11.32,11.32l-80-80a8,8,0,0,1,0-11.32l80-80a8,8,0,0,1,11.32,11.32L91.31,128Z\"/></svg>","caret-right":"<svg aria-hidden=\"true\" focusable=\"false\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 256 256\" fill=\"currentColor\"><path d=\"M181.66,133.66l-80,80a8,8,0,0,1-11.32-11.32L164.69,128,90.34,53.66a8,8,0,0,1,11.32-11.32l80,80A8,8,0,0,1,181.66,133.66Z\"/></svg>","x":"<svg aria-hidden=\"true\" focusable=\"false\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 256 256\" fill=\"currentColor\"><path d=\"M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z\"/></svg>","eye-slash":"<svg aria-hidden=\"true\" focusable=\"false\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 256 256\" fill=\"currentColor\"><path d=\"M53.92,34.62A8,8,0,1,0,42.08,45.38L61.32,66.55C25,88.84,9.38,123.2,8.69,124.76a8,8,0,0,0,0,6.5c.35.79,8.82,19.57,27.65,38.4C61.43,194.74,93.12,208,128,208a127.11,127.11,0,0,0,52.07-10.83l22,24.21a8,8,0,1,0,11.84-10.76Zm47.33,75.84,41.67,45.85a32,32,0,0,1-41.67-45.85ZM128,192c-30.78,0-57.67-11.19-79.93-33.25A133.16,133.16,0,0,1,25,128c4.69-8.79,19.66-33.39,47.35-49.38l18,19.75a48,48,0,0,0,63.66,70l14.73,16.2A112,112,0,0,1,128,192Zm6-95.43a8,8,0,0,1,3-15.72,48.16,48.16,0,0,1,38.77,42.64,8,8,0,0,1-7.22,8.71,6.39,6.39,0,0,1-.75,0,8,8,0,0,1-8-7.26A32.09,32.09,0,0,0,134,96.57Zm113.28,34.69c-.42.94-10.55,23.37-33.36,43.8a8,8,0,1,1-10.67-11.92A132.77,132.77,0,0,0,231.05,128a133.15,133.15,0,0,0-23.12-30.77C185.67,75.19,158.78,64,128,64a118.37,118.37,0,0,0-19.36,1.57A8,8,0,1,1,106,49.79,134,134,0,0,1,128,48c34.88,0,66.57,13.26,91.66,38.35,18.83,18.83,27.3,37.62,27.65,38.41A8,8,0,0,1,247.31,131.26Z\"/></svg>","eye":"<svg aria-hidden=\"true\" focusable=\"false\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 256 256\" fill=\"currentColor\"><path d=\"M247.31,124.76c-.35-.79-8.82-19.58-27.65-38.41C194.57,61.26,162.88,48,128,48S61.43,61.26,36.34,86.35C17.51,105.18,9,124,8.69,124.76a8,8,0,0,0,0,6.5c.35.79,8.82,19.57,27.65,38.4C61.43,194.74,93.12,208,128,208s66.57-13.26,91.66-38.34c18.83-18.83,27.3-37.61,27.65-38.4A8,8,0,0,0,247.31,124.76ZM128,192c-30.78,0-57.67-11.19-79.93-33.25A133.47,133.47,0,0,1,25,128,133.33,133.33,0,0,1,48.07,97.25C70.33,75.19,97.22,64,128,64s57.67,11.19,79.93,33.25A133.46,133.46,0,0,1,231.05,128C223.84,141.46,192.43,192,128,192Zm0-112a48,48,0,1,0,48,48A48.05,48.05,0,0,0,128,80Zm0,80a32,32,0,1,1,32-32A32,32,0,0,1,128,160Z\"/></svg>","pause":"<svg aria-hidden=\"true\" focusable=\"false\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 256 256\" fill=\"currentColor\"><path d=\"M200,32H160a16,16,0,0,0-16,16V208a16,16,0,0,0,16,16h40a16,16,0,0,0,16-16V48A16,16,0,0,0,200,32Zm0,176H160V48h40ZM96,32H56A16,16,0,0,0,40,48V208a16,16,0,0,0,16,16H96a16,16,0,0,0,16-16V48A16,16,0,0,0,96,32Zm0,176H56V48H96Z\"/></svg>","play":"<svg aria-hidden=\"true\" focusable=\"false\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 256 256\" fill=\"currentColor\"><path d=\"M232.4,114.49,88.32,26.35a16,16,0,0,0-16.2-.3A15.86,15.86,0,0,0,64,39.87V216.13A15.94,15.94,0,0,0,80,232a16.07,16.07,0,0,0,8.36-2.35L232.4,141.51a15.81,15.81,0,0,0,0-27ZM80,215.94V40l143.83,88Z\"/></svg>","arrow-counter-clockwise":"<svg aria-hidden=\"true\" focusable=\"false\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 256 256\" fill=\"currentColor\"><path d=\"M224,128a96,96,0,0,1-94.71,96H128A95.38,95.38,0,0,1,62.1,197.8a8,8,0,0,1,11-11.63A80,80,0,1,0,71.43,71.39a3.07,3.07,0,0,1-.26.25L44.59,96H72a8,8,0,0,1,0,16H24a8,8,0,0,1-8-8V56a8,8,0,0,1,16,0V85.8L60.25,60A96,96,0,0,1,224,128Z\"/></svg>","timer":"<svg aria-hidden=\"true\" focusable=\"false\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 256 256\" fill=\"currentColor\"><path d=\"M128,40a96,96,0,1,0,96,96A96.11,96.11,0,0,0,128,40Zm0,176a80,80,0,1,1,80-80A80.09,80.09,0,0,1,128,216ZM173.66,90.34a8,8,0,0,1,0,11.32l-40,40a8,8,0,0,1-11.32-11.32l40-40A8,8,0,0,1,173.66,90.34ZM96,16a8,8,0,0,1,8-8h48a8,8,0,0,1,0,16H104A8,8,0,0,1,96,16Z\"/></svg>","file-pdf":"<svg aria-hidden=\"true\" focusable=\"false\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 256 256\" fill=\"currentColor\"><path d=\"M224,152a8,8,0,0,1-8,8H192v16h16a8,8,0,0,1,0,16H192v16a8,8,0,0,1-16,0V152a8,8,0,0,1,8-8h32A8,8,0,0,1,224,152ZM92,172a28,28,0,0,1-28,28H56v8a8,8,0,0,1-16,0V152a8,8,0,0,1,8-8H64A28,28,0,0,1,92,172Zm-16,0a12,12,0,0,0-12-12H56v24h8A12,12,0,0,0,76,172Zm88,8a36,36,0,0,1-36,36H112a8,8,0,0,1-8-8V152a8,8,0,0,1,8-8h16A36,36,0,0,1,164,180Zm-16,0a20,20,0,0,0-20-20h-8v40h8A20,20,0,0,0,148,180ZM40,112V40A16,16,0,0,1,56,24h96a8,8,0,0,1,5.66,2.34l56,56A8,8,0,0,1,216,88v24a8,8,0,0,1-16,0V96H152a8,8,0,0,1-8-8V40H56v72a8,8,0,0,1-16,0ZM160,80h28.69L160,51.31Z\"/></svg>","sign-out":"<svg aria-hidden=\"true\" focusable=\"false\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 256 256\" fill=\"currentColor\"><path d=\"M120,216a8,8,0,0,1-8,8H48a8,8,0,0,1-8-8V40a8,8,0,0,1,8-8h64a8,8,0,0,1,0,16H56V208h56A8,8,0,0,1,120,216Zm109.66-93.66-40-40a8,8,0,0,0-11.32,11.32L204.69,120H112a8,8,0,0,0,0,16h92.69l-26.35,26.34a8,8,0,0,0,11.32,11.32l40-40A8,8,0,0,0,229.66,122.34Z\"/></svg>","monitor":"<svg aria-hidden=\"true\" focusable=\"false\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 256 256\" fill=\"currentColor\"><path d=\"M208,40H48A24,24,0,0,0,24,64V176a24,24,0,0,0,24,24H208a24,24,0,0,0,24-24V64A24,24,0,0,0,208,40Zm8,136a8,8,0,0,1-8,8H48a8,8,0,0,1-8-8V64a8,8,0,0,1,8-8H208a8,8,0,0,1,8,8Zm-48,48a8,8,0,0,1-8,8H96a8,8,0,0,1,0-16h64A8,8,0,0,1,168,224Z\"/></svg>","copy":"<svg aria-hidden=\"true\" focusable=\"false\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 256 256\" fill=\"currentColor\"><path d=\"M216,32H88a8,8,0,0,0-8,8V80H40a8,8,0,0,0-8,8V216a8,8,0,0,0,8,8H168a8,8,0,0,0,8-8V176h40a8,8,0,0,0,8-8V40A8,8,0,0,0,216,32ZM160,208H48V96H160Zm48-48H176V88a8,8,0,0,0-8-8H96V48H208Z\"/></svg>","monitor-play":"<svg aria-hidden=\"true\" focusable=\"false\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 256 256\" fill=\"currentColor\"><path d=\"M208,40H48A24,24,0,0,0,24,64V176a24,24,0,0,0,24,24H208a24,24,0,0,0,24-24V64A24,24,0,0,0,208,40Zm8,136a8,8,0,0,1-8,8H48a8,8,0,0,1-8-8V64a8,8,0,0,1,8-8H208a8,8,0,0,1,8,8Zm-48,48a8,8,0,0,1-8,8H96a8,8,0,0,1,0-16h64A8,8,0,0,1,168,224Zm-3.56-110.66-48-32A8,8,0,0,0,104,88v64a8,8,0,0,0,12.44,6.66l48-32a8,8,0,0,0,0-13.32ZM120,137.05V103l25.58,17Z\"/></svg>"};
+
+const SLIDES = [
+  { cls: 's-title', html: '<span class="stripe"></span><div class="in"><h4>Ejemplo de presentación</h4><p>Diapositivas de muestra para la maqueta</p></div>' },
+  { cls: '', html: '<div class="in"><h4>Por qué importa</h4><ul><li>Una idea por diapositiva</li><li>Texto grande y legible</li><li>Imágenes que acompañan</li></ul></div>' },
+  { cls: '', html: '<div class="in"><h4>Crecimiento</h4><p>Ejemplo de gráfico</p><div class="bars"><i style="height:35%"></i><i style="height:52%"></i><i style="height:68%"></i><i style="height:94%"></i></div></div>' },
+  { cls: 's-quote', html: '<div class="in"><h4>«Una cita destacada en una diapositiva de color»</h4></div>' },
+  { cls: 's-portrait', html: '<div class="in"><h4>Página vertical</h4><p>Los PDF pueden mezclar tamaños</p><div class="grid3"><div></div><div></div><div></div></div></div>' },
+  { cls: 's-end', html: '<div class="in"><h4>Gracias</h4><p>Preguntas</p></div>' },
+];
+
+const $ = (s, el = document) => el.querySelector(s);
+const $$ = (s, el = document) => [...el.querySelectorAll(s)];
+const app = $('#app');
+const state = { view: 'presenter', page: 0, black: false, elapsed: 0, running: true, last: performance.now() };
+
+function slideEl(i) {
+  const d = document.createElement('div');
+  d.className = 'slide ' + SLIDES[i].cls;
+  d.innerHTML = SLIDES[i].html;
+  return d;
+}
+
+function paintIcons(root = document) {
+  $$('[data-icon]', root).forEach((el) => { if (!el.firstElementChild) el.innerHTML = ICONS[el.dataset.icon] || ''; });
+}
+
+function fit() {
+  const frame = $('#frame');
+  app.style.transform = `scale(${frame.clientWidth / 1280})`;
+}
+
+const titles = { welcome: 'PDF Presenter', reader: 'PDF Presenter', presenter: 'PDF Presenter - Orador', audience: 'Ventana del público (sin marco, pantalla completa)' };
+
+function render() {
+  $$('.view', app).forEach((v) => v.classList.toggle('on', v.dataset.v === state.view));
+  $$('[data-view]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.view === state.view)));
+  $('.titlebar').style.display = state.view === 'audience' ? 'none' : '';
+  app.style.gridTemplateRows = state.view === 'audience' ? '1fr' : '32px 1fr';
+  $('#wintitle').textContent = titles[state.view];
+
+  const n = SLIDES.length, p = state.page;
+  $$('[data-count]').forEach((el) => (el.textContent = `Página ${p + 1} de ${n}`));
+  $('[data-count-big]').innerHTML = `<b>${p + 1}</b> de ${n}`;
+
+  $$('.thumb').forEach((t, i) => t.classList.toggle('current', i === p));
+  const cur = $('.thumb.current');
+  if (cur && state.view === 'reader') cur.scrollIntoView({ block: 'nearest' });
+
+  $('#rstage').replaceChildren(slideEl(p));
+  const portrait = SLIDES[p].cls.includes('portrait');
+  $('#rstage .slide').style.width = portrait ? 'auto' : '';
+  $('#rstage .slide').style.height = portrait ? '100%' : '';
+
+  const current = $('#current');
+  current.querySelector('.slide')?.remove();
+  const big = slideEl(p);
+  if (portrait) { big.style.width = 'auto'; big.style.height = '100%'; }
+  current.append(big);
+  current.classList.toggle('black', state.black);
+
+  const next = $('#next');
+  next.replaceChildren(p + 1 < n ? slideEl(p + 1) : Object.assign(document.createElement('div'), { className: 'end', textContent: 'Fin de la presentación' }));
+  if (p + 1 < n && SLIDES[p + 1].cls.includes('portrait')) { const s = next.firstChild; s.style.width = 'auto'; s.style.height = '100%'; }
+  if (p + 1 < n && !SLIDES[p + 1].cls.includes('portrait')) next.firstChild.style.width = '100%';
+
+  const aud = $('#audience');
+  aud.replaceChildren(slideEl(p));
+  if (portrait) { aud.firstChild.style.width = 'auto'; aud.firstChild.style.height = '100%'; }
+  aud.classList.toggle('black', state.black);
+
+  $('#black').setAttribute('aria-pressed', String(state.black));
+}
+
+function go(i) { state.page = Math.max(0, Math.min(SLIDES.length - 1, i)); render(); }
+function setView(v) {
+  if (v === 'mirror') { titles.audience = 'Duplicar pantalla: esta misma imagen en los dos monitores (Esc para salir)'; v = 'audience'; }
+  else if (v === 'audience') titles.audience = 'Ventana del público (sin marco, pantalla completa)';
+  if (v === 'presenter' && state.view !== 'presenter' && state.view !== 'audience') { state.elapsed = 0; state.running = true; state.last = performance.now(); updatePause(); }
+  state.view = v; render();
+}
+
+// Cronómetro
+const pad = (x) => String(x).padStart(2, '0');
+function tick(now) {
+  if (state.running) state.elapsed += now - state.last;
+  state.last = now;
+  const s = Math.floor(state.elapsed / 1000);
+  $('#clock').textContent = `${pad(Math.floor(s / 3600))}:${pad(Math.floor(s / 60) % 60)}:${pad(s % 60)}`;
+  requestAnimationFrame(tick);
+}
+function updatePause() {
+  const b = $('#pause');
+  b.querySelector('[data-icon]').dataset.icon = state.running ? 'pause' : 'play';
+  b.querySelector('[data-icon]').innerHTML = ICONS[state.running ? 'pause' : 'play'];
+  b.lastElementChild.textContent = state.running ? 'Pausar' : 'Reanudar';
+  $('#timer').classList.toggle('paused', !state.running);
+}
+$('#pause').addEventListener('click', () => { state.running = !state.running; updatePause(); });
+$('#reset').addEventListener('click', () => { state.elapsed = 0; state.running = true; updatePause(); });
+
+// Miniaturas
+SLIDES.forEach((_, i) => {
+  const b = document.createElement('button');
+  b.type = 'button'; b.className = 'thumb';
+  const s = slideEl(i);
+  if (SLIDES[i].cls.includes('portrait')) { s.style.width = '61px'; }
+  b.append(s, Object.assign(document.createElement('small'), { textContent: String(i + 1) }));
+  b.addEventListener('click', () => go(i));
+  $('#thumbs').append(b);
+});
+
+// Controles
+$$('[data-step]').forEach((b) => b.addEventListener('click', () => go(state.page + Number(b.dataset.step))));
+$$('[data-go]').forEach((b) => b.addEventListener('click', () => setView(b.dataset.go)));
+$$('[data-view]').forEach((b) => b.addEventListener('click', () => setView(b.dataset.view)));
+$('#black').addEventListener('click', () => { state.black = !state.black; render(); });
+$('#drop').addEventListener('click', () => setView('reader'));
+$$('[data-monitors]').forEach((b) => b.addEventListener('click', () => {
+  app.classList.toggle('multi', b.dataset.monitors === '2');
+  $$('[data-monitors]').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+  if (state.view !== 'welcome') setView('reader');
+}));
+$$('[data-app-theme]').forEach((b) => b.addEventListener('click', () => {
+  app.classList.toggle('dark', b.dataset.appTheme === 'dark');
+  $$('[data-app-theme]').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+}));
+
+document.addEventListener('keydown', (e) => {
+  if (state.view === 'welcome') return;
+  const k = e.key;
+  if (['ArrowRight', 'ArrowDown', 'PageDown', ' ', 'Enter'].includes(k)) { if (k === ' ' || k === 'Enter') { if (e.target.closest('button')) return; } go(state.page + 1); e.preventDefault(); }
+  else if (['ArrowLeft', 'ArrowUp', 'PageUp', 'Backspace'].includes(k)) { go(state.page - 1); e.preventDefault(); }
+  else if (k === 'Home') { go(0); e.preventDefault(); }
+  else if (k === 'End') { go(SLIDES.length - 1); e.preventDefault(); }
+  else if ((k === 'b' || k === 'B' || k === '.') && state.view !== 'reader') { state.black = !state.black; render(); }
+  else if (k === 'Escape' && (state.view === 'presenter' || state.view === 'audience')) setView('reader');
+});
+
+// La app sigue el tema del visor al abrir, como haría con Windows.
+if (matchMedia('(prefers-color-scheme: dark)').matches && document.documentElement.dataset.theme !== 'light') $('#t-dark').click();
+
+paintIcons();
+new ResizeObserver(fit).observe($('#frame'));
+fit();
+render();
+requestAnimationFrame((t) => { state.last = t; tick(t); });
+</script>
