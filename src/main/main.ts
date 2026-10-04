@@ -1,22 +1,27 @@
-import { app, BrowserWindow, dialog, ipcMain } from 'electron';
+import { app, BrowserWindow, dialog, ipcMain, Menu } from 'electron';
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
-import type { OpenedPdf } from '../types/ipc';
+import { IPC, type PdfFile } from '../types/ipc';
+import {
+  endPresentation,
+  getSession,
+  handleAction,
+  isPresentAction,
+  isPresentationSender,
+  startPresentation,
+} from './presentation';
+import { createWindow } from './windows';
 
-function createLauncherWindow(): void {
-  const win = new BrowserWindow({
-    width: 960,
-    height: 640,
-    webPreferences: {
-      preload: path.join(__dirname, 'preload.js'),
-      contextIsolation: true,
-      nodeIntegration: false,
-    },
-  });
-  void win.loadFile(path.join(__dirname, 'renderer', 'launcher', 'index.html'));
+// Último PDF abierto; es el que se presenta.
+let openedPdf: PdfFile | null = null;
+
+async function readPdf(file: string): Promise<PdfFile> {
+  if (!/\.pdf$/i.test(file)) throw new Error('No es un archivo PDF');
+  openedPdf = { path: file, name: path.basename(file), data: await readFile(file) };
+  return openedPdf;
 }
 
-async function openPdf(event: Electron.IpcMainInvokeEvent): Promise<OpenedPdf | null> {
+async function pickPdf(event: Electron.IpcMainInvokeEvent): Promise<PdfFile | null> {
   const parent = BrowserWindow.fromWebContents(event.sender) ?? undefined;
   const options: Electron.OpenDialogOptions = {
     title: 'Abrir PDF',
@@ -28,13 +33,37 @@ async function openPdf(event: Electron.IpcMainInvokeEvent): Promise<OpenedPdf | 
     : await dialog.showOpenDialog(options);
   const file = result.filePaths[0];
   if (result.canceled || !file) return null;
-  return { name: path.basename(file), data: await readFile(file) };
+  return readPdf(file);
 }
 
-ipcMain.handle('ping', () => 'pong');
-ipcMain.handle('open-pdf', openPdf);
+function createLauncherWindow(): void {
+  const win = createWindow('launcher', { width: 1000, height: 680, title: 'PDF Presenter' });
+  win.on('closed', endPresentation);
+}
 
-app.whenReady().then(createLauncherWindow);
+ipcMain.handle(IPC.openPdf, pickPdf);
+ipcMain.handle(IPC.readPdf, (_event, file: unknown) => {
+  if (typeof file !== 'string') throw new Error('Ruta no válida');
+  return readPdf(file);
+});
+
+ipcMain.handle(IPC.startPresentation, (event, total: unknown, page: unknown) => {
+  const launcher = BrowserWindow.fromWebContents(event.sender);
+  if (!launcher || !openedPdf) return;
+  if (typeof total !== 'number' || typeof page !== 'number' || !(total >= 1)) return;
+  startPresentation(launcher, openedPdf, Math.trunc(total), page);
+});
+
+ipcMain.handle(IPC.getSession, (event) => (isPresentationSender(event.sender) ? getSession() : null));
+
+ipcMain.on(IPC.action, (event, action: unknown) => {
+  if (isPresentationSender(event.sender) && isPresentAction(action)) handleAction(action);
+});
+
+app.whenReady().then(() => {
+  Menu.setApplicationMenu(null);
+  createLauncherWindow();
+});
 
 app.on('window-all-closed', () => {
   app.quit();
