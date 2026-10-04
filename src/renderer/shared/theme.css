@@ -1,4 +1,4 @@
-/* Variables de diseño compartidas por todas las ventanas (de docs/diseno/maqueta-0.4.html).
+/* Variables de diseño compartidas por todas las ventanas (de docs/design/mockup-0.4.html).
    Siguen el tema de Windows: Electron lo expone como prefers-color-scheme. */
 :root {
   color-scheme: light dark;
