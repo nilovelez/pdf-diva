@@ -1,4 +1,4 @@
-import type { BrowserWindow, Display, WebContents } from 'electron';
+import { screen, type BrowserWindow, type Display, type WebContents } from 'electron';
 import {
   IPC,
   type PdfFile,
@@ -133,7 +133,9 @@ function placeAudience(win: BrowserWindow, display: Display): void {
 
 function placeSpeaker(win: BrowserWindow, display: Display): void {
   if (win.isDestroyed()) return;
-  if (win.isMaximized() && sameBounds(win.getBounds(), display.workArea) && win.isVisible()) return;
+  // Compare displays, not bounds: on Windows a maximized window reaches 8 px past the work area.
+  const onDisplay = screen.getDisplayMatching(win.getBounds()).id === display.id;
+  if (win.isMaximized() && onDisplay && win.isVisible()) return;
   if (win.isMaximized()) win.unmaximize();
   win.setBounds(display.workArea);
   win.maximize();
