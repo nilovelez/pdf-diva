@@ -6,7 +6,8 @@ export interface Thumbnails {
   select(page: number): void;
 }
 
-const BOX = { width: 140, height: 180 };
+// Miniaturas de 144 px de ancho y, como máximo, 81 de alto (16:9), como en la maqueta.
+const BOX = { width: 144, height: 81 };
 
 /** Barra de miniaturas: cada una se dibuja solo cuando entra en pantalla. */
 export function createThumbnails(
@@ -33,7 +34,7 @@ export function createThumbnails(
     const item = document.createElement('div');
     item.className = 'thumb';
     item.dataset.page = String(page);
-    const label = document.createElement('span');
+    const label = document.createElement('small');
     label.textContent = String(page);
     item.append(document.createElement('canvas'), label);
     item.addEventListener('click', () => onSelect(page));

@@ -12,23 +12,51 @@
   </head>
   <body>
     <section id="welcome">
-      <p>Haz clic o arrastra un fichero pdf para abrirlo</p>
-      <button id="open-welcome" type="button"><span class="icon" aria-hidden="true"></span>Abrir archivo...</button>
+      <div id="drop">
+        <span class="icon big" data-icon="file-pdf"></span>
+        <p>Haz clic o arrastra un fichero pdf para abrirlo</p>
+        <button id="open-welcome" class="btn primary big-text" type="button">
+          <span class="icon" data-icon="folder-open"></span>Abrir archivo...
+        </button>
+      </div>
     </section>
 
     <section id="reader" hidden>
-      <header>
-        <button id="open" type="button"><span class="icon" aria-hidden="true"></span>Abrir</button>
-        <button id="present" type="button"><span class="icon" aria-hidden="true"></span>Presentar</button>
-        <span id="page"></span>
-      </header>
+      <div id="toolbar">
+        <button id="open" class="btn" type="button">
+          <span class="icon" data-icon="folder-open"></span>Abrir
+        </button>
+        <button id="present" class="btn single-only" type="button">
+          <span class="icon" data-icon="presentation-chart"></span>Presentar
+        </button>
+        <span class="divider multi-only" aria-hidden="true"></span>
+        <span class="group-label multi-only">Presentar</span>
+        <button id="present-presenter" class="btn multi-only" type="button">
+          <span class="icon" data-icon="presentation-chart"></span>Con vista del orador
+        </button>
+        <button id="present-mirror" class="btn multi-only" type="button">
+          <span class="icon" data-icon="copy"></span>Duplicar pantalla
+        </button>
+        <span class="spacer"></span>
+        <span id="pager">
+          <button id="prev" type="button" title="Página anterior" aria-label="Página anterior">
+            <span class="icon" data-icon="caret-left"></span>
+          </button>
+          <span id="page"></span>
+          <button id="next" type="button" title="Página siguiente" aria-label="Página siguiente">
+            <span class="icon" data-icon="caret-right"></span>
+          </button>
+        </span>
+      </div>
       <div id="body">
         <aside id="thumbs"></aside>
         <main id="stage">
           <canvas id="canvas"></canvas>
         </main>
       </div>
-      <footer id="status"></footer>
+      <footer id="status">
+        <span class="icon" data-icon="file-pdf"></span><span id="path"></span>
+      </footer>
     </section>
 
     <p id="notice" role="alert" hidden></p>
