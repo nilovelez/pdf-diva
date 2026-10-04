@@ -1,7 +1,7 @@
 {
   "name": "pdf-diva",
   "productName": "PDF Diva",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "Presenter for PDF files with a speaker view",
   "main": "dist/main.js",
   "license": "GPL-3.0-or-later",
