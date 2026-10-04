@@ -50,9 +50,10 @@ body {
   color: var(--on-warn);
 }
 
+/* --danger is reserved for errors; leaving the presentation is a warning-level action. */
 .tool.exit:hover {
-  color: var(--danger);
-  border-color: var(--danger);
+  color: var(--warn);
+  border-color: var(--warn);
 }
 
 /* Current and next slide, vertically centered in the available space */
