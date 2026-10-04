@@ -100,7 +100,8 @@ pdf-presenter/
 - TypeScript estricto; evitar `any`.
 - Tipar los mensajes IPC en un único archivo compartido (`src/types`).
 - Funciones pequeñas y nombres claros. Comentarios solo donde el "porqué" no sea obvio.
-- Texto de interfaz en **español** (preparar las cadenas para poder traducirlas más adelante).
+- Texto de interfaz en **español** por ahora (preparar las cadenas para poder traducirlas: la app será multiidioma en el hito 8).
+- **Idioma del proyecto: inglés.** Mensajes de commit, mensajes de los tags, README, CHANGELOG, documentación para usuarios y nombres de archivos y carpetas nuevos, en **inglés**, aunque la conversación con el usuario sea en español. Los commits anteriores a la v0.4.0 se quedan como están.
 - Sin dependencias nuevas sin comentarlo primero.
 
 ## Comandos (ajustar al crear el proyecto)
@@ -123,6 +124,7 @@ npm run typecheck
 5. **Robustez**: un solo monitor, cambios de monitores, selector de monitor, errores de PDF.
 6. **Empaquetado**: instalador de Windows con electron-builder.
 7. **Extra (baja prioridad)**: builds de Mac y Linux.
+8. **Multiidioma (baja prioridad)**: interfaz traducible, con el español y el inglés como primeros idiomas.
 
 ## Fuera de alcance (por ahora)
 
@@ -135,10 +137,11 @@ npm run typecheck
 
 - Antes de implementar algo grande, proponer el plan en pocas líneas.
 - Probar siempre el flujo completo con dos monitores y también con uno solo.
+- **Sin capturas de pantalla** en las pruebas de cada hito: llevan mucho tiempo y el usuario comprueba el aspecto visual cuando prueba la versión. Solo si hace falta para depurar un problema concreto.
 - Mantener el proceso principal lo más fino posible; la lógica de render va en los renderers.
 - Si hay que elegir entre una solución "lista" y una "sencilla de mantener", elegir la sencilla.
 - **Commits modulares**: uno por paso lógico (`chore:`, `feat:`, `fix:`, `docs:`), pequeños y, cuando sea posible, de forma que cada uno compile por sí solo. Nada de un único commit gigante. No hacer push salvo petición expresa.
-- **Una etiqueta por hito**: al cerrar un hito, tag anotado (`git tag -a v0.2.0 -m "Hito 2: ..."`) y `package.json` a la misma versión. Hito 1 = v0.1.0, hito 2 = v0.2.0, etc.; v1.0.0 cuando el instalador de Windows (hito 6) esté listo.
-- **Documentación para el usuario final** (`CHANGELOG.md`, README, guías): la escribe la sesión "Coordinador", en su worktree y rama `docs/...`, en español, corta y solo con lo relevante para un usuario (el CHANGELOG sigue Keep a Changelog: Añadido / Cambiado / Corregido). Flujo al cerrar un hito: yo le paso un resumen corto de lo que cambia para el usuario (funciones, teclas, requisitos, limitaciones), ella escribe la entrada y actualiza el README, yo hago merge a `main`, subo la versión en `package.json` y pongo el tag. La documentación técnica (este archivo, comentarios en el código) es mía.
+- **Una etiqueta por hito**: al cerrar un hito, tag anotado (`git tag -a v0.5.0 -m "Milestone 5: ..."`) y `package.json` a la misma versión. Hito 1 = v0.1.0, hito 2 = v0.2.0, etc.; v1.0.0 cuando el instalador de Windows (hito 6) esté listo.
+- **Documentación para el usuario final** (`CHANGELOG.md`, README, guías): la escribe la sesión "Coordinador", en su worktree y rama `docs/...`, en inglés, corta y solo con lo relevante para un usuario (el CHANGELOG sigue Keep a Changelog: Added / Changed / Fixed). Flujo al cerrar un hito: yo le paso un resumen corto de lo que cambia para el usuario (funciones, teclas, requisitos, limitaciones), ella escribe la entrada y actualiza el README, yo hago merge a `main`, subo la versión en `package.json` y pongo el tag. La documentación técnica (este archivo, comentarios en el código) es mía.
 - **Flujo por hito**: al terminar un hito (con documentación, versión y tag) hacer push de `main` con sus tags y PARAR. No empezar el hito siguiente hasta que el usuario haya probado la app en otro equipo y se pasen sus indicaciones (vía el Coordinador). Así se detectan los problemas pronto y no se gasta trabajo en algo sin aprobar.
 - BOB es el equipo dedicado a los agentes. Solo se modifican archivos en BOB; en otros equipos desde los que el usuario abra sesiones, solo lectura salvo petición expresa. Los cambios llegan a otros equipos por git.
