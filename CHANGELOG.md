@@ -7,6 +7,8 @@ The app's interface is currently in Spanish; button names are quoted as they app
 
 ## [Unreleased]
 
+## [0.5.1] - 2026-10-04
+
 ### Changed
 - The project is now called **PDF Diva** (formerly PDF Presenter). The repository moved to [github.com/nilovelez/pdf-diva](https://github.com/nilovelez/pdf-diva).
 - Because of the new name, saved settings (speaker monitor and theme) are reset once.
