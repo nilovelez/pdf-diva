@@ -1,6 +1,20 @@
-# PDF Presenter
+# PDF Diva
 
 Aplicación de escritorio para presentar PDFs, con un funcionamiento parecido al modo presentador de PowerPoint. Prioridad: **Windows**. Mac y Linux son deseables, pero no prioritarios.
+
+## Producto y público (decidido)
+
+- **Nombre**: PDF Diva. **Claim**: "A presenter view for any PDF."
+- **Qué es**: una herramienta abierta y gratuita para usar un PDF como si fuera una presentación de PowerPoint, de forma sencilla, sólida y fiable.
+- **Público objetivo**: técnicos de sala y operadores de streaming y vídeo; la utilidad que está instalada por si un ponente llega con un PDF en un pendrive. No es para docentes ni para creadores de contenido.
+- **Qué implica** (a tener en cuenta en cada decisión):
+  - Arranque rápido y cero configuración.
+  - Fiabilidad bajo presión por encima de funciones nuevas. La contención es parte del producto: no añadir funciones que lo acerquen a suites de AV con API, mandos o efectos.
+  - Sin cuenta, sin telemetría, sin red: todo funciona sin conexión.
+  - Vista del orador legible de un vistazo, a distancia y con poca luz.
+  - Nada que interrumpa durante una presentación (avisos de actualización, diálogos, etc.).
+- **Por qué este nombre**: los técnicos recuerdan las herramientas por un nombre único (HandBrake, OBS) y los nombres descriptivos como "PDF Presenter" chocan siempre con otros proyectos. El nombre aporta carácter y el claim explica lo que hace.
+- **Tono**: el humor y el personaje viven en el nombre y la identidad. Los controles, los avisos y los mensajes de error son sobrios y claros.
 
 ## Objetivo
 
@@ -78,7 +92,7 @@ Si la ventana del público tiene el foco (por ejemplo, tras hacer clic en ella),
 ## Estructura de carpetas sugerida
 
 ```
-pdf-presenter/
+pdf-diva/
 ├─ CLAUDE.md
 ├─ package.json
 ├─ tsconfig.json
@@ -123,7 +137,7 @@ npm run typecheck
 3. **Modo presentación**: dos ventanas (público y orador) en monitores distintos, sincronizadas por IPC.
 4. **Vista del orador completa**: página siguiente, "Página X de Y", controles y cronómetro.
 5. **Robustez**: un solo monitor, cambios de monitores, selector de monitor, errores de PDF.
-6. **Empaquetado**: instalador de Windows con electron-builder.
+6. **Empaquetado**: instalador de Windows con electron-builder. `productName`, `appId` y nombre del instalador con el nombre nuevo (PDF Diva); el `appId` se decide en este hito.
 7. **Extra (baja prioridad)**: builds de Mac y Linux.
 8. **Multiidioma (baja prioridad)**: interfaz traducible, con el español y el inglés como primeros idiomas.
 
