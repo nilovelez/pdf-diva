@@ -6,7 +6,7 @@ It doesn't need Acrobat or any other installed program: PDFs are rendered with a
 
 ## Status
 
-**Version 0.4.0: complete speaker view.** You can present with a speaker view (current slide, next slide and timer) or duplicate the slide on every screen. The app follows the Windows light or dark theme.
+**Version 0.4.1: complete speaker view.** You can present with a speaker view (current slide, next slide and timer) or duplicate the slide on every screen. The app follows the Windows light or dark theme.
 
 You can't choose the projection monitor yet, and there is no installer. Both are coming in the next versions. See the [changelog](CHANGELOG.md) for what each version includes.
 
@@ -46,8 +46,9 @@ With a PDF open you have:
 
 - at the top, the **Abrir** (Open) button for another PDF, the presentation buttons and, on the right, the page arrows and "Página X de Y" (Page X of Y);
 - on the side, page thumbnails: click one to go to it;
-- in the center, the current page;
-- at the bottom, the file path.
+- in the center, the current page.
+
+The window title shows the path of the open file.
 
 ### Presenting
 
@@ -62,9 +63,10 @@ With only one screen, the toolbar shows a single **Presentar** (Present) button,
 
 ### Speaker view
 
-- **At the top**, the timer. It starts when the presentation starts. **Pausar** (Pause) stops it and changes to **Reanudar** (Resume); **Reiniciar** (Restart) sets it back to zero.
-- **In the center**, the current slide with "1 de 40" (1 of 40) below it, and the next slide on the right.
-- **At the bottom**, the **Anterior** (Previous) and **Siguiente** (Next) buttons, **Pantalla en negro** (Black screen, stays orange while active) and **Salir** (Exit).
+- **At the top left**, the timer. It starts when the presentation starts. **Pausar** (Pause) stops it and changes to **Reanudar** (Resume); **Reiniciar** (Restart) sets it back to zero.
+- **At the top right**, **Pantalla en negro** (Black screen, stays orange while active) and **Salir** (Exit).
+- **In the center**, the current slide and, on the right, the next one. Click the next slide to advance.
+- **Below the current slide**, the **Anterior** (Previous) and **Siguiente** (Next) buttons with "1 de 40" (1 of 40) between them.
 
 ### Keys
 
