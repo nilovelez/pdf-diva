@@ -32,7 +32,8 @@ export function onKeyAction(
 ): void {
   window.addEventListener('keydown', (event) => {
     const action = KEY_ACTIONS[event.key];
-    if (!action) return;
+    // Ctrl+B, Alt+arrow and the like are not clicker keys.
+    if (!action || event.ctrlKey || event.altKey || event.metaKey) return;
     const target = event.target instanceof Element ? event.target : null;
     if (action !== 'exit' && target?.closest('input, select, textarea')) return;
     const onButton = target?.closest('button') != null;
