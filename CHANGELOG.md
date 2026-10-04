@@ -7,8 +7,21 @@ The app's interface is currently in Spanish; button names are quoted as they app
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-10-04
+
 ### Added
+- **Password-protected PDFs** can now be opened: the app asks for the password, and it works in the presentation too. The password is never saved.
+- **Settings** (gear button on the right of the reader toolbar): choose the speaker monitor and the theme (System, Light or Dark). Changes are saved automatically.
+- **Alternar pantallas** (Swap screens) in the speaker view, when two or more monitors are connected: moves the slides to the other monitor without stopping the presentation or the timer.
+- If a monitor is disconnected during a presentation, it goes on full screen on the remaining monitor, on the same slide. When the monitor is back, the speaker view returns. Connecting a second monitor during a single-monitor presentation also switches to the speaker view.
+- The start screen shows the version, the license and a link to the project.
 - The project is now licensed under the GNU GPL v3.0 or later, with a list of third-party licenses and credits.
+
+### Changed
+- Speaker view: the next-slide preview is larger (70/30 split instead of 75/25).
+
+### Fixed
+- After a damaged PDF failed to open, presenting showed the damaged file instead of the one that was open.
 
 ## [0.4.1] - 2026-10-04
 
