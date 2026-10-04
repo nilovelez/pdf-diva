@@ -1,8 +1,6 @@
 html,
 body {
-  height: 100%;
-  margin: 0;
-  background: var(--color-stage);
+  background: var(--audience-bg);
   cursor: none;
   overflow: hidden;
 }
