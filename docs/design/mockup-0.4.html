@@ -1,4 +1,4 @@
-<title>Maqueta PDF Presenter 0.4</title>
+<title>Maqueta PDF Diva 0.4</title>
 <style>
 /* Maqueta: una ventana de la app a 1280x800 (el monitor de 11" de BOB), escalada para caber en la página.
    La página sigue el tema del visor; la ventana simulada tiene su propio interruptor claro/oscuro,
@@ -181,7 +181,7 @@ kbd { font-family: var(--mono); font-size: 12px; border: 1px solid var(--page-li
 
 <div class="wrap">
   <div class="intro">
-    <h1>Maqueta PDF Presenter 0.4</h1>
+    <h1>Maqueta PDF Diva 0.4</h1>
     <p>Propuesta de diseño para la versión 0.4: ventana a tamaño real del monitor de 11" (1280×800), con los iconos Phosphor y tema claro u oscuro. Es interactiva: navega con los botones o con las teclas, y el cronómetro funciona. Las diapositivas son de ejemplo.</p>
   </div>
 
@@ -204,7 +204,7 @@ kbd { font-family: var(--mono); font-size: 12px; border: 1px solid var(--page-li
 
   <div class="frame" id="frame">
     <div class="app multi" id="app">
-      <div class="titlebar"><span id="wintitle">PDF Presenter - Orador</span><span class="caps"><span>—</span><span>▢</span><span>✕</span></span></div>
+      <div class="titlebar"><span id="wintitle">PDF Diva - Orador</span><span class="caps"><span>—</span><span>▢</span><span>✕</span></span></div>
 
       <section class="view welcome" data-v="welcome">
         <div class="drop" id="drop">
@@ -339,7 +339,7 @@ function fit() {
   app.style.transform = `scale(${frame.clientWidth / 1280})`;
 }
 
-const titles = { welcome: 'PDF Presenter', reader: 'PDF Presenter - C:\\Users\\manolito\\Documents\\Charlas\\Ejemplo de presentación.pdf', presenter: 'PDF Presenter - Orador', audience: 'Ventana del público (sin marco, pantalla completa)' };
+const titles = { welcome: 'PDF Diva', reader: 'PDF Diva - C:\\Users\\manolito\\Documents\\Charlas\\Ejemplo de presentación.pdf', presenter: 'PDF Diva - Orador', audience: 'Ventana del público (sin marco, pantalla completa)' };
 
 function render() {
   $$('.view', app).forEach((v) => v.classList.toggle('on', v.dataset.v === state.view));

@@ -1,6 +1,10 @@
-# PDF Presenter
+# PDF Diva
+
+**A presenter view for any PDF.**
 
 A desktop app to present PDFs like PowerPoint's presenter view: the audience sees the slide full screen on the projector, and you see the current slide, the next one, a timer and the controls on your own screen.
+
+It's made for the people who run the room: venue technicians, streaming and video operators. It's the tool you keep installed for when a speaker shows up with a PDF on a USB stick. It starts fast, needs no setup, works offline and has no account or telemetry.
 
 It doesn't need Acrobat or any other installed program: PDFs are rendered with a built-in viewer.
 
@@ -23,8 +27,8 @@ The interface is currently in Spanish. Button names below are quoted as they app
 2. Get the project and install its dependencies:
 
    ```bash
-   git clone https://github.com/nilovelez/pdf-presenter.git
-   cd pdf-presenter
+   git clone https://github.com/nilovelez/pdf-diva.git
+   cd pdf-diva
    npm install
    ```
 
@@ -102,8 +106,8 @@ The gear button on the right of the reader toolbar opens **Ajustes** (Settings).
 
 ## License
 
-PDF Presenter is free software: you can redistribute it and/or modify it under the terms of the [GNU General Public License](LICENSE) as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+PDF Diva is free software: you can redistribute it and/or modify it under the terms of the [GNU General Public License](LICENSE) as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
 ## Credits
 
-PDF Presenter is built with [PDF.js](https://github.com/mozilla/pdf.js) (Apache 2.0), [Electron](https://www.electronjs.org) (MIT) and icons by [Phosphor Icons](https://phosphoricons.com) (MIT). See [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md) for the full list and their licenses.
+PDF Diva is built with [PDF.js](https://github.com/mozilla/pdf.js) (Apache 2.0), [Electron](https://www.electronjs.org) (MIT) and icons by [Phosphor Icons](https://phosphoricons.com) (MIT). See [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md) for the full list and their licenses.
