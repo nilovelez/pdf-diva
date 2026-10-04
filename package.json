@@ -1,5 +1,6 @@
 {
-  "name": "pdf-presenter",
+  "name": "pdf-diva",
+  "productName": "PDF Diva",
   "version": "0.5.0",
   "description": "Presenter for PDF files with a speaker view",
   "main": "dist/main.js",
