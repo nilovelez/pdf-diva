@@ -7,7 +7,14 @@ The app's interface is currently in Spanish; button names are quoted as they app
 
 ## [Unreleased]
 
+## [0.4.1] - 2026-10-04
+
+### Added
+- Click the next-slide preview in the speaker view to advance.
+
 ### Changed
+- Speaker view layout: **Anterior** and **Siguiente** now sit on the same line as the page counter, aligned with the edges of the current slide; **Pantalla en negro** and **Salir** moved to the top bar, next to the timer. The bottom bar is gone and the slides are centered vertically.
+- Reader: the status bar is gone; the path of the open PDF is shown in the window title.
 - README and changelog are now written in English.
 
 ## [0.4.0] - 2026-10-04
