@@ -71,7 +71,14 @@ function askPassword(file: PdfFile): Promise<{ doc: PDFDocumentProxy; password: 
   passwordInput.focus();
 
   return new Promise((resolve) => {
+    let settled = false;
     const finish = (value: { doc: PDFDocumentProxy; password: string } | null): void => {
+      // A check still running after a cancel must not close the dialog of the next file.
+      if (settled) {
+        if (value) void value.doc.loadingTask.destroy();
+        return;
+      }
+      settled = true;
       passwordDialog.hidden = true;
       passwordForm.onsubmit = null;
       cancelPassword = null;
@@ -99,12 +106,19 @@ function askPassword(file: PdfFile): Promise<{ doc: PDFDocumentProxy; password: 
 
 // ---- Opening files ----
 
+/** Counts calls to openFile: only the newest one may finish, older ones are dropped. */
+let openSeq = 0;
+
 async function openFile(file: PdfFile): Promise<void> {
+  const seq = ++openSeq;
+  // A new file replaces one still waiting for its password.
+  cancelPassword?.();
   let next: PDFDocumentProxy;
   let password: string | undefined;
   try {
     next = await loadPdf(file.data);
   } catch (err) {
+    if (seq !== openSeq) return;
     if (!isPasswordError(err)) {
       showNotice(describeLoadError(err));
       return;
@@ -114,10 +128,14 @@ async function openFile(file: PdfFile): Promise<void> {
     next = unlocked.doc;
     password = unlocked.password;
   }
+  if (seq !== openSeq) {
+    void next.loadingTask.destroy();
+    return;
+  }
   const previous = doc;
   doc = next;
   docPassword = password;
-  window.presenter.pdfOpened();
+  window.presenter.pdfOpened(file.id);
   notice.hidden = true;
   // The window title carries the full path of the open PDF (there is no status bar).
   document.title = `PDF Diva - ${file.path}`;

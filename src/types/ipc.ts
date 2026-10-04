@@ -18,6 +18,8 @@ export const IPC = {
 } as const;
 
 export interface PdfFile {
+  /** Identifies this read, so the launcher can say exactly which file it ended up opening. */
+  id: number;
   path: string;
   name: string;
   data: Uint8Array;
@@ -76,11 +78,11 @@ export interface PresenterApi {
   openPdf(): Promise<PdfFile | null>;
   /** Reads a PDF by path (drag and drop). Rejects if it is not a PDF or cannot be read. */
   readPdf(path: string): Promise<PdfFile>;
-  /** Tells the main process that the PDF last read opened fine, so it is the one to present. */
-  pdfOpened(): void;
+  /** Tells the main process that the PDF with this id opened fine, so it is the one to present. */
+  pdfOpened(id: number): void;
   /** Real path of a file dropped on the window. */
   pathForFile(file: File): string;
-  /** Starts presenting the PDF opened last, from page `page`. */
+  /** Starts presenting the PDF reported by `pdfOpened`, from page `page`. */
   startPresentation(
     total: number,
     page: number,

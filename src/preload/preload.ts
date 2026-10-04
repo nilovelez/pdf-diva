@@ -4,7 +4,7 @@ import { IPC, type PresenterApi } from '../types/ipc';
 const api: PresenterApi = {
   openPdf: () => ipcRenderer.invoke(IPC.openPdf),
   readPdf: (path) => ipcRenderer.invoke(IPC.readPdf, path),
-  pdfOpened: () => ipcRenderer.send(IPC.pdfOpened),
+  pdfOpened: (id) => ipcRenderer.send(IPC.pdfOpened, id),
   pathForFile: (file) => webUtils.getPathForFile(file),
   startPresentation: (total, page, mode, password) =>
     ipcRenderer.invoke(IPC.startPresentation, total, page, mode, password),

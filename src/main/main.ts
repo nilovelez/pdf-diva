@@ -18,14 +18,17 @@ import { createWindow } from './windows';
 
 const REPOSITORY_URL = 'https://github.com/nilovelez/pdf-diva';
 
-// The PDF to present is the last one that opened fine; `pending` is one just read that may still fail.
+// The PDF to present is the last one that opened fine; `pending` is the last one read, which may
+// still fail. The launcher reports the id it opened, so a slow open can never swap in another file.
 let openedPdf: PdfFile | null = null;
 let pendingPdf: PdfFile | null = null;
+let lastReadId = 0;
 let launcherWindow: BrowserWindow | null = null;
 
 async function readPdf(file: string): Promise<PdfFile> {
   if (!/\.pdf$/i.test(file)) throw new Error('No es un archivo PDF');
-  pendingPdf = { path: file, name: path.basename(file), data: await readFile(file) };
+  const data = await readFile(file);
+  pendingPdf = { id: ++lastReadId, path: file, name: path.basename(file), data };
   return pendingPdf;
 }
 
@@ -72,8 +75,8 @@ ipcMain.handle(IPC.readPdf, (_event, file: unknown) => {
   if (typeof file !== 'string') throw new Error('Ruta no válida');
   return readPdf(file);
 });
-ipcMain.on(IPC.pdfOpened, () => {
-  if (pendingPdf) openedPdf = pendingPdf;
+ipcMain.on(IPC.pdfOpened, (_event, id: unknown) => {
+  if (pendingPdf && pendingPdf.id === id) openedPdf = pendingPdf;
 });
 
 ipcMain.handle(
