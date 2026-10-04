@@ -1,4 +1,4 @@
-/* Design variables shared by every window (from docs/design/mockup-0.4.html).
+/* Design variables shared by every window (palette: docs/design/palette.html).
    They follow the Windows theme: Electron exposes it as prefers-color-scheme. */
 :root {
   color-scheme: light dark;
@@ -6,23 +6,23 @@
   --ui: "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif;
   --ui-display: "Segoe UI Variable Display", "Segoe UI", system-ui, sans-serif;
 
-  /* Tema claro */
-  --bg: #ffffff;
-  --surface: #f4f6f9;
-  --surface-2: #e9edf2;
-  --line: #dbe0e7;
-  --text: #1c212b;
-  --muted: #5e6776;
-  --accent: #2453c7;
+  /* PDF Diva palette, light theme: warm neutrals, fuchsia accent. */
+  --bg: #fbfaf8;
+  --surface: #f4f2ef;
+  --surface-2: #ebe8e4;
+  --line: #ddd9d3;
+  --text: #1f1d1b;
+  --muted: #645f59;
+  --accent: #c2185b;
   --on-accent: #ffffff;
-  --accent-soft: #e3ebff;
-  --hover: #e7ebf1;
-  --reader-stage: #e4e7ec;
+  --accent-soft: #f9e8ef;
+  --hover: #ece9e5;
+  --reader-stage: #e6e3df;
   --presenter-stage: #0b0c0e;
-  --paper-shadow: rgb(16 24 40 / 0.22);
-  --warn: #b5560b;
-  --on-warn: #ffffff;
-  --danger: #c0262d;
+  --paper-shadow: rgb(31 29 27 / 0.22);
+  --warn: #e85d04;
+  --on-warn: #1a0a00;
+  --danger: #c62a1f;
 
   /* The audience window is always black, whatever the theme. */
   --audience-bg: #000000;
@@ -32,24 +32,25 @@
   --radius-lg: 14px;
 }
 
+/* PDF Diva palette, dark theme: warm neutrals, gold accent. */
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #1c1e23;
-    --surface: #22252b;
-    --surface-2: #2b2f37;
-    --line: #343943;
-    --text: #e6e9ee;
-    --muted: #9ba3b1;
-    --accent: #7d9cff;
-    --on-accent: #0e1320;
-    --accent-soft: #263255;
-    --hover: #2f343d;
-    --reader-stage: #131518;
+    --bg: #1d1c1b;
+    --surface: #242321;
+    --surface-2: #2e2c2a;
+    --line: #3c3a37;
+    --text: #ece9e5;
+    --muted: #a8a39c;
+    --accent: #e8ba30;
+    --on-accent: #1a1206;
+    --accent-soft: #3e351e;
+    --hover: #33312f;
+    --reader-stage: #141312;
     --presenter-stage: #000000;
     --paper-shadow: rgb(0 0 0 / 0.6);
-    --warn: #f0a24b;
-    --on-warn: #1d1206;
-    --danger: #ff7a7f;
+    --warn: #ff6b1a;
+    --on-warn: #1a0a00;
+    --danger: #ff7d6e;
   }
 }
 
