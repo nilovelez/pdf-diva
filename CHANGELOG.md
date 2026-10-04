@@ -5,6 +5,19 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/).
 
 ## [Sin publicar]
 
+## [0.4.0] - 2026-10-04
+
+### Añadido
+- **Vista del orador completa**: la página actual en grande con «1 de 40» debajo, la vista previa de la siguiente («Fin de la presentación» en la última), botones grandes **Anterior** y **Siguiente**, **Pantalla en negro** y **Salir**.
+- **Cronómetro** en la vista del orador. Empieza a contar al iniciar la presentación; **Pausar** lo detiene (el botón pasa a **Reanudar**) y **Reiniciar** lo pone a cero.
+- **Duplicar pantalla**: la diapositiva a pantalla completa en todos los monitores a la vez, sin vista del orador.
+- **Tema claro y oscuro** automático, según el que tengas en Windows. La pantalla del público sigue siempre en negro y las páginas del PDF se ven con sus colores originales.
+- Iconos en todos los botones.
+
+### Cambiado
+- Nuevo diseño del lector: fondo gris con la página como en papel, flechas para cambiar de página y una barra superior que se adapta a los monitores conectados. Con dos o más muestra **Con vista del orador** y **Duplicar pantalla**; con uno, solo **Presentar**.
+- El cambio de diapositiva es instantáneo: la página siguiente se prepara por adelantado.
+
 ## [0.3.0] - 2026-10-04
 
 ### Añadido
