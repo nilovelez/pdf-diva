@@ -131,8 +131,14 @@ function placeAudience(win: BrowserWindow, display: Display): void {
   win.show();
 }
 
+/**
+ * Speaker views that have painted their page. Until then they are not placed or shown (maximize()
+ * would show them too), so no blank window flashes; the layout runs again on 'ready-to-show'.
+ */
+const readyWindows = new WeakSet<BrowserWindow>();
+
 function placeSpeaker(win: BrowserWindow, display: Display): void {
-  if (win.isDestroyed()) return;
+  if (win.isDestroyed() || !readyWindows.has(win)) return;
   // Compare displays, not bounds: on Windows a maximized window reaches 8 px past the work area.
   const onDisplay = screen.getDisplayMatching(win.getBounds()).id === display.id;
   if (win.isMaximized() && onDisplay && win.isVisible()) return;
@@ -192,7 +198,7 @@ function layoutSpeakerMode(p: Presentation, displays: Display[]): void {
   } else {
     // Started with a single display: only the speaker view, in a normal window.
     reconcileAudiences(p, []);
-    presenter.show();
+    if (readyWindows.has(presenter)) presenter.show();
   }
 }
 
@@ -271,6 +277,10 @@ export function startPresentation(
     });
     presenter.on('closed', () => {
       if (!presentation.quiet.has(presenter)) endPresentation();
+    });
+    presenter.once('ready-to-show', () => {
+      readyWindows.add(presenter);
+      if (current === presentation) applyLayout(presentation);
     });
     presentation.presenter = presenter;
     const { speaker, audience } = displays.length >= 2
