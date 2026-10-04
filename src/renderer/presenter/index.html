@@ -21,6 +21,13 @@
         <span class="icon" data-icon="arrow-counter-clockwise"></span>Reiniciar
       </button>
       <span id="paused" hidden>En pausa</span>
+      <span class="spacer"></span>
+      <button id="black" class="btn tool" type="button" aria-pressed="false">
+        <span class="icon" data-icon="eye-slash"></span>Pantalla en negro
+      </button>
+      <button id="exit" class="btn tool exit" type="button">
+        <span class="icon" data-icon="x"></span>Salir
+      </button>
     </header>
 
     <main id="main">
@@ -31,32 +38,24 @@
           </span>
           <canvas id="canvas"></canvas>
         </div>
-        <div id="count"></div>
+        <div id="row">
+          <button id="prev" class="nav" type="button">
+            <span class="icon" data-icon="caret-left"></span>Anterior
+          </button>
+          <div id="count"></div>
+          <button id="forward" class="nav go" type="button">
+            Siguiente<span class="icon" data-icon="caret-right"></span>
+          </button>
+        </div>
       </div>
       <div id="side">
-        <div id="next">
+        <div id="next" role="button" title="Ir a la siguiente">
           <canvas id="next-canvas"></canvas>
           <span id="end" hidden>Fin de la presentación</span>
         </div>
         <h3>Siguiente</h3>
       </div>
     </main>
-
-    <footer id="bottom">
-      <button id="prev" class="nav" type="button">
-        <span class="icon" data-icon="caret-left"></span>Anterior
-      </button>
-      <button id="forward" class="nav go" type="button">
-        Siguiente<span class="icon" data-icon="caret-right"></span>
-      </button>
-      <span class="spacer"></span>
-      <button id="black" class="btn tool" type="button" aria-pressed="false">
-        <span class="icon" data-icon="eye-slash"></span>Pantalla en negro
-      </button>
-      <button id="exit" class="btn tool exit" type="button">
-        <span class="icon" data-icon="x"></span>Salir
-      </button>
-    </footer>
     <script src="presenter.js"></script>
   </body>
 </html>

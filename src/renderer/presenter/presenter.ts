@@ -23,7 +23,7 @@ const end = byId('end');
 const blackButton = byId('black');
 
 const drawCurrent = createPageRenderer(byId<HTMLCanvasElement>('canvas'), current);
-// La vista previa no pre-renderiza: la página siguiente ya se dibuja entera aquí.
+// The preview does not prefetch: the next page is already rendered in full by drawCurrent.
 const drawNext = createPageRenderer(nextCanvas, next, { prefetch: false });
 
 const logError = (err: unknown): void => console.error(err);
@@ -36,8 +36,12 @@ byId('prev').addEventListener('click', () => window.presenter.sendAction({ type:
 byId('forward').addEventListener('click', () => window.presenter.sendAction({ type: 'next' }));
 blackButton.addEventListener('click', () => window.presenter.sendAction({ type: 'toggleBlack' }));
 byId('exit').addEventListener('click', () => window.presenter.sendAction({ type: 'exit' }));
+// On the last page the preview shows "Fin de la presentación" and clicking it does nothing.
+next.addEventListener('click', () => {
+  if (!next.classList.contains('is-end')) window.presenter.sendAction({ type: 'next' });
+});
 
-// Cronómetro: empieza solo al abrirse la ventana; el tiempo en pausa no cuenta.
+// Timer: starts when the window opens; paused time does not count.
 let elapsedMs = 0;
 let lastTick = performance.now();
 let running = true;
@@ -80,6 +84,7 @@ connectToPresentation((doc, state) => {
   drawCurrent(doc, state.page).catch(logError);
 
   const hasNext = state.page < state.total;
+  next.classList.toggle('is-end', !hasNext);
   nextCanvas.hidden = !hasNext;
   end.hidden = hasNext;
   if (hasNext) drawNext(doc, state.page + 1).catch(logError);

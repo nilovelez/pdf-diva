@@ -1,10 +1,14 @@
 body {
   display: grid;
-  grid-template-rows: 64px 1fr 72px;
+  grid-template-rows: 64px 1fr;
   background: var(--surface);
 }
 
-/* Cronómetro */
+.spacer {
+  flex: 1;
+}
+
+/* Top bar: timer on the left, blackout and exit on the right */
 #top {
   display: flex;
   align-items: center;
@@ -40,29 +44,40 @@ body {
   color: var(--warn);
 }
 
-/* Diapositiva actual y siguiente */
+.tool[aria-pressed='true'] {
+  background: var(--warn);
+  border-color: var(--warn);
+  color: var(--on-warn);
+}
+
+.tool.exit:hover {
+  color: var(--danger);
+  border-color: var(--danger);
+}
+
+/* Current and next slide, vertically centered in the available space */
 #main {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 320px;
-  grid-template-rows: minmax(0, 1fr);
   gap: 16px;
   padding: 16px;
   min-height: 0;
   align-items: start;
+  align-content: center;
 }
 
 #maincol {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+  display: grid;
+  gap: 12px;
   min-width: 0;
-  height: 100%;
 }
 
 #current {
   position: relative;
-  flex: 1;
-  min-height: 0;
+  box-sizing: border-box;
+  aspect-ratio: 16 / 9;
+  /* On short windows, leave room for the button row instead of overflowing */
+  max-height: calc(100vh - 64px - 32px - 12px - 48px);
   display: grid;
   place-items: center;
   padding: 12px;
@@ -101,7 +116,16 @@ body {
   height: 16px;
 }
 
-/* «1 de 6»: grande y centrado, sin la palabra «Página». */
+/* Previous, "1 of 6" and next on one line, aligned with the edges of the current slide */
+#row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 48px;
+}
+
+/* No word "Página": just "1 de 6" */
 #count {
   text-align: center;
   font-family: var(--ui-display);
@@ -114,57 +138,6 @@ body {
 #count b {
   font-weight: 600;
   color: var(--text);
-}
-
-#side {
-  display: grid;
-  gap: 8px;
-  min-width: 0;
-}
-
-#side h3 {
-  margin: 0;
-  text-align: center;
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.7px;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-
-#next {
-  box-sizing: border-box;
-  aspect-ratio: 16 / 9;
-  display: grid;
-  place-items: center;
-  padding: 8px;
-  overflow: hidden;
-  border-radius: var(--radius-md);
-  background: var(--presenter-stage);
-}
-
-#end {
-  color: #9aa1ad;
-  font-size: 15px;
-}
-
-#end[hidden],
-#next canvas[hidden] {
-  display: none;
-}
-
-/* Controles */
-#bottom {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 0 16px;
-  border-top: 1px solid var(--line);
-  background: var(--bg);
-}
-
-.spacer {
-  flex: 1;
 }
 
 .nav {
@@ -199,13 +172,53 @@ body {
   height: 22px;
 }
 
-.tool[aria-pressed='true'] {
-  background: var(--warn);
-  border-color: var(--warn);
-  color: var(--on-warn);
+#side {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
 }
 
-.tool.exit:hover {
-  color: var(--danger);
-  border-color: var(--danger);
+#side h3 {
+  margin: 0;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.7px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* Clicking the next-slide preview advances */
+#next {
+  box-sizing: border-box;
+  aspect-ratio: 16 / 9;
+  display: grid;
+  place-items: center;
+  padding: 8px;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  background: var(--presenter-stage);
+  cursor: pointer;
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  transition: outline-color 0.15s;
+}
+
+#next:hover {
+  outline-color: var(--accent);
+}
+
+#next.is-end {
+  cursor: default;
+  outline: none;
+}
+
+#end {
+  color: #9aa1ad;
+  font-size: 15px;
+}
+
+#end[hidden],
+#next canvas[hidden] {
+  display: none;
 }
