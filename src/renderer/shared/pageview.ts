@@ -1,7 +1,7 @@
 import type { RenderTask } from 'pdfjs-dist';
 import { renderPage, type Box, type PDFDocumentProxy } from './pdf';
 
-/** Tamaño disponible dentro de `el`, sin su relleno (padding). */
+/** Space available inside `el`, without its padding. */
 export function contentBox(el: HTMLElement): Box {
   const style = getComputedStyle(el);
   return {
@@ -10,7 +10,7 @@ export function contentBox(el: HTMLElement): Box {
   };
 }
 
-interface Prerendered {
+interface Rendered {
   canvas: HTMLCanvasElement;
   box: Box;
 }
@@ -20,12 +20,18 @@ const isCancelled = (err: unknown): boolean =>
 
 const sameBox = (a: Box, b: Box): boolean => a.width === b.width && a.height === b.height;
 
+/** Frees a canvas's pixels right away instead of waiting for the garbage collector (4K is ~33 MB). */
+function release(canvas: HTMLCanvasElement): void {
+  canvas.width = 0;
+  canvas.height = 0;
+}
+
 /**
- * Devuelve una función que dibuja una página en `canvas` ajustada a `container`.
- * Los dibujos se encadenan de uno en uno (PDF.js no admite dos sobre el mismo canvas)
- * y uno nuevo cancela el anterior, así que al pasar páginas rápido solo se acaba la última.
- * Tras dibujar, pre-renderiza la página siguiente fuera de pantalla para que el cambio
- * sea instantáneo.
+ * Returns a function that draws a page in `canvas`, fitted to `container`.
+ * Pages are drawn off screen and copied to `canvas` only when complete, so the visible page
+ * is never blanked or half drawn. Draws run one at a time and a new one cancels the previous
+ * one, so when paging fast only the last page is finished.
+ * With `prefetch`, the next and previous pages are rendered ahead so moving either way is instant.
  */
 export function createPageRenderer(
   canvas: HTMLCanvasElement,
@@ -37,29 +43,38 @@ export function createPageRenderer(
   let task: RenderTask | null = null;
   let chain: Promise<void> = Promise.resolve();
   let cachedDoc: PDFDocumentProxy | null = null;
-  const prerendered = new Map<number, Prerendered>();
+  const cache = new Map<number, Rendered>();
 
-  /** Devuelve false si el dibujo se canceló o ya hay uno más reciente. */
-  async function renderTo(
-    target: HTMLCanvasElement,
+  function drop(page: number): void {
+    const entry = cache.get(page);
+    if (entry) release(entry.canvas);
+    cache.delete(page);
+  }
+
+  /** Renders `page` off screen and caches it; resolves to false if cancelled or overtaken. */
+  async function renderToCache(
     doc: PDFDocumentProxy,
     page: number,
     box: Box,
     mine: number,
   ): Promise<boolean> {
+    const off = document.createElement('canvas');
     try {
-      const started = await renderPage(doc, page, target, box);
+      const started = await renderPage(doc, page, off, box);
       task = started;
       if (mine !== latest) started.cancel();
       await started.promise;
-      return mine === latest;
     } catch (err) {
+      release(off);
       if (isCancelled(err)) return false;
       throw err;
     }
+    drop(page);
+    cache.set(page, { canvas: off, box });
+    return mine === latest;
   }
 
-  function copyToVisible(from: HTMLCanvasElement): void {
+  function show(from: HTMLCanvasElement): void {
     canvas.width = from.width;
     canvas.height = from.height;
     canvas.style.width = from.style.width;
@@ -67,26 +82,30 @@ export function createPageRenderer(
     canvas.getContext('2d')?.drawImage(from, 0, 0);
   }
 
+  const fresh = (page: number, box: Box): boolean => {
+    const entry = cache.get(page);
+    return entry !== undefined && sameBox(entry.box, box);
+  };
+
   async function job(doc: PDFDocumentProxy, page: number, mine: number): Promise<void> {
     if (mine !== latest) return;
     const box = contentBox(container);
     if (box.width <= 0 || box.height <= 0) return;
     if (cachedDoc !== doc) {
-      prerendered.clear();
+      for (const key of [...cache.keys()]) drop(key);
       cachedDoc = doc;
     }
 
-    const hit = prerendered.get(page);
-    if (hit && sameBox(hit.box, box)) copyToVisible(hit.canvas);
-    else if (!(await renderTo(canvas, doc, page, box, mine))) return;
+    if (!fresh(page, box) && !(await renderToCache(doc, page, box, mine))) return;
+    show(cache.get(page)!.canvas);
 
-    const next = page + 1;
-    for (const key of [...prerendered.keys()]) if (key !== next) prerendered.delete(key);
-    if (!prefetch || next > doc.numPages || mine !== latest) return;
-    const ready = prerendered.get(next);
-    if (ready && sameBox(ready.box, box)) return;
-    const off = document.createElement('canvas');
-    if (await renderTo(off, doc, next, box, mine)) prerendered.set(next, { canvas: off, box });
+    // Keep only this page and its neighbours, then render the neighbours ahead (next first).
+    const neighbours = prefetch ? [page + 1, page - 1].filter((p) => p >= 1 && p <= doc.numPages) : [];
+    for (const key of [...cache.keys()]) if (key !== page && !neighbours.includes(key)) drop(key);
+    for (const neighbour of neighbours) {
+      if (mine !== latest) return;
+      if (!fresh(neighbour, box) && !(await renderToCache(doc, neighbour, box, mine))) return;
+    }
   }
 
   return (doc, page) => {
