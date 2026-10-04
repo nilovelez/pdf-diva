@@ -7,18 +7,31 @@
       content="default-src 'self'; script-src 'self'; style-src 'self'; worker-src 'self'"
     />
     <title>PDF Presenter</title>
+    <link rel="stylesheet" href="../shared/theme.css" />
     <link rel="stylesheet" href="launcher.css" />
   </head>
   <body>
-    <header>
-      <button id="open" type="button">Abrir PDF…</button>
-      <span id="title"></span>
-      <span id="page"></span>
-    </header>
-    <main id="stage">
-      <p id="message">Abre un PDF para empezar.</p>
-      <canvas id="canvas" hidden></canvas>
-    </main>
+    <section id="welcome">
+      <p>Haz clic o arrastra un fichero pdf para abrirlo</p>
+      <button id="open-welcome" type="button"><span class="icon" aria-hidden="true"></span>Abrir archivo...</button>
+    </section>
+
+    <section id="reader" hidden>
+      <header>
+        <button id="open" type="button"><span class="icon" aria-hidden="true"></span>Abrir</button>
+        <button id="present" type="button"><span class="icon" aria-hidden="true"></span>Presentar</button>
+        <span id="page"></span>
+      </header>
+      <div id="body">
+        <aside id="thumbs"></aside>
+        <main id="stage">
+          <canvas id="canvas"></canvas>
+        </main>
+      </div>
+      <footer id="status"></footer>
+    </section>
+
+    <p id="notice" role="alert" hidden></p>
     <script src="launcher.js"></script>
   </body>
 </html>

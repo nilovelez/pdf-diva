@@ -1,13 +1,8 @@
-import type { PresenterApi } from '../../types/ipc';
+import type { PdfFile } from '../../types/ipc';
 import { onKeyAction } from '../shared/keys';
-import { describeLoadError, loadPdf, renderPage, type PDFDocumentProxy } from '../shared/pdf';
-import type { RenderTask } from 'pdfjs-dist';
-
-declare global {
-  interface Window {
-    presenter: PresenterApi;
-  }
-}
+import { createPageRenderer } from '../shared/pageview';
+import { describeLoadError, loadPdf, type PDFDocumentProxy } from '../shared/pdf';
+import { createThumbnails } from './thumbnails';
 
 function byId<T extends HTMLElement>(id: string): T {
   const el = document.getElementById(id);
@@ -15,59 +10,99 @@ function byId<T extends HTMLElement>(id: string): T {
   return el as T;
 }
 
-const openButton = byId<HTMLButtonElement>('open');
-const title = byId('title');
+const welcome = byId('welcome');
+const reader = byId('reader');
 const pageLabel = byId('page');
+const status = byId('status');
 const stage = byId('stage');
-const message = byId('message');
+const notice = byId('notice');
 const canvas = byId<HTMLCanvasElement>('canvas');
+
+const draw = createPageRenderer(canvas, stage);
+const thumbnails = createThumbnails(byId('thumbs'), (page) => void show(page));
 
 let doc: PDFDocumentProxy | null = null;
 let current = 1;
-let task: RenderTask | null = null;
+let noticeTimer: number | undefined;
 
-function showMessage(text: string): void {
-  message.textContent = text;
-  message.hidden = false;
-  canvas.hidden = true;
+function showNotice(text: string): void {
+  notice.textContent = text;
+  notice.hidden = false;
+  window.clearTimeout(noticeTimer);
+  noticeTimer = window.setTimeout(() => (notice.hidden = true), 6000);
 }
 
 async function show(page: number): Promise<void> {
   if (!doc) return;
   current = Math.min(Math.max(page, 1), doc.numPages);
   pageLabel.textContent = `Página ${current} de ${doc.numPages}`;
-  task?.cancel();
+  thumbnails.select(current);
   try {
-    task = await renderPage(doc, current, canvas, {
-      width: stage.clientWidth,
-      height: stage.clientHeight,
-    });
-    message.hidden = true;
-    canvas.hidden = false;
-    await task.promise;
-  } catch (err) {
-    // Cancelar un render en curso al cambiar de página es normal, no un error.
-    if (err instanceof Error && err.name === 'RenderingCancelledException') return;
-    showMessage('No se ha podido dibujar la página.');
+    await draw(doc, current);
+  } catch {
+    showNotice('No se ha podido dibujar la página.');
   }
 }
 
-async function open(): Promise<void> {
+async function openFile(file: PdfFile): Promise<void> {
+  let next: PDFDocumentProxy;
+  try {
+    next = await loadPdf(file.data);
+  } catch (err) {
+    showNotice(describeLoadError(err));
+    return;
+  }
+  const previous = doc;
+  doc = next;
+  notice.hidden = true;
+  status.textContent = file.path;
+  welcome.hidden = true;
+  reader.hidden = false;
+  thumbnails.load(next);
+  await show(1);
+  // Se destruye al final: las miniaturas y la página anteriores ya no lo usan.
+  void previous?.loadingTask.destroy();
+}
+
+async function pickFile(): Promise<void> {
   const file = await window.presenter.openPdf();
-  if (!file) return;
+  if (file) await openFile(file);
+}
+
+async function openDropped(dropped: File): Promise<void> {
+  if (!/\.pdf$/i.test(dropped.name)) {
+    showNotice('Solo se pueden abrir archivos PDF.');
+    return;
+  }
   try {
-    const next = await loadPdf(file.data);
-    await doc?.loadingTask.destroy();
-    doc = next;
-    title.textContent = file.name;
-    await show(1);
-  } catch (err) {
-    showMessage(describeLoadError(err));
+    await openFile(await window.presenter.readPdf(window.presenter.pathForFile(dropped)));
+  } catch {
+    showNotice('No se ha podido leer el archivo.');
   }
 }
 
-openButton.addEventListener('click', () => void open());
+welcome.addEventListener('click', () => void pickFile());
+byId('open').addEventListener('click', () => void pickFile());
+byId('present').addEventListener('click', () => {
+  if (doc) void window.presenter.startPresentation(doc.numPages, current);
+});
+
+document.addEventListener('dragover', (event) => {
+  event.preventDefault();
+  document.body.classList.add('dragging');
+});
+document.addEventListener('dragleave', (event) => {
+  if (event.relatedTarget === null) document.body.classList.remove('dragging');
+});
+document.addEventListener('drop', (event) => {
+  event.preventDefault();
+  document.body.classList.remove('dragging');
+  const dropped = event.dataTransfer?.files[0];
+  if (dropped) void openDropped(dropped);
+});
+
 window.addEventListener('resize', () => void show(current));
+window.presenter.onPresentationEnded((page) => void show(page));
 
 onKeyAction((action) => {
   if (!doc) return;
