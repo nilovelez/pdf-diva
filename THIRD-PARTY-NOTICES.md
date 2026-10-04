@@ -1,10 +1,10 @@
 # Third-party notices
 
-PDF Presenter is free software, released under the [GNU General Public License v3.0 or later](LICENSE). It is built on the following projects. Thanks to all their authors.
+PDF Diva is free software, released under the [GNU General Public License v3.0 or later](LICENSE). It is built on the following projects. Thanks to all their authors.
 
 ## Included in the app
 
-These are distributed with PDF Presenter. Their full license texts must ship with every build of the app.
+These are distributed with PDF Diva. Their full license texts must ship with every build of the app.
 
 | Project | Used for | License | Copyright |
 |---|---|---|---|
