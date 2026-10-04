@@ -36,6 +36,8 @@ byId('prev').addEventListener('click', () => window.presenter.sendAction({ type:
 byId('forward').addEventListener('click', () => window.presenter.sendAction({ type: 'next' }));
 blackButton.addEventListener('click', () => window.presenter.sendAction({ type: 'toggleBlack' }));
 byId('exit').addEventListener('click', () => window.presenter.sendAction({ type: 'exit' }));
+const swapButton = byId('swap');
+swapButton.addEventListener('click', () => window.presenter.sendAction({ type: 'swapScreens' }));
 // On the last page the preview shows "Fin de la presentación" and clicking it does nothing.
 next.addEventListener('click', () => {
   if (!next.classList.contains('is-end')) window.presenter.sendAction({ type: 'next' });
@@ -81,6 +83,8 @@ connectToPresentation((doc, state) => {
   current.classList.toggle('black', state.blank);
   badge.hidden = !state.blank;
   blackButton.setAttribute('aria-pressed', String(state.blank));
+  // There is nothing to swap with a single display.
+  swapButton.hidden = state.displayCount < 2;
   drawCurrent(doc, state.page).catch(logError);
 
   const hasNext = state.page < state.total;
