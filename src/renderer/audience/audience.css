@@ -1,0 +1,18 @@
+html,
+body {
+  height: 100%;
+  margin: 0;
+  background: var(--color-stage);
+  cursor: none;
+  overflow: hidden;
+}
+
+#stage {
+  height: 100%;
+  display: grid;
+  place-items: center;
+}
+
+#canvas.blank {
+  visibility: hidden;
+}
