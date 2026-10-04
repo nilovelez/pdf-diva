@@ -21,9 +21,10 @@ const KEY_ACTIONS: Record<string, KeyAction> = {
 };
 
 /**
- * Traduce una tecla a su acción según la tabla de CLAUDE.md.
- * Con `buttonsKeepKeys`, Espacio e Intro activan el botón enfocado en vez de pasar de página
- * (útil en el lector; en la presentación siempre pasan de página, porque un presenter envía Espacio).
+ * Maps a key to its action using the table in CLAUDE.md.
+ * Keys typed into a text field or a select are left alone (except Escape).
+ * With `buttonsKeepKeys`, Space and Enter activate the focused button instead of turning the page
+ * (useful in the reader; during a presentation they always turn the page, because a clicker sends Space).
  */
 export function onKeyAction(
   handler: (action: KeyAction) => void,
@@ -32,14 +33,16 @@ export function onKeyAction(
   window.addEventListener('keydown', (event) => {
     const action = KEY_ACTIONS[event.key];
     if (!action) return;
-    const onButton = event.target instanceof Element && event.target.closest('button') !== null;
+    const target = event.target instanceof Element ? event.target : null;
+    if (action !== 'exit' && target?.closest('input, select, textarea')) return;
+    const onButton = target?.closest('button') != null;
     if (options.buttonsKeepKeys && onButton && (event.key === ' ' || event.key === 'Enter')) return;
     event.preventDefault();
     handler(action);
   });
 }
 
-/** Evita que un clic deje el foco en un botón: así Espacio/Intro de un presenter no lo vuelven a pulsar. */
+/** A click must not leave the focus on a button: otherwise a clicker's Space/Enter would press it again. */
 export function keepFocusOffButtons(): void {
   document.addEventListener('mousedown', (event) => {
     if (event.target instanceof Element && event.target.closest('button')) event.preventDefault();

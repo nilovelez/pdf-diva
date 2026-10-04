@@ -1,12 +1,15 @@
-// Iconos Phosphor (MIT, ver resources/icons/LICENSE-phosphor.txt). Se incrustan en el JS
-// al compilar, así la CSP no necesita permitir nada más.
+// Phosphor icons (MIT, see resources/icons/LICENSE-phosphor.txt). They are inlined into the JS
+// at build time, so the CSP does not need to allow anything else.
 import arrowCounterClockwise from '../../../resources/icons/arrow-counter-clockwise.svg';
+import arrowsLeftRight from '../../../resources/icons/arrows-left-right.svg';
 import caretLeft from '../../../resources/icons/caret-left.svg';
 import caretRight from '../../../resources/icons/caret-right.svg';
 import copy from '../../../resources/icons/copy.svg';
 import eyeSlash from '../../../resources/icons/eye-slash.svg';
 import filePdf from '../../../resources/icons/file-pdf.svg';
 import folderOpen from '../../../resources/icons/folder-open.svg';
+import gearSix from '../../../resources/icons/gear-six.svg';
+import lockKey from '../../../resources/icons/lock-key.svg';
 import pause from '../../../resources/icons/pause.svg';
 import play from '../../../resources/icons/play.svg';
 import presentationChart from '../../../resources/icons/presentation-chart.svg';
@@ -15,12 +18,15 @@ import x from '../../../resources/icons/x.svg';
 
 const ICONS = {
   'arrow-counter-clockwise': arrowCounterClockwise,
+  'arrows-left-right': arrowsLeftRight,
   'caret-left': caretLeft,
   'caret-right': caretRight,
   copy,
   'eye-slash': eyeSlash,
   'file-pdf': filePdf,
   'folder-open': folderOpen,
+  'gear-six': gearSix,
+  'lock-key': lockKey,
   pause,
   play,
   'presentation-chart': presentationChart,
@@ -34,7 +40,7 @@ export function setIcon(el: Element, name: IconName): void {
   el.innerHTML = ICONS[name];
 }
 
-/** Rellena cada `<span class="icon" data-icon="nombre">` con su SVG. */
+/** Fills every `<span class="icon" data-icon="name">` with its SVG. */
 export function paintIcons(root: ParentNode = document): void {
   root.querySelectorAll<HTMLElement>('[data-icon]').forEach((el) => {
     setIcon(el, el.dataset.icon as IconName);

@@ -1,7 +1,7 @@
 import * as pdfjs from 'pdfjs-dist';
 import type { PDFDocumentProxy, RenderTask } from 'pdfjs-dist';
 
-// Ruta relativa a cada renderer (dist/renderer/<ventana>/); esbuild.mjs copia el worker aquí.
+// Relative to each renderer (dist/renderer/<window>/); esbuild.mjs copies the worker next to it.
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   '../shared/pdf.worker.min.mjs',
   location.href,
@@ -9,13 +9,23 @@ pdfjs.GlobalWorkerOptions.workerSrc = new URL(
 
 export type { PDFDocumentProxy };
 
-export async function loadPdf(data: Uint8Array): Promise<PDFDocumentProxy> {
-  return pdfjs.getDocument({ data }).promise;
+export async function loadPdf(data: Uint8Array, password?: string): Promise<PDFDocumentProxy> {
+  // PDF.js takes ownership of the buffer it is given, so every attempt gets its own copy.
+  return pdfjs.getDocument({ data: data.slice(), password }).promise;
+}
+
+/** The PDF is encrypted: a password is needed (or the one given was wrong). */
+export function isPasswordError(err: unknown): boolean {
+  return err instanceof Error && err.name === 'PasswordException';
+}
+
+export function isWrongPassword(err: unknown): boolean {
+  const code = (err as { code?: number } | null)?.code;
+  return isPasswordError(err) && code === pdfjs.PasswordResponses.INCORRECT_PASSWORD;
 }
 
 export function describeLoadError(err: unknown): string {
   const name = err instanceof Error ? err.name : '';
-  if (name === 'PasswordException') return 'El PDF está protegido con contraseña y no se puede abrir.';
   if (name === 'InvalidPDFException') return 'El archivo está dañado o no es un PDF válido.';
   return 'No se ha podido leer el PDF.';
 }
@@ -26,8 +36,8 @@ export interface Box {
 }
 
 /**
- * Dibuja una página ajustada a `box` (mantiene la proporción) con la resolución real
- * de la pantalla. La escala se calcula por página, por si el PDF mezcla tamaños.
+ * Draws a page fitted to `box` (keeping its proportions) at the real resolution of the
+ * screen. The scale is computed per page, in case the PDF mixes page sizes.
  */
 export async function renderPage(
   doc: PDFDocumentProxy,

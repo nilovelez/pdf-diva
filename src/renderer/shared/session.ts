@@ -2,8 +2,8 @@ import type { PresentationState } from '../../types/ipc';
 import { loadPdf, type PDFDocumentProxy } from './pdf';
 
 /**
- * Se une a la presentación en curso: descarga el PDF una vez y llama a `render`
- * con cada cambio de estado (y al cambiar el tamaño de la ventana).
+ * Joins the running presentation: downloads the PDF once and calls `render`
+ * on every state change (and when the window is resized).
  */
 export async function connectToPresentation(
   render: (doc: PDFDocumentProxy, state: PresentationState) => void,
@@ -14,7 +14,7 @@ export async function connectToPresentation(
     if (doc && state) render(doc, state);
   };
 
-  // Suscribirse antes de pedir la sesión: no se pierde ningún cambio mientras se carga el PDF.
+  // Subscribe before asking for the session so no change is lost while the PDF loads.
   window.presenter.onState((next) => {
     state = next;
     update();
@@ -24,6 +24,6 @@ export async function connectToPresentation(
   const session = await window.presenter.getSession();
   if (!session) throw new Error('No hay presentación en curso');
   state = session.state;
-  doc = await loadPdf(session.data);
+  doc = await loadPdf(session.data, session.password);
   update();
 }

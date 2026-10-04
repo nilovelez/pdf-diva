@@ -1,5 +1,5 @@
-/* Variables de diseño compartidas por todas las ventanas (de docs/design/mockup-0.4.html).
-   Siguen el tema de Windows: Electron lo expone como prefers-color-scheme. */
+/* Design variables shared by every window (from docs/design/mockup-0.4.html).
+   They follow the Windows theme: Electron exposes it as prefers-color-scheme. */
 :root {
   color-scheme: light dark;
 
@@ -24,7 +24,7 @@
   --on-warn: #ffffff;
   --danger: #c0262d;
 
-  /* La ventana del público es siempre negra, sea cual sea el tema. */
+  /* The audience window is always black, whatever the theme. */
   --audience-bg: #000000;
 
   --radius-sm: 6px;
@@ -51,6 +51,11 @@
     --on-warn: #1d1206;
     --danger: #ff7a7f;
   }
+}
+
+/* Component display rules (inline-flex, grid...) must not defeat the hidden attribute. */
+[hidden] {
+  display: none !important;
 }
 
 html,
