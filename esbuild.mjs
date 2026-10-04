@@ -3,7 +3,7 @@ import { cpSync } from 'node:fs';
 
 const common = { bundle: true, sourcemap: true, logLevel: 'info' };
 
-// main y preload corren en Node/Electron; "electron" lo aporta el runtime.
+// main and preload run in Node/Electron; the runtime provides "electron".
 await build({
   ...common,
   entryPoints: { main: 'src/main/main.ts', preload: 'src/preload/preload.ts' },
@@ -14,7 +14,7 @@ await build({
   external: ['electron'],
 });
 
-// Los renderers corren en Chromium.
+// The renderers run in Chromium.
 const renderers = ['launcher', 'audience', 'presenter'];
 await build({
   ...common,
@@ -28,12 +28,15 @@ await build({
   loader: { '.svg': 'text' },
 });
 
-// Recursos compartidos por todos los renderers: el worker de PDF.js (se carga como
-// archivo aparte) y las variables de diseño.
+// Shared by every renderer: the PDF.js worker (loaded as a separate file), the design tokens
+// and the data PDF.js fetches on demand (image decoders, CMaps, standard fonts, CMYK profile).
 cpSync(
   'node_modules/pdfjs-dist/build/pdf.worker.min.mjs',
   'dist/renderer/shared/pdf.worker.min.mjs',
 );
+for (const dir of ['wasm', 'cmaps', 'standard_fonts', 'iccs']) {
+  cpSync(`node_modules/pdfjs-dist/${dir}`, `dist/renderer/shared/pdfjs/${dir}`, { recursive: true });
+}
 cpSync('src/renderer/shared/theme.css', 'dist/renderer/shared/theme.css');
 
 for (const r of renderers) {

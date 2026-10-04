@@ -7,11 +7,21 @@ pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   location.href,
 ).href;
 
+// Data PDF.js loads only when a PDF needs it; without it, JBIG2 and JPEG 2000 images
+// (common in scans) and text using built-in CMaps (CJK) come out blank.
+const assets = (dir: string): string => new URL(`../shared/pdfjs/${dir}/`, location.href).href;
+const ASSET_URLS = {
+  wasmUrl: assets('wasm'),
+  cMapUrl: assets('cmaps'),
+  standardFontDataUrl: assets('standard_fonts'),
+  iccUrl: assets('iccs'),
+};
+
 export type { PDFDocumentProxy };
 
 export async function loadPdf(data: Uint8Array, password?: string): Promise<PDFDocumentProxy> {
   // PDF.js takes ownership of the buffer it is given, so every attempt gets its own copy.
-  return pdfjs.getDocument({ data: data.slice(), password }).promise;
+  return pdfjs.getDocument({ data: data.slice(), password, ...ASSET_URLS }).promise;
 }
 
 /** The PDF is encrypted: a password is needed (or the one given was wrong). */
