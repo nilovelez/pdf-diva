@@ -6,9 +6,9 @@ It doesn't need Acrobat or any other installed program: PDFs are rendered with a
 
 ## Status
 
-**Version 0.4.1: complete speaker view.** You can present with a speaker view (current slide, next slide and timer) or duplicate the slide on every screen. The app follows the Windows light or dark theme.
+**Version 0.5.0: ready for real presentations.** You can present with a speaker view (current slide, next slide and timer) or duplicate the slide on every screen, choose which monitor is yours, swap screens on the fly and keep going if a cable comes loose. Password-protected PDFs open too.
 
-You can't choose the projection monitor yet, and there is no installer. Both are coming in the next versions. See the [changelog](CHANGELOG.md) for what each version includes.
+There is no installer yet; it's coming in the next version. See the [changelog](CHANGELOG.md) for what each version includes.
 
 The interface is currently in Spanish. Button names below are quoted as they appear on screen, with a translation the first time. More languages are planned.
 
@@ -40,11 +40,11 @@ To update to a new version: `git pull`, `npm install` and `npm run dev`.
 
 ### Opening a PDF
 
-When the app starts you'll see an area with a dashed border. Click it or **Abrir archivo...** (Open file), or drag a PDF from File Explorer.
+When the app starts you'll see an area with a dashed border. Click it or **Abrir archivo...** (Open file), or drag a PDF from File Explorer. If the PDF is password-protected, the app asks for the password.
 
 With a PDF open you have:
 
-- at the top, the **Abrir** (Open) button for another PDF, the presentation buttons and, on the right, the page arrows and "Página X de Y" (Page X of Y);
+- at the top, the **Abrir** (Open) button for another PDF, the presentation buttons and, on the right, the page arrows, "Página X de Y" (Page X of Y) and the settings button (gear);
 - on the side, page thumbnails: click one to go to it;
 - in the center, the current page.
 
@@ -61,10 +61,12 @@ Move through the slides with the keyboard or your presentation remote, and press
 
 With only one screen, the toolbar shows a single **Presentar** (Present) button, which opens the speaker view in a normal window. The toolbar updates by itself when you connect or disconnect a screen.
 
+If the slides end up on the wrong screen, press **Alternar pantallas** (Swap screens) in the speaker view. If a screen is disconnected during the presentation, it goes on full screen on the remaining one; when the screen is back, the speaker view returns.
+
 ### Speaker view
 
 - **At the top left**, the timer. It starts when the presentation starts. **Pausar** (Pause) stops it and changes to **Reanudar** (Resume); **Reiniciar** (Restart) sets it back to zero.
-- **At the top right**, **Pantalla en negro** (Black screen, stays orange while active) and **Salir** (Exit).
+- **At the top right**, **Alternar pantallas** (Swap screens, with two or more monitors), **Pantalla en negro** (Black screen, stays orange while active) and **Salir** (Exit).
 - **In the center**, the current slide and, on the right, the next one. Click the next slide to advance.
 - **Below the current slide**, the **Anterior** (Previous) and **Siguiente** (Next) buttons with "1 de 40" (1 of 40) between them.
 
@@ -83,19 +85,20 @@ Navigation keys work in the reader and in every presentation window. Black scree
 
 Presentation remotes send these same keys, so they work without any setup.
 
-### Light and dark theme
+### Settings
 
-The app uses the same theme as Windows (*Settings > Personalization > Colors*). The audience screen is always black and PDF pages keep their original colors.
+The gear button on the right of the reader toolbar opens **Ajustes** (Settings). Changes are saved automatically.
+
+- **Monitor del orador** (Speaker monitor): **Automático** (Automatic) uses the Windows main monitor for the speaker view, or pick a specific monitor. The slides go to another monitor.
+- **Tema** (Theme): **Sistema** (System) follows Windows (*Settings > Personalization > Colors*); you can also force **Claro** (Light) or **Oscuro** (Dark). The audience screen is always black and PDF pages keep their original colors.
 
 ## Troubleshooting
 
-**The slides appear on the wrong screen.** For now the audience window always goes to the screen that is not the main one. Check which screen is marked as main in *Settings > System > Display*. You'll be able to choose it from the app in a later version.
-
-**I connected the projector after starting the presentation.** Windows aren't moved during a presentation yet. Press `Esc` and present again.
+**The slides appear on the wrong screen.** Press **Alternar pantallas** in the speaker view to swap them. To fix it for next time, choose your monitor in **Ajustes > Monitor del orador**.
 
 **`npm install` fails while downloading Electron.** Some computers are missing the *Microsoft Visual C++ Redistributable* (x64). Download it from Microsoft's website, install it and run `npm install` again. This is only needed for the development version.
 
-**The PDF doesn't open and a message appears.** The file is damaged or password-protected. Password-protected PDFs can't be opened yet: remove the protection with the program you created it with and try again.
+**The PDF doesn't open and a message appears.** The file is damaged. Try exporting it again from the program you created it with.
 
 ## License
 
