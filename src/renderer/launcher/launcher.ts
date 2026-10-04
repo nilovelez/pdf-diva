@@ -14,7 +14,6 @@ function byId<T extends HTMLElement>(id: string): T {
 const welcome = byId('welcome');
 const reader = byId('reader');
 const pageLabel = byId('page');
-const path = byId('path');
 const stage = byId('stage');
 const notice = byId('notice');
 
@@ -55,12 +54,13 @@ async function openFile(file: PdfFile): Promise<void> {
   const previous = doc;
   doc = next;
   notice.hidden = true;
-  path.textContent = file.path;
+  // The window title carries the full path of the open PDF (there is no status bar).
+  document.title = `PDF Presenter - ${file.path}`;
   welcome.hidden = true;
   reader.hidden = false;
   thumbnails.load(next);
   await show(1);
-  // Se destruye al final: las miniaturas y la página anteriores ya no lo usan.
+  // Destroyed last: the previous thumbnails and page no longer use it.
   void previous?.loadingTask.destroy();
 }
 
@@ -113,7 +113,7 @@ document.addEventListener('drop', (event) => {
 window.addEventListener('resize', () => void show(current));
 window.presenter.onPresentationEnded((page) => void show(page));
 
-// Con 2 o más monitores se ofrecen las dos formas de presentar; se actualiza al conectar/desconectar.
+// With 2+ displays both ways of presenting are offered; updated when a display is plugged/unplugged.
 const showDisplays = (count: number): void => {
   document.body.classList.toggle('multi', count >= 2);
 };

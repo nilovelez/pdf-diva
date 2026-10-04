@@ -1,14 +1,14 @@
 body {
-  display: flow-root; /* evita que el margen de #welcome se salga del body y cree scroll */
+  display: flow-root; /* keeps the #welcome margin inside the body so it does not create a scrollbar */
 }
 
-/* Un monitor: un solo botón «Presentar». Dos o más: las dos opciones. */
+/* One display: a single "Presentar" button. Two or more: both ways of presenting. */
 body:not(.multi) .multi-only,
 body.multi .single-only {
   display: none;
 }
 
-/* Inicio */
+/* Welcome screen */
 #welcome {
   box-sizing: border-box;
   height: 100%;
@@ -60,11 +60,11 @@ body.dragging #drop {
   font-size: 15px;
 }
 
-/* Lector */
+/* Reader */
 #reader {
   height: 100%;
   display: grid;
-  grid-template-rows: 48px 1fr 28px;
+  grid-template-rows: 48px 1fr;
 }
 
 #reader[hidden] {
@@ -212,30 +212,7 @@ body.dragging #reader {
   box-shadow: 0 4px 18px var(--paper-shadow);
 }
 
-#status {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 0 12px;
-  background: var(--surface);
-  border-top: 1px solid var(--line);
-  font-size: 12px;
-  color: var(--muted);
-  white-space: nowrap;
-  overflow: hidden;
-}
-
-#status .icon svg {
-  width: 14px;
-  height: 14px;
-}
-
-#path {
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-/* Avisos de error */
+/* Error notices */
 #notice {
   position: fixed;
   top: 16px;
