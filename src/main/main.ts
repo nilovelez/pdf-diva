@@ -85,6 +85,7 @@ ipcMain.handle(
     const launcher = BrowserWindow.fromWebContents(event.sender);
     if (!launcher || !openedPdf) return;
     if (typeof total !== 'number' || typeof page !== 'number' || !(total >= 1)) return;
+    if (!Number.isFinite(total) || !Number.isFinite(page)) return;
     if (!isPresentationMode(mode)) return;
     const pdfPassword = typeof password === 'string' && password !== '' ? password : undefined;
     startPresentation(launcher, openedPdf, Math.trunc(total), page, mode, pdfPassword);
