@@ -1,15 +1,20 @@
-// Contrato IPC compartido entre main, preload y renderers.
+// IPC contract shared by main, preload and renderers.
 
 export const IPC = {
   openPdf: 'open-pdf',
   readPdf: 'read-pdf',
+  pdfOpened: 'pdf-opened',
   startPresentation: 'start-presentation',
   getSession: 'get-session',
   action: 'action',
   state: 'state',
   presentationEnded: 'presentation-ended',
-  getDisplayCount: 'get-display-count',
-  displayCount: 'display-count',
+  getDisplays: 'get-displays',
+  displaysChanged: 'displays-changed',
+  getSettings: 'get-settings',
+  setSettings: 'set-settings',
+  getAppInfo: 'get-app-info',
+  openRepository: 'open-repository',
 } as const;
 
 export interface PdfFile {
@@ -19,43 +24,81 @@ export interface PdfFile {
 }
 
 /**
- * presenter: público en el monitor secundario y vista del orador en el principal.
- * mirror: la misma diapositiva a pantalla completa en todos los monitores, sin vista del orador.
+ * presenter: audience on a secondary display and speaker view on the main one.
+ * mirror: the same slide full screen on every display, no speaker view.
  */
 export type PresentationMode = 'presenter' | 'mirror';
 
 export interface PresentationState {
   page: number;
   total: number;
-  /** Pantalla del público en negro. */
+  /** Audience screen blacked out. */
   blank: boolean;
+  /** Connected displays; the speaker view hides its "swap screens" button with fewer than 2. */
+  displayCount: number;
 }
 
 export interface PresentationSession {
   name: string;
   data: Uint8Array;
+  /** Password of the PDF, kept in memory only so every window can open it. */
+  password?: string;
   state: PresentationState;
 }
 
 export type PresentAction =
-  | { type: 'next' | 'prev' | 'first' | 'last' | 'toggleBlack' | 'exit' }
+  | { type: 'next' | 'prev' | 'first' | 'last' | 'toggleBlack' | 'swapScreens' | 'exit' }
   | { type: 'goto'; page: number };
 
+export interface DisplayInfo {
+  id: number;
+  /** 1-based position in the list (main display first). */
+  index: number;
+  width: number;
+  height: number;
+  primary: boolean;
+}
+
+export type ThemeSetting = 'system' | 'light' | 'dark';
+
+export interface Settings {
+  /** Display for the speaker view; null means automatic (the main display). */
+  speakerMonitorId: number | null;
+  theme: ThemeSetting;
+}
+
+export interface AppInfo {
+  version: string;
+}
+
 export interface PresenterApi {
-  /** Abre el diálogo de selección; devuelve null si el usuario cancela. */
+  /** Opens the file dialog; resolves to null if the user cancels. */
   openPdf(): Promise<PdfFile | null>;
-  /** Lee un PDF por ruta (arrastrar y soltar). Rechaza si no es un PDF o no se puede leer. */
+  /** Reads a PDF by path (drag and drop). Rejects if it is not a PDF or cannot be read. */
   readPdf(path: string): Promise<PdfFile>;
-  /** Ruta real de un archivo soltado en la ventana. */
+  /** Tells the main process that the PDF last read opened fine, so it is the one to present. */
+  pdfOpened(): void;
+  /** Real path of a file dropped on the window. */
   pathForFile(file: File): string;
-  /** Inicia la presentación del último PDF abierto, desde la página `page`. */
-  startPresentation(total: number, page: number, mode: PresentationMode): Promise<void>;
+  /** Starts presenting the PDF opened last, from page `page`. */
+  startPresentation(
+    total: number,
+    page: number,
+    mode: PresentationMode,
+    password?: string,
+  ): Promise<void>;
   getSession(): Promise<PresentationSession>;
   sendAction(action: PresentAction): void;
   onState(callback: (state: PresentationState) => void): void;
-  /** Se llama con la última página mostrada cuando termina la presentación. */
+  /** Called with the last page shown when the presentation ends. */
   onPresentationEnded(callback: (page: number) => void): void;
-  getDisplayCount(): Promise<number>;
-  /** Se llama cada vez que se conecta o desconecta un monitor. */
-  onDisplayCount(callback: (count: number) => void): void;
+  getDisplays(): Promise<DisplayInfo[]>;
+  /** Called whenever a display is plugged in, unplugged or changes. */
+  onDisplaysChanged(callback: (displays: DisplayInfo[]) => void): void;
+  getSettings(): Promise<Settings>;
+  /** Saves and applies the given settings; resolves to the resulting settings. */
+  setSettings(patch: Partial<Settings>): Promise<Settings>;
+  getAppInfo(): Promise<AppInfo>;
+  /** Opens the project page in the external browser. */
+  openRepository(): void;
 }

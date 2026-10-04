@@ -1,7 +1,8 @@
-import { app, BrowserWindow, dialog, ipcMain, Menu, nativeTheme, screen } from 'electron';
+import { app, BrowserWindow, dialog, ipcMain, Menu, screen, shell } from 'electron';
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
-import { IPC, type PdfFile } from '../types/ipc';
+import { IPC, type PdfFile, type Settings } from '../types/ipc';
+import { displayInfos } from './displays';
 import {
   endPresentation,
   getSession,
@@ -9,18 +10,23 @@ import {
   isPresentAction,
   isPresentationMode,
   isPresentationSender,
+  onDisplaysChanged,
   startPresentation,
 } from './presentation';
+import { applyTheme, getSettings, loadSettings, updateSettings } from './settings';
 import { createWindow } from './windows';
 
-// Último PDF abierto; es el que se presenta.
+const REPOSITORY_URL = 'https://github.com/nilovelez/pdf-presenter';
+
+// The PDF to present is the last one that opened fine; `pending` is one just read that may still fail.
 let openedPdf: PdfFile | null = null;
+let pendingPdf: PdfFile | null = null;
 let launcherWindow: BrowserWindow | null = null;
 
 async function readPdf(file: string): Promise<PdfFile> {
   if (!/\.pdf$/i.test(file)) throw new Error('No es un archivo PDF');
-  openedPdf = { path: file, name: path.basename(file), data: await readFile(file) };
-  return openedPdf;
+  pendingPdf = { path: file, name: path.basename(file), data: await readFile(file) };
+  return pendingPdf;
 }
 
 async function pickPdf(event: Electron.IpcMainInvokeEvent): Promise<PdfFile | null> {
@@ -44,8 +50,21 @@ function createLauncherWindow(): void {
   launcherWindow = win;
 }
 
-function notifyDisplayCount(): void {
-  launcherWindow?.webContents.send(IPC.displayCount, screen.getAllDisplays().length);
+function displaysChanged(): void {
+  launcherWindow?.webContents.send(IPC.displaysChanged, displayInfos());
+  onDisplaysChanged();
+}
+
+function isSettingsPatch(value: unknown): value is Partial<Settings> {
+  if (typeof value !== 'object' || value === null) return false;
+  const { speakerMonitorId, theme } = value as Record<string, unknown>;
+  const idOk =
+    speakerMonitorId === undefined ||
+    speakerMonitorId === null ||
+    typeof speakerMonitorId === 'number';
+  const themeOk =
+    theme === undefined || theme === 'system' || theme === 'light' || theme === 'dark';
+  return idOk && themeOk;
 }
 
 ipcMain.handle(IPC.openPdf, pickPdf);
@@ -53,17 +72,32 @@ ipcMain.handle(IPC.readPdf, (_event, file: unknown) => {
   if (typeof file !== 'string') throw new Error('Ruta no válida');
   return readPdf(file);
 });
-
-ipcMain.handle(IPC.startPresentation, (event, total: unknown, page: unknown, mode: unknown) => {
-  const launcher = BrowserWindow.fromWebContents(event.sender);
-  if (!launcher || !openedPdf) return;
-  if (typeof total !== 'number' || typeof page !== 'number' || !(total >= 1)) return;
-  if (!isPresentationMode(mode)) return;
-  startPresentation(launcher, openedPdf, Math.trunc(total), page, mode);
+ipcMain.on(IPC.pdfOpened, () => {
+  if (pendingPdf) openedPdf = pendingPdf;
 });
 
+ipcMain.handle(
+  IPC.startPresentation,
+  (event, total: unknown, page: unknown, mode: unknown, password: unknown) => {
+    const launcher = BrowserWindow.fromWebContents(event.sender);
+    if (!launcher || !openedPdf) return;
+    if (typeof total !== 'number' || typeof page !== 'number' || !(total >= 1)) return;
+    if (!isPresentationMode(mode)) return;
+    const pdfPassword = typeof password === 'string' && password !== '' ? password : undefined;
+    startPresentation(launcher, openedPdf, Math.trunc(total), page, mode, pdfPassword);
+  },
+);
+
 ipcMain.handle(IPC.getSession, (event) => (isPresentationSender(event.sender) ? getSession() : null));
-ipcMain.handle(IPC.getDisplayCount, () => screen.getAllDisplays().length);
+ipcMain.handle(IPC.getDisplays, () => displayInfos());
+ipcMain.handle(IPC.getSettings, () => getSettings());
+ipcMain.handle(IPC.setSettings, (_event, patch: unknown) => {
+  if (!isSettingsPatch(patch)) throw new Error('Ajustes no válidos');
+  return updateSettings(patch);
+});
+ipcMain.handle(IPC.getAppInfo, () => ({ version: app.getVersion() }));
+// Only the project page can be opened, never a URL the renderer supplies.
+ipcMain.on(IPC.openRepository, () => void shell.openExternal(REPOSITORY_URL));
 
 ipcMain.on(IPC.action, (event, action: unknown) => {
   if (isPresentationSender(event.sender) && isPresentAction(action)) handleAction(action);
@@ -71,9 +105,11 @@ ipcMain.on(IPC.action, (event, action: unknown) => {
 
 app.whenReady().then(() => {
   Menu.setApplicationMenu(null);
-  nativeTheme.themeSource = 'system';
-  screen.on('display-added', notifyDisplayCount);
-  screen.on('display-removed', notifyDisplayCount);
+  loadSettings();
+  applyTheme();
+  screen.on('display-added', displaysChanged);
+  screen.on('display-removed', displaysChanged);
+  screen.on('display-metrics-changed', displaysChanged);
   createLauncherWindow();
 });
 
