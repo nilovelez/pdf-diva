@@ -103,6 +103,7 @@ pdf-presenter/
 - Texto de interfaz en **español** por ahora (preparar las cadenas para poder traducirlas: la app será multiidioma en el hito 8).
 - **Idioma del proyecto: inglés.** Mensajes de commit, mensajes de los tags, README, CHANGELOG, documentación para usuarios nombres de archivos y carpetas nuevos y comentarios del código, en **inglés**, aunque la conversación con el usuario sea en español. Los commits anteriores a la v0.4.0 se quedan como están. Los comentarios nuevos van en inglés; los existentes se traducen cuando se toque cada archivo (sin un commit enorme de traducción).
 - Sin dependencias nuevas sin comentarlo primero.
+- **Licencia y créditos**: el proyecto es GPL-3.0-or-later (`LICENSE`). Al añadir o quitar una dependencia o un recurso (iconos, fuentes, imágenes), actualizar `THIRD-PARTY-NOTICES.md` en el mismo cambio. El instalador (hito 6) debe incluir `LICENSE`, `THIRD-PARTY-NOTICES.md` y los textos de licencia de pdfjs-dist, Electron y Phosphor.
 
 ## Comandos (ajustar al crear el proyecto)
 
