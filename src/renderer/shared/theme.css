@@ -1,0 +1,55 @@
+/* Variables de diseño compartidas por todas las ventanas. */
+:root {
+  /* Colores */
+  --color-bg: #ffffff;
+  --color-surface: #f3f4f6;
+  --color-border: #dddddd;
+  --color-text: #222222;
+  --color-text-muted: #555555;
+  --color-dropzone: #999999;
+  --color-accent: #2563eb;
+  --color-accent-soft: #dbeafe;
+  --color-danger: #b91c1c;
+  --color-on-danger: #ffffff;
+  --color-warning: #b45309;
+  --color-on-warning: #ffffff;
+  /* Escenario donde se dibuja el PDF y ventana del público: siempre negro */
+  --color-stage: #000000;
+  --color-thumb-paper: #ffffff;
+  --color-shadow: rgba(0, 0, 0, 0.3);
+
+  /* Tipografía */
+  --font-family: system-ui, sans-serif;
+  --font-size-base: 1rem;
+  --font-size-small: 0.85rem;
+  --font-size-label: 0.8rem;
+  --font-size-large: 1.25rem;
+  --font-size-footer: 1.5rem;
+
+  /* Espacios y formas */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 1rem;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 12px;
+  --border-width-dropzone: 3px;
+
+  /* Lector */
+  --sidebar-width: 180px;
+  --thumb-min-height: 90px;
+  --icon-size: 1.1em;
+}
+
+/* Hueco para el icono SVG de un botón (fill/stroke con currentColor). */
+.icon {
+  display: inline-block;
+  width: var(--icon-size);
+  height: var(--icon-size);
+  vertical-align: -0.15em;
+  margin-right: var(--space-1);
+}
+
+.icon:empty {
+  display: none;
+}

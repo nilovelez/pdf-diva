@@ -1,4 +1,6 @@
-export type KeyAction = 'next' | 'prev' | 'first' | 'last' | 'black' | 'exit';
+import type { PresentAction } from '../../types/ipc';
+
+export type KeyAction = Exclude<PresentAction, { type: 'goto' }>['type'];
 
 const KEY_ACTIONS: Record<string, KeyAction> = {
   PageDown: 'next',
@@ -12,9 +14,9 @@ const KEY_ACTIONS: Record<string, KeyAction> = {
   Backspace: 'prev',
   Home: 'first',
   End: 'last',
-  b: 'black',
-  B: 'black',
-  '.': 'black',
+  b: 'toggleBlack',
+  B: 'toggleBlack',
+  '.': 'toggleBlack',
   Escape: 'exit',
 };
 

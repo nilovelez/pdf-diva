@@ -15,7 +15,7 @@ await build({
 });
 
 // Los renderers corren en Chromium.
-const renderers = ['launcher'];
+const renderers = ['launcher', 'audience', 'presenter'];
 await build({
   ...common,
   entryPoints: Object.fromEntries(
@@ -27,11 +27,13 @@ await build({
   target: 'chrome130',
 });
 
-// PDF.js carga su worker como archivo aparte; lo usan todos los renderers.
+// Recursos compartidos por todos los renderers: el worker de PDF.js (se carga como
+// archivo aparte) y las variables de diseño.
 cpSync(
   'node_modules/pdfjs-dist/build/pdf.worker.min.mjs',
   'dist/renderer/shared/pdf.worker.min.mjs',
 );
+cpSync('src/renderer/shared/theme.css', 'dist/renderer/shared/theme.css');
 
 for (const r of renderers) {
   cpSync(`src/renderer/${r}`, `dist/renderer/${r}`, {
