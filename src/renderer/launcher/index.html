@@ -4,14 +4,21 @@
     <meta charset="UTF-8" />
     <meta
       http-equiv="Content-Security-Policy"
-      content="default-src 'self'; script-src 'self'; style-src 'self'"
+      content="default-src 'self'; script-src 'self'; style-src 'self'; worker-src 'self'"
     />
     <title>PDF Presenter</title>
     <link rel="stylesheet" href="launcher.css" />
   </head>
   <body>
-    <h1>PDF Presenter</h1>
-    <p id="status">Iniciando…</p>
+    <header>
+      <button id="open" type="button">Abrir PDF…</button>
+      <span id="title"></span>
+      <span id="page"></span>
+    </header>
+    <main id="stage">
+      <p id="message">Abre un PDF para empezar.</p>
+      <canvas id="canvas" hidden></canvas>
+    </main>
     <script src="launcher.js"></script>
   </body>
 </html>
