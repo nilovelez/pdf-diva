@@ -101,7 +101,7 @@ pdf-presenter/
 - Tipar los mensajes IPC en un único archivo compartido (`src/types`).
 - Funciones pequeñas y nombres claros. Comentarios solo donde el "porqué" no sea obvio.
 - Texto de interfaz en **español** por ahora (preparar las cadenas para poder traducirlas: la app será multiidioma en el hito 8).
-- **Idioma del proyecto: inglés.** Mensajes de commit, mensajes de los tags, README, CHANGELOG, documentación para usuarios y nombres de archivos y carpetas nuevos, en **inglés**, aunque la conversación con el usuario sea en español. Los commits anteriores a la v0.4.0 se quedan como están.
+- **Idioma del proyecto: inglés.** Mensajes de commit, mensajes de los tags, README, CHANGELOG, documentación para usuarios nombres de archivos y carpetas nuevos y comentarios del código, en **inglés**, aunque la conversación con el usuario sea en español. Los commits anteriores a la v0.4.0 se quedan como están. Los comentarios nuevos van en inglés; los existentes se traducen cuando se toque cada archivo (sin un commit enorme de traducción).
 - Sin dependencias nuevas sin comentarlo primero.
 
 ## Comandos (ajustar al crear el proyecto)
