@@ -27,6 +27,12 @@ await build({
   target: 'chrome130',
 });
 
+// PDF.js carga su worker como archivo aparte; lo usan todos los renderers.
+cpSync(
+  'node_modules/pdfjs-dist/build/pdf.worker.min.mjs',
+  'dist/renderer/shared/pdf.worker.min.mjs',
+);
+
 for (const r of renderers) {
   cpSync(`src/renderer/${r}`, `dist/renderer/${r}`, {
     recursive: true,
