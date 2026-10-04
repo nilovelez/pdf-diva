@@ -7,6 +7,15 @@ The app's interface is currently in Spanish; button names are quoted as they app
 
 ## [Unreleased]
 
+## [0.5.3] - 2026-10-05
+
+### Fixed
+- Scanned PDFs (with JBIG2 or JPEG 2000 images) and PDFs with Chinese, Japanese or Korean text no longer show blank pages.
+- Going back a slide, or moving through slides quickly, no longer flashes black or a half-drawn page on the audience screen.
+- The speaker view no longer flickers when the display settings change (for example, the scale of a monitor), and no longer shows up empty for a moment when the presentation starts.
+- `Ctrl+B` no longer blacks out the screen; `B` and `.` still do.
+- Opening a second PDF while the first one was asking for its password could present the wrong file.
+
 ## [0.5.2] - 2026-10-04
 
 ### Changed

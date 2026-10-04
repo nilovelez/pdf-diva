@@ -10,7 +10,7 @@ It doesn't need Acrobat or any other installed program: PDFs are rendered with a
 
 ## Status
 
-**Version 0.5.2: ready for real presentations.** You can present with a speaker view (current slide, next slide and timer) or duplicate the slide on every screen, choose which monitor is yours, swap screens on the fly and keep going if a cable comes loose. Password-protected PDFs open too.
+**Version 0.5.3: ready for real presentations.** You can present with a speaker view (current slide, next slide and timer) or duplicate the slide on every screen, choose which monitor is yours, swap screens on the fly and keep going if a cable comes loose. Password-protected PDFs open too.
 
 There is no installer yet; it's coming in the next version. See the [changelog](CHANGELOG.md) for what each version includes.
 
