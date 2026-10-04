@@ -25,6 +25,7 @@ await build({
   platform: 'browser',
   format: 'iife',
   target: 'chrome130',
+  loader: { '.svg': 'text' },
 });
 
 // Recursos compartidos por todos los renderers: el worker de PDF.js (se carga como

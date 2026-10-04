@@ -1,55 +1,126 @@
-/* Variables de diseño compartidas por todas las ventanas. */
+/* Variables de diseño compartidas por todas las ventanas (de docs/diseno/maqueta-0.4.html).
+   Siguen el tema de Windows: Electron lo expone como prefers-color-scheme. */
 :root {
-  /* Colores */
-  --color-bg: #ffffff;
-  --color-surface: #f3f4f6;
-  --color-border: #dddddd;
-  --color-text: #222222;
-  --color-text-muted: #555555;
-  --color-dropzone: #999999;
-  --color-accent: #2563eb;
-  --color-accent-soft: #dbeafe;
-  --color-danger: #b91c1c;
-  --color-on-danger: #ffffff;
-  --color-warning: #b45309;
-  --color-on-warning: #ffffff;
-  /* Escenario donde se dibuja el PDF y ventana del público: siempre negro */
-  --color-stage: #000000;
-  --color-thumb-paper: #ffffff;
-  --color-shadow: rgba(0, 0, 0, 0.3);
+  color-scheme: light dark;
 
-  /* Tipografía */
-  --font-family: system-ui, sans-serif;
-  --font-size-base: 1rem;
-  --font-size-small: 0.85rem;
-  --font-size-label: 0.8rem;
-  --font-size-large: 1.25rem;
-  --font-size-footer: 1.5rem;
+  --ui: "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif;
+  --ui-display: "Segoe UI Variable Display", "Segoe UI", system-ui, sans-serif;
 
-  /* Espacios y formas */
-  --space-1: 0.25rem;
-  --space-2: 0.5rem;
-  --space-3: 1rem;
-  --radius-sm: 4px;
-  --radius-md: 6px;
-  --radius-lg: 12px;
-  --border-width-dropzone: 3px;
+  /* Tema claro */
+  --bg: #ffffff;
+  --surface: #f4f6f9;
+  --surface-2: #e9edf2;
+  --line: #dbe0e7;
+  --text: #1c212b;
+  --muted: #5e6776;
+  --accent: #2453c7;
+  --on-accent: #ffffff;
+  --accent-soft: #e3ebff;
+  --hover: #e7ebf1;
+  --reader-stage: #e4e7ec;
+  --presenter-stage: #0b0c0e;
+  --paper-shadow: rgb(16 24 40 / 0.22);
+  --warn: #b5560b;
+  --on-warn: #ffffff;
+  --danger: #c0262d;
 
-  /* Lector */
-  --sidebar-width: 180px;
-  --thumb-min-height: 90px;
-  --icon-size: 1.1em;
+  /* La ventana del público es siempre negra, sea cual sea el tema. */
+  --audience-bg: #000000;
+
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 14px;
 }
 
-/* Hueco para el icono SVG de un botón (fill/stroke con currentColor). */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1c1e23;
+    --surface: #22252b;
+    --surface-2: #2b2f37;
+    --line: #343943;
+    --text: #e6e9ee;
+    --muted: #9ba3b1;
+    --accent: #7d9cff;
+    --on-accent: #0e1320;
+    --accent-soft: #263255;
+    --hover: #2f343d;
+    --reader-stage: #131518;
+    --presenter-stage: #000000;
+    --paper-shadow: rgb(0 0 0 / 0.6);
+    --warn: #f0a24b;
+    --on-warn: #1d1206;
+    --danger: #ff7a7f;
+  }
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--ui);
+  font-size: 14px;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+/* Hueco para un icono SVG (Phosphor, fill="currentColor"). */
 .icon {
-  display: inline-block;
-  width: var(--icon-size);
-  height: var(--icon-size);
-  vertical-align: -0.15em;
-  margin-right: var(--space-1);
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+}
+
+.icon svg {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
 }
 
 .icon:empty {
   display: none;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--line);
+  background: var(--bg);
+  border-radius: var(--radius-sm);
+  padding: 7px 14px;
+  font-size: 14px;
+}
+
+.btn:hover {
+  background: var(--hover);
+}
+
+.btn.primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--on-accent);
+}
+
+.btn.primary:hover {
+  filter: brightness(1.08);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
 }
