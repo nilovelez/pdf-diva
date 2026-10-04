@@ -75,7 +75,7 @@ kbd { font-family: var(--mono); font-size: 12px; border: 1px solid var(--page-li
 .btn.big-text { font-size: 15px; padding: 9px 18px; }
 
 /* ---- Lector ---- */
-.reader { grid-template-rows: 48px 1fr 28px; }
+.reader { grid-template-rows: 48px 1fr; }
 .toolbar { display: flex; align-items: center; gap: 6px; padding: 0 10px; background: var(--surface); border-bottom: 1px solid var(--line); }
 .toolbar .tb { display: inline-flex; align-items: center; gap: 7px; border: 1px solid transparent; background: transparent; border-radius: 6px; padding: 6px 11px; }
 .toolbar .tb:hover { background: var(--hover); }
@@ -107,7 +107,7 @@ kbd { font-family: var(--mono); font-size: 12px; border: 1px solid var(--page-li
 .status span { overflow: hidden; text-overflow: ellipsis; }
 
 /* ---- Orador ---- */
-.presenter { grid-template-rows: 64px 1fr 72px; background: var(--surface); }
+.presenter { grid-template-rows: 64px 1fr; background: var(--surface); }
 .ptop { display: flex; align-items: center; gap: 14px; padding: 0 16px; border-bottom: 1px solid var(--line); background: var(--bg); }
 .timer { display: flex; align-items: center; gap: 10px; }
 .timer .clock { font-family: var(--ui-display); font-size: 34px; font-weight: 600; letter-spacing: .5px; font-variant-numeric: tabular-nums; min-width: 150px; }
@@ -116,18 +116,21 @@ kbd { font-family: var(--mono); font-size: 12px; border: 1px solid var(--page-li
 .timer.paused .state { visibility: visible; }
 .ptop .spacer { flex: 1; }
 .app .timer > [data-icon] svg { width: 34px; height: 34px; }
+.prow { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .pcount { text-align: center; font-family: var(--ui-display); font-size: 34px; font-weight: 400; font-variant-numeric: tabular-nums; color: var(--muted); }
 .pcount b { font-weight: 600; color: var(--text); }
-.pmain { display: grid; grid-template-columns: 1fr 320px; gap: 16px; padding: 16px; min-height: 0; align-items: start; }
+.pmain { display: grid; grid-template-columns: 1fr 320px; gap: 16px; padding: 16px; min-height: 0; align-items: start; align-content: center; }
 .current { background: var(--presenter-stage); border-radius: 8px; display: grid; place-items: center; padding: 12px; position: relative; min-width: 0; overflow: hidden; aspect-ratio: 16 / 9; }
 .current .slide { width: 100%; max-height: 100%; }
 .current.black .slide { opacity: .25; }
 .badge { position: absolute; top: 14px; left: 50%; transform: translateX(-50%); display: none; align-items: center; gap: 8px; background: var(--warn); color: var(--on-warn); border-radius: 999px; padding: 6px 14px; font-weight: 600; font-size: 14px; }
 .badge svg { width: 16px; height: 16px; }
 .current.black .badge { display: inline-flex; }
-.maincol { display: grid; gap: 4px; min-width: 0; }
+.maincol { display: grid; gap: 12px; min-width: 0; }
 .side { display: grid; gap: 8px; min-width: 0; }
-.next { aspect-ratio: 16 / 9; display: grid; place-items: center; }
+.next { aspect-ratio: 16 / 9; display: grid; place-items: center; cursor: pointer; outline: 2px solid transparent; outline-offset: 2px; transition: outline-color .15s; }
+.next:hover, .next:focus-visible { outline-color: var(--accent); }
+.next.is-end { cursor: default; outline: none; }
 .side h3 { margin: 0; text-align: center; font-size: 12px; font-weight: 600; letter-spacing: .7px; text-transform: uppercase; color: var(--muted); }
 .next { background: var(--presenter-stage); border-radius: 8px; padding: 8px; }
 .next .slide { width: 100%; }
@@ -230,7 +233,6 @@ kbd { font-family: var(--mono); font-size: 12px; border: 1px solid var(--page-li
           <aside class="thumbs" id="thumbs"></aside>
           <main class="rstage" id="rstage"></main>
         </div>
-        <div class="status"><span data-icon="file-pdf"></span><span>C:\Users\manolito\Documents\Charlas\Ejemplo de presentación.pdf</span></div>
       </section>
 
       <section class="view presenter" data-v="presenter">
@@ -243,23 +245,22 @@ kbd { font-family: var(--mono); font-size: 12px; border: 1px solid var(--page-li
             <span class="state">En pausa</span>
           </div>
           <span class="spacer"></span>
+          <button type="button" class="btn tool" id="black" aria-pressed="false"><span data-icon="eye-slash"></span>Pantalla en negro</button>
+          <button type="button" class="btn tool exit" data-go="reader"><span data-icon="x"></span>Salir</button>
         </div>
         <div class="pmain">
           <div class="maincol">
             <div class="current" id="current"><span class="badge"><span data-icon="eye-slash"></span>Pantalla del público en negro</span></div>
-            <div class="pcount" data-count-big><b>1</b> de 6</div>
+            <div class="prow">
+              <button type="button" class="nav" data-step="-1"><span data-icon="caret-left"></span>Anterior</button>
+              <div class="pcount" data-count-big><b>1</b> de 6</div>
+              <button type="button" class="nav go" data-step="1">Siguiente<span data-icon="caret-right"></span></button>
+            </div>
           </div>
           <div class="side">
-            <div class="next" id="next"></div>
+            <div class="next" id="next" role="button" tabindex="0" title="Ir a la siguiente"></div>
             <h3>Siguiente</h3>
           </div>
-        </div>
-        <div class="pbottom">
-          <button type="button" class="nav" data-step="-1"><span data-icon="caret-left"></span>Anterior</button>
-          <button type="button" class="nav go" data-step="1">Siguiente<span data-icon="caret-right"></span></button>
-          <span class="spacer"></span>
-          <button type="button" class="btn tool" id="black" aria-pressed="false"><span data-icon="eye-slash"></span>Pantalla en negro</button>
-          <button type="button" class="btn tool exit" data-go="reader"><span data-icon="x"></span>Salir</button>
         </div>
       </section>
 
@@ -280,9 +281,9 @@ kbd { font-family: var(--mono); font-size: 12px; border: 1px solid var(--page-li
     <div class="note">
       <h2>Vista del orador</h2>
       <ul>
-        <li>Página actual grande y la siguiente a la derecha. En la última página, «Fin de la presentación».</li>
-        <li>Botones grandes de anterior y siguiente, fáciles de pulsar sin mirar.</li>
-        <li><b>Pantalla en negro</b> se queda marcada en naranja mientras está activa.</li>
+        <li>Página actual grande y la siguiente a la derecha, centradas en vertical. Clic en la siguiente para avanzar. En la última página, «Fin de la presentación».</li>
+        <li>Anterior y Siguiente en la línea del contador, alineados con los bordes de la diapositiva actual.</li>
+        <li><b>Pantalla en negro</b> y <b>Salir</b> arriba a la derecha. Pantalla en negro se queda en naranja mientras está activa.</li>
       </ul>
     </div>
     <div class="note">
@@ -291,7 +292,7 @@ kbd { font-family: var(--mono); font-size: 12px; border: 1px solid var(--page-li
         <li>Con dos monitores: <b>Abrir</b> | Presentar <b>Con vista del orador</b> y <b>Duplicar pantalla</b>. Con uno: <b>Abrir</b> y <b>Presentar</b>. Cámbialo con el selector de monitores de arriba.</li>
         <li>Propuesta: fondo gris en vez de negro, con la página «en papel» y sombra, como un lector normal. El negro queda solo para presentar.</li>
         <li>Flechas de página y «Página X de Y» en la barra superior.</li>
-        <li>Icono de PDF y ruta en la barra de estado.</li>
+        <li>Sin barra de estado: la ruta del PDF va en el título de la ventana.</li>
       </ul>
     </div>
     <div class="note">
@@ -338,7 +339,7 @@ function fit() {
   app.style.transform = `scale(${frame.clientWidth / 1280})`;
 }
 
-const titles = { welcome: 'PDF Presenter', reader: 'PDF Presenter', presenter: 'PDF Presenter - Orador', audience: 'Ventana del público (sin marco, pantalla completa)' };
+const titles = { welcome: 'PDF Presenter', reader: 'PDF Presenter - C:\\Users\\manolito\\Documents\\Charlas\\Ejemplo de presentación.pdf', presenter: 'PDF Presenter - Orador', audience: 'Ventana del público (sin marco, pantalla completa)' };
 
 function render() {
   $$('.view', app).forEach((v) => v.classList.toggle('on', v.dataset.v === state.view));
@@ -372,6 +373,7 @@ function render() {
   if (p + 1 < n && SLIDES[p + 1].cls.includes('portrait')) { const s = next.firstChild; s.style.width = 'auto'; s.style.height = '100%'; }
   if (p + 1 < n && !SLIDES[p + 1].cls.includes('portrait')) next.firstChild.style.width = '100%';
 
+  next.classList.toggle('is-end', p + 1 >= n);
   const aud = $('#audience');
   aud.replaceChildren(slideEl(p));
   if (portrait) { aud.firstChild.style.width = 'auto'; aud.firstChild.style.height = '100%'; }
@@ -422,6 +424,7 @@ SLIDES.forEach((_, i) => {
 $$('[data-step]').forEach((b) => b.addEventListener('click', () => go(state.page + Number(b.dataset.step))));
 $$('[data-go]').forEach((b) => b.addEventListener('click', () => setView(b.dataset.go)));
 $$('[data-view]').forEach((b) => b.addEventListener('click', () => setView(b.dataset.view)));
+$('#next').addEventListener('click', () => go(state.page + 1));
 $('#black').addEventListener('click', () => { state.black = !state.black; render(); });
 $('#drop').addEventListener('click', () => setView('reader'));
 $$('[data-monitors]').forEach((b) => b.addEventListener('click', () => {
