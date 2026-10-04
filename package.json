@@ -1,7 +1,7 @@
 {
   "name": "pdf-presenter",
   "version": "0.4.1",
-  "description": "Presentador de PDFs con vista de orador",
+  "description": "Presenter for PDF files with a speaker view",
   "main": "dist/main.js",
   "private": true,
   "scripts": {
