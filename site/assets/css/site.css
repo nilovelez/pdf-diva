@@ -49,7 +49,7 @@
 
 /* Base */
 *, *::before, *::after { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; scroll-padding-top: 72px; }
 body {
   margin: 0;
   background: var(--bg);
@@ -71,7 +71,10 @@ p { margin: 0; }
 .stack { display: flex; flex-direction: column; gap: 48px; }
 
 /* Header */
-.site-header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; padding-block: 20px; }
+.site-header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; padding-block: 14px;
+  position: sticky; top: 0; z-index: 10;
+  /* Full-width background behind the centred content, so the page content scrolls out of sight under the bar. */
+  background: var(--bg); box-shadow: 0 0 0 100vmax var(--bg); clip-path: inset(0 -100vmax); }
 .brand { display: flex; align-items: center; gap: 10px; color: var(--text); text-decoration: none; font-weight: 600; font-size: 17px; }
 .brand:hover { color: var(--text); }
 .nav { display: flex; flex-wrap: wrap; align-items: center; gap: 20px; font-size: 15px; }
