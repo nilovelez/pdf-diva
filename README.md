@@ -16,7 +16,7 @@ The interface is currently in Spanish. Button names below are quoted as they app
 
 ## Requirements
 
-- Windows 10 or 11, 64-bit. Mac and Linux are planned.
+- Windows 10 or 11, 64-bit (x64). It also runs on Windows 11 on ARM, through Windows' built-in emulation. Mac and Linux are planned.
 - No administrator rights, internet connection or other programs needed.
 
 ## Installing
