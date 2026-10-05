@@ -137,7 +137,7 @@ npm run typecheck
 3. **Modo presentación**: dos ventanas (público y orador) en monitores distintos, sincronizadas por IPC.
 4. **Vista del orador completa**: página siguiente, "Página X de Y", controles y cronómetro.
 5. **Robustez**: un solo monitor, cambios de monitores, selector de monitor, errores de PDF.
-6. **Empaquetado**: instalador de Windows con electron-builder. `productName`, `appId` y nombre del instalador con el nombre nuevo (PDF Diva); el `appId` se decide en este hito.
+6. **Empaquetado y distribución (Windows)**, dos canales con electron-builder: (1) Microsoft Store con paquete MSIX (target `appx`), que la Store firma gratis y sin aviso de SmartScreen; (2) instalador NSIS sin firmar en GitHub Releases, para equipos con la Store bloqueada (SmartScreen avisará; se explica en el README). Firma: nada de certificados de pago anuales; SignPath Foundation se solicitará más adelante, cuando haya reputación, para firmar también el de GitHub; Azure Artifact Signing no está disponible para particulares en España. `appId` com.nilovelez.pdfdiva; la identidad del paquete de la Store (Identity Name, Publisher, nombre reservado) sale de Partner Center. La política de privacidad es `PRIVACY.md`.
 7. **Extra (baja prioridad)**: builds de Mac y Linux.
 8. **Multiidioma (baja prioridad)**: interfaz traducible, con el español y el inglés como primeros idiomas.
 
