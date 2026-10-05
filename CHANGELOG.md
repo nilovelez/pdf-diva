@@ -7,6 +7,17 @@ The app's interface is currently in Spanish; button names are quoted as they app
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-10-05
+
+### Added
+- **Windows installer.** Install PDF Diva from the Microsoft Store, or download the installer from GitHub if the Store is blocked. No administrator rights needed. The GitHub installer isn't digitally signed yet, so Windows shows a warning the first time (see the README).
+- `F5` starts the presentation from the first page and `Shift+F5` from the current page, as in PowerPoint. Remotes with a "play" button work too.
+- Privacy policy: PDF Diva collects no data.
+
+### Changed
+- The app now blocks every internet connection, so it stays fully offline. Spell checking is off, because it downloaded dictionaries.
+- Uninstalling removes the saved settings.
+
 ## [0.5.3] - 2026-10-05
 
 ### Fixed
