@@ -16,7 +16,7 @@ The app interface is in Spanish only until milestone 8, so the main listing is S
 | Privacy policy URL | https://nilovelez.github.io/pdf-diva/privacy.html (generated from `PRIVACY.md` on every website deploy) |
 | Website | https://nilovelez.github.io/pdf-diva/ |
 | Support contact | https://github.com/nilovelez/pdf-diva/issues |
-| Copyright | © 2026 PDF Diva contributors |
+| Copyright | Nilo Vélez |
 | Additional license terms | GNU General Public License v3.0 or later: https://www.gnu.org/licenses/gpl-3.0.html |
 | Restricted capability `runFullTrust` (justification) | PDF Diva is a desktop app built with Electron and packaged as MSIX. It needs full trust to run as a regular desktop app and to place its windows on different monitors. It makes no network connections. |
 
