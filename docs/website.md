@@ -61,7 +61,7 @@ The privacy URL `https://nilovelez.github.io/pdf-diva/privacy.html` is used in t
 
 ## Pending
 
-- **Microsoft Store button**: it is commented out in two places in `site/index.html` (search for `MICROSOFT_STORE_URL`). The app is in Store certification. When the listing URL exists, uncomment both buttons, replace the placeholder with the URL, and remove "Microsoft Store: coming soon" from the `meta` line. Then check `docs/store-listing.md` is still in sync with what is published.
+- **Microsoft Store button**: it is commented out in two places in `site/index.html` (search for `MICROSOFT_STORE_URL`). The app is published in the Store (`https://apps.microsoft.com/detail/9nh5x0qbmhq1`). Uncomment both buttons, replace the placeholder with the URL, and remove "Microsoft Store: coming soon" from the `meta` line. Then check `docs/store-listing.md` is still in sync with what is published.
 - **`apple-touch-icon.png` and `og.png`**: see Images.
 - Text says "Mac and Linux coming soon" in the hero and the closing section; update it if that changes.
 - The Store listing texts are in `docs/store-listing.md` (not published on the site).
