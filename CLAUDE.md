@@ -114,7 +114,7 @@ pdf-diva/
 - TypeScript estricto; evitar `any`.
 - Tipar los mensajes IPC en un único archivo compartido (`src/types`).
 - Funciones pequeñas y nombres claros. Comentarios solo donde el "porqué" no sea obvio.
-- Texto de interfaz en **español** por ahora (preparar las cadenas para poder traducirlas: la app será multiidioma en el hito 8).
+- Texto de interfaz en **español** por ahora (preparar las cadenas para poder traducirlas: la app será multiidioma en el hito 7).
 - **Idioma del proyecto: inglés.** Mensajes de commit, mensajes de los tags, README, CHANGELOG, documentación para usuarios nombres de archivos y carpetas nuevos y comentarios del código, en **inglés**, aunque la conversación con el usuario sea en español. Los commits anteriores a la v0.4.0 se quedan como están. Los comentarios nuevos van en inglés; los existentes se traducen cuando se toque cada archivo (sin un commit enorme de traducción).
 - Sin dependencias nuevas sin comentarlo primero.
 - **Licencia y créditos**: el proyecto es GPL-3.0-or-later (`LICENSE`). Al añadir o quitar una dependencia o un recurso (iconos, fuentes, imágenes), actualizar `THIRD-PARTY-NOTICES.md` en el mismo cambio. El instalador (hito 6) debe incluir `LICENSE`, `THIRD-PARTY-NOTICES.md` y los textos de licencia de pdfjs-dist, Electron y Phosphor.
@@ -137,9 +137,9 @@ npm run typecheck
 3. **Modo presentación**: dos ventanas (público y orador) en monitores distintos, sincronizadas por IPC.
 4. **Vista del orador completa**: página siguiente, "Página X de Y", controles y cronómetro.
 5. **Robustez**: un solo monitor, cambios de monitores, selector de monitor, errores de PDF.
-6. **Empaquetado y distribución (Windows)**, dos canales con electron-builder: (1) Microsoft Store con paquete MSIX (target `appx`), que la Store firma gratis y sin aviso de SmartScreen; (2) instalador NSIS sin firmar en GitHub Releases, para equipos con la Store bloqueada (SmartScreen avisará; se explica en el README). Firma: nada de certificados de pago anuales; SignPath Foundation se solicitará más adelante, cuando haya reputación, para firmar también el de GitHub; Azure Artifact Signing no está disponible para particulares en España. `appId` com.nilovelez.pdfdiva; la identidad del paquete de la Store (Identity Name, Publisher, nombre reservado) sale de Partner Center. La política de privacidad es `PRIVACY.md`.
-7. **Extra (baja prioridad)**: builds de Mac y Linux.
-8. **Multiidioma (baja prioridad)**: interfaz traducible, con el español y el inglés como primeros idiomas.
+6. **Empaquetado y distribución (Windows)**, dos canales con electron-builder: (1) Microsoft Store con paquete MSIX (target `appx`), que la Store firma gratis y sin aviso de SmartScreen; (2) instalador NSIS sin firmar en GitHub Releases, para equipos con la Store bloqueada (SmartScreen avisará; se explica en el README). Firma: nada de certificados de pago anuales (el instalador de GitHub queda sin firmar); Azure Artifact Signing no está disponible para particulares en España. `appId` com.nilovelez.pdfdiva; la identidad del paquete de la Store (Identity Name, Publisher, nombre reservado) sale de Partner Center. La política de privacidad es `PRIVACY.md`.
+7. **Multiidioma**: interfaz traducible, con el español y el inglés como primeros idiomas (el inglés va antes que Mac y Linux).
+8. **Extra (baja prioridad)**: builds de Mac y Linux.
 
 ## Fuera de alcance (por ahora)
 
