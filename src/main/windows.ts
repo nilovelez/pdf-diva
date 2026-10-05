@@ -14,6 +14,8 @@ export function createWindow(
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,
       nodeIntegration: false,
+      // No spellcheck: Chromium may download dictionaries, and the app must stay offline.
+      spellcheck: false,
     },
   });
   // The app never navigates away or opens new windows by itself; links go through IPC.

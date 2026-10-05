@@ -80,6 +80,8 @@ function askPassword(file: PdfFile): Promise<{ doc: PDFDocumentProxy; password: 
       }
       settled = true;
       passwordDialog.hidden = true;
+      // Do not leave the typed password sitting in the field.
+      passwordInput.value = '';
       passwordForm.onsubmit = null;
       cancelPassword = null;
       resolve(value);

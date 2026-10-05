@@ -1,4 +1,4 @@
-import { app, BrowserWindow, dialog, ipcMain, Menu, screen, shell } from 'electron';
+import { app, BrowserWindow, dialog, ipcMain, Menu, screen, session, shell } from 'electron';
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { IPC, type PdfFile, type Settings } from '../types/ipc';
@@ -107,7 +107,22 @@ ipcMain.on(IPC.action, (event, action: unknown) => {
   if (isPresentationSender(event.sender) && isPresentAction(action)) handleAction(action);
 });
 
+/**
+ * PDF Diva works entirely offline and says so in PRIVACY.md. The pages only load local files
+ * (the CSP already forbids anything else); this is a second line of defence that also covers
+ * Chromium features that could reach the network on their own, such as spellcheck dictionaries.
+ */
+function keepOffline(): void {
+  const { defaultSession } = session;
+  defaultSession.setSpellCheckerEnabled(false);
+  defaultSession.webRequest.onBeforeRequest(
+    { urls: ['http://*/*', 'https://*/*', 'ws://*/*', 'wss://*/*', 'ftp://*/*'] },
+    (_details, callback) => callback({ cancel: true }),
+  );
+}
+
 app.whenReady().then(() => {
+  keepOffline();
   Menu.setApplicationMenu(null);
   loadSettings();
   applyTheme();
