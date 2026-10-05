@@ -16,7 +16,7 @@ import {
 import { applyTheme, getSettings, loadSettings, updateSettings } from './settings';
 import { createWindow } from './windows';
 
-const REPOSITORY_URL = 'https://github.com/nilovelez/pdf-diva';
+const WEBSITE_URL = 'https://nilovelez.github.io/pdf-diva/';
 
 // The PDF to present is the last one that opened fine; `pending` is the last one read, which may
 // still fail. The launcher reports the id it opened, so a slow open can never swap in another file.
@@ -101,7 +101,7 @@ ipcMain.handle(IPC.setSettings, (_event, patch: unknown) => {
 });
 ipcMain.handle(IPC.getAppInfo, () => ({ version: app.getVersion() }));
 // Only the project page can be opened, never a URL the renderer supplies.
-ipcMain.on(IPC.openRepository, () => void shell.openExternal(REPOSITORY_URL));
+ipcMain.on(IPC.openWebsite, () => void shell.openExternal(WEBSITE_URL));
 
 ipcMain.on(IPC.action, (event, action: unknown) => {
   if (isPresentationSender(event.sender) && isPresentAction(action)) handleAction(action);

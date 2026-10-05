@@ -234,9 +234,9 @@ byId('password-cancel').addEventListener('click', () => cancelPassword?.());
 
 // The version comes from the main process; the link opens in the external browser.
 void window.presenter.getAppInfo().then((info) => (byId('version').textContent = info.version));
-byId('repo').addEventListener('click', (event) => {
+byId('website').addEventListener('click', (event) => {
   event.preventDefault();
-  window.presenter.openRepository();
+  window.presenter.openWebsite();
 });
 
 document.addEventListener('dragover', (event) => {

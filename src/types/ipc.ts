@@ -14,7 +14,7 @@ export const IPC = {
   getSettings: 'get-settings',
   setSettings: 'set-settings',
   getAppInfo: 'get-app-info',
-  openRepository: 'open-repository',
+  openWebsite: 'open-website',
 } as const;
 
 export interface PdfFile {
@@ -102,5 +102,5 @@ export interface PresenterApi {
   setSettings(patch: Partial<Settings>): Promise<Settings>;
   getAppInfo(): Promise<AppInfo>;
   /** Opens the project page in the external browser. */
-  openRepository(): void;
+  openWebsite(): void;
 }
