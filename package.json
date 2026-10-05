@@ -4,7 +4,7 @@
   "version": "0.5.3",
   "description": "Presenter for PDF files with a speaker view",
   "main": "dist/main.js",
-  "author": "PDF Diva contributors",
+  "author": "Nilo Vélez",
   "license": "GPL-3.0-or-later",
   "private": true,
   "scripts": {

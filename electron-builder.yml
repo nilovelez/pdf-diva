@@ -4,7 +4,7 @@
 #   npm run pack        -> unpacked folder, to try the packaged app quickly
 appId: com.nilovelez.pdfdiva
 productName: PDF Diva
-copyright: Copyright © PDF Diva contributors. GPL-3.0-or-later.
+copyright: Copyright © 2026 Nilo Vélez
 
 directories:
   output: release
