@@ -45,14 +45,14 @@ nsis:
   # Uninstalling removes the saved settings (updates keep them), as PRIVACY.md says.
   deleteAppDataOnUninstall: true
 
-# Microsoft Store package. The identity values below are placeholders until the app is
-# reserved in Partner Center, which gives the real Identity Name and Publisher.
+# Microsoft Store package. Identity values come from Partner Center (the app name "PDF Diva"
+# is reserved there). The "RedViral" prefix belongs to the publisher account; users never see it.
 appx:
   artifactName: PDF-Diva-${version}.${ext}
   applicationId: PDFDiva
-  identityName: PDFDiva
-  publisher: CN=00000000-0000-0000-0000-000000000000
-  publisherDisplayName: PDF Diva
+  identityName: 4095RedViral.PDFDiva
+  publisher: CN=140CA302-E9F8-47D7-BC52-9FEFCB98772E
+  publisherDisplayName: Nilo Vélez
   displayName: PDF Diva
   languages:
     - es-ES
