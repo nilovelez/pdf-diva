@@ -137,6 +137,8 @@ PDF Diva collects no data and never connects to the internet. See the [privacy p
 
 ## License
 
+Copyright © 2026 Nilo Vélez.
+
 PDF Diva is free software: you can redistribute it and/or modify it under the terms of the [GNU General Public License](LICENSE) as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
 ## Credits
