@@ -1,6 +1,6 @@
 # PDF Diva
 
-**A presenter view for any PDF.**
+**A presenter view for any PDF.** · [Website](https://nilovelez.github.io/pdf-diva/)
 
 A desktop app to present PDFs like PowerPoint's presenter view: the audience sees the slide full screen on the projector, and you see the current slide, the next one, a timer and the controls on your own screen.
 
@@ -10,18 +10,41 @@ It doesn't need Acrobat or any other installed program: PDFs are rendered with a
 
 ## Status
 
-**Version 0.5.3: ready for real presentations.** You can present with a speaker view (current slide, next slide and timer) or duplicate the slide on every screen, choose which monitor is yours, swap screens on the fly and keep going if a cable comes loose. Password-protected PDFs open too.
-
-There is no installer yet; it's coming in the next version. See the [changelog](CHANGELOG.md) for what each version includes.
+**Version 1.0.0: first release with a Windows installer.** You can present with a speaker view (current slide, next slide and timer) or duplicate the slide on every screen, choose which monitor is yours, swap screens on the fly and keep going if a cable comes loose. Password-protected PDFs open too. See the [changelog](CHANGELOG.md) for what each version includes.
 
 The interface is currently in Spanish. Button names below are quoted as they appear on screen, with a translation the first time. More languages are planned.
 
 ## Requirements
 
-- Windows 10 or 11 (Mac and Linux later).
-- There is no installer yet: the app runs from the source code (see below).
+- Windows 10 or 11, 64-bit (x64). It also runs on Windows 11 on ARM, through Windows' built-in emulation. Mac and Linux are planned.
+- No administrator rights, internet connection or other programs needed.
 
-## Running it (development version)
+## Installing
+
+There are two ways to install PDF Diva. Both are free and install the same app.
+
+### From the Microsoft Store (recommended)
+
+<!-- TODO: Store link once the app is published -->
+The Microsoft Store version is in review and will be available in a few days. Once it's out, search for **PDF Diva** in the Microsoft Store and click **Get**. The Store keeps the app up to date.
+
+### From GitHub
+
+Use this if the Microsoft Store is blocked on your computer.
+
+1. Download `PDF-Diva-Setup-<version>.exe` from the [latest release](https://github.com/nilovelez/pdf-diva/releases/latest).
+2. Run it. The app installs for your user only and doesn't ask for administrator rights.
+3. Windows may show **Windows protected your PC** (*Windows protegió su PC*), because the installer isn't digitally signed. Click **More info** (*Más información*) and then **Run anyway** (*Ejecutar de todas formas*).
+
+The first start after installing can take a minute on a slow computer, while the antivirus checks the app. Later starts are fast.
+
+To update, download and run the new installer: your settings are kept.
+
+### Uninstalling
+
+Go to Windows *Settings > Apps > Installed apps*, find **PDF Diva** and choose **Uninstall**. Your settings are removed too.
+
+## Running from source (for developers)
 
 1. Install [Node.js](https://nodejs.org/) (LTS version) and [Git](https://git-scm.com/).
 2. Get the project and install its dependencies:
@@ -56,7 +79,7 @@ The window title shows the path of the open file.
 
 ### Presenting
 
-Connect the projector or external screen and set Windows to **Extend** mode (`Windows + P`). The toolbar then offers two ways to present:
+Connect the projector or external screen and set Windows to **Extend** mode (`Windows + P`). Press `F5` to start from the first page, or `Shift+F5` to start from the page you're on, with the speaker view. The toolbar also offers two ways to present:
 
 - **Con vista del orador** (With speaker view): the audience sees the slide full screen on the external screen, and you see the speaker view on your main monitor.
 - **Duplicar pantalla** (Duplicate screen): the slide full screen on every screen, without the speaker view.
@@ -76,10 +99,12 @@ If the slides end up on the wrong screen, press **Alternar pantallas** (Swap scr
 
 ### Keys
 
-Navigation keys work in the reader and in every presentation window. Black screen and `Esc` only work during a presentation.
+Navigation keys work in the reader and in every presentation window. `F5` and `Shift+F5` only work in the reader; black screen and `Esc` only during a presentation.
 
 | Action | Keys |
 |---|---|
+| Start presenting from the first page | `F5` |
+| Start presenting from the current page | `Shift+F5` |
 | Next page | `PageDown`, `→`, `↓`, `Space`, `Enter` |
 | Previous page | `PageUp`, `←`, `↑`, `Backspace` |
 | First page | `Home` |
@@ -87,7 +112,7 @@ Navigation keys work in the reader and in every presentation window. Black scree
 | Black audience screen (on or off) | `B`, `.` |
 | End the presentation | `Esc` |
 
-Presentation remotes send these same keys, so they work without any setup.
+Presentation remotes send these same keys, so they work without any setup. On remotes with a "play" button, it usually sends `F5` to start and `Esc` to end.
 
 ### Settings
 
@@ -100,11 +125,19 @@ The gear button on the right of the reader toolbar opens **Ajustes** (Settings).
 
 **The slides appear on the wrong screen.** Press **Alternar pantallas** in the speaker view to swap them. To fix it for next time, choose your monitor in **Ajustes > Monitor del orador**.
 
+**Windows warns that the installer is unsafe.** The GitHub installer isn't digitally signed, so Windows SmartScreen shows a warning the first time. Click **More info** and then **Run anyway**. The Microsoft Store version doesn't show this warning.
+
 **`npm install` fails while downloading Electron.** Some computers are missing the *Microsoft Visual C++ Redistributable* (x64). Download it from Microsoft's website, install it and run `npm install` again. This is only needed for the development version.
 
 **The PDF doesn't open and a message appears.** The file is damaged. Try exporting it again from the program you created it with.
 
+## Privacy
+
+PDF Diva collects no data and never connects to the internet. See the [privacy policy](https://nilovelez.github.io/pdf-diva/privacy.html).
+
 ## License
+
+Copyright © 2026 Nilo Vélez.
 
 PDF Diva is free software: you can redistribute it and/or modify it under the terms of the [GNU General Public License](LICENSE) as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
