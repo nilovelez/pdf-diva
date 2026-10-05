@@ -63,7 +63,7 @@ Gratis y de código abierto (GPL v3)
 
 - Minimum hardware: `Un monitor (con dos, el público ve la diapositiva y tú la vista del orador)`
 
-**Search terms** (up to 7, max. 21 characters each)
+**Search terms** (only if Partner Center shows the field; current MSIX documentation no longer lists it)
 
 ```
 vista del orador
@@ -77,7 +77,7 @@ mando presentador
 
 **What's new in this version**
 
-> Primera versión en la Microsoft Store.
+Leave it blank on the first submission, as Microsoft asks. Text for the first update goes here.
 
 ## Listing: English (en-US, additional language)
 
@@ -122,7 +122,7 @@ Free and open source (GPL v3)
 
 - Minimum hardware: `One monitor (with two, the audience sees the slide and you see the presenter view)`
 
-**Search terms**
+**Search terms** (only if the field exists)
 
 ```
 presenter view
@@ -136,7 +136,7 @@ clicker
 
 **What's new in this version**
 
-> First release on the Microsoft Store.
+Leave it blank on the first submission (same as the Spanish listing).
 
 ## Images still needed
 
