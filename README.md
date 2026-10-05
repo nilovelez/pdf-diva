@@ -25,8 +25,7 @@ There are two ways to install PDF Diva. Both are free and install the same app.
 
 ### From the Microsoft Store (recommended)
 
-<!-- TODO: Store link once the app is published -->
-The Microsoft Store version is in review and will be available in a few days. Once it's out, search for **PDF Diva** in the Microsoft Store and click **Get**. The Store keeps the app up to date.
+[**Get PDF Diva from the Microsoft Store**](https://apps.microsoft.com/detail/9nh5x0qbmhq1), or search for **PDF Diva** in the Store app and click **Get**. The Store keeps the app up to date.
 
 ### From GitHub
 
