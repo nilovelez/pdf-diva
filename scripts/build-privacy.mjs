@@ -68,7 +68,7 @@ ${body}
   </main>
   <footer class="site-footer">
     <div class="wrap footer-row">
-      <span>PDF Diva · GPL-3.0-or-later</span>
+      <span>PDF Diva · GPL-3.0-or-later · Made by <a href="https://nilovelez.com">Nilo Vélez</a></span>
       <span class="footer-links"><a href="./">Home</a><a href="https://github.com/nilovelez/pdf-diva/issues">Report an issue</a></span>
     </div>
   </footer>
