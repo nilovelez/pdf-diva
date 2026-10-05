@@ -166,9 +166,19 @@ async function openDropped(dropped: File): Promise<void> {
   }
 }
 
-function present(mode: PresentationMode): void {
-  if (doc) void window.presenter.startPresentation(doc.numPages, current, mode, docPassword);
+function present(mode: PresentationMode, page = current): void {
+  if (doc) void window.presenter.startPresentation(doc.numPages, page, mode, docPassword);
 }
+
+// F5 presents from the first page and Shift+F5 from the current one, as in PowerPoint
+// (many clickers have a "play" button that sends F5). It uses the default mode: speaker view
+// plus audience, or the single-display presentation when there is only one display.
+window.addEventListener('keydown', (event) => {
+  if (event.key !== 'F5' || event.ctrlKey || event.altKey || event.metaKey) return;
+  event.preventDefault();
+  if (!doc || !passwordDialog.hidden || !settingsDialog.hidden) return;
+  present('presenter', event.shiftKey ? current : 1);
+});
 
 // ---- Settings dialog ----
 
