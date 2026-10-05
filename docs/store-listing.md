@@ -13,8 +13,8 @@ The app interface is in Spanish only until milestone 8, so the main listing is S
 | Price | Free, no in-app purchases |
 | Markets | All |
 | Age rating (IARC questionnaire) | No violence, no user interaction, no data sharing, no purchases → expected: 3+ / Everyone |
-| Privacy policy URL | https://github.com/nilovelez/pdf-diva/blob/main/PRIVACY.md (switch to the GitHub Pages URL when the site is live) |
-| Website | https://github.com/nilovelez/pdf-diva (switch to GitHub Pages later) |
+| Privacy policy URL | https://nilovelez.github.io/pdf-diva/privacy.html (generated from `PRIVACY.md` on every website deploy) |
+| Website | https://nilovelez.github.io/pdf-diva/ |
 | Support contact | https://github.com/nilovelez/pdf-diva/issues |
 | Copyright | © 2026 PDF Diva contributors |
 | Additional license terms | GNU General Public License v3.0 or later: https://www.gnu.org/licenses/gpl-3.0.html |
@@ -28,13 +28,13 @@ The app interface is in Spanish only until milestone 8, so the main listing is S
 
 **Description**
 
-> PDF Diva presenta cualquier PDF como si fuera una presentación de PowerPoint, con vista del orador.
+> PDF Diva presenta cualquier PDF como una presentación de diapositivas, con vista del orador.
 >
 > Pensada para técnicos de sala y operadores de vídeo: la herramienta que tienes instalada para cuando el ponente llega con un PDF en un pendrive. Abres el archivo, pulsas F5 y listo.
 >
 > En el monitor del público, la diapositiva a pantalla completa sobre fondo negro, sin controles ni marcos. En el tuyo, la página actual en grande, la siguiente, el número de página y un cronómetro, legibles de un vistazo.
 >
-> Funciona con cualquier mando de diapositivas estándar, porque usa las mismas teclas que PowerPoint. Si se desconecta un monitor durante la presentación, sigue en la pantalla que quede, en la misma diapositiva.
+> Funciona con cualquier mando de diapositivas estándar, porque usa las mismas teclas que los programas de presentaciones habituales. Si se desconecta un monitor durante la presentación, sigue en la pantalla que quede, en la misma diapositiva.
 >
 > Sin cuenta, sin telemetría y sin conexión a internet: no recoge ningún dato. Todo funciona sin red.
 >
@@ -63,6 +63,22 @@ Gratis y de código abierto (GPL v3)
 
 - Minimum hardware: `Un monitor (con dos, el público ve la diapositiva y tú la vista del orador)`
 
+**Search terms** (up to 7, max. 21 characters each)
+
+```
+vista del orador
+presentar pdf
+pdf pantalla completa
+presentacion pdf
+cronómetro
+diapositivas
+mando presentador
+```
+
+**What's new in this version**
+
+> Primera versión en la Microsoft Store.
+
 ## Listing: English (en-US, additional language)
 
 **Short description**
@@ -71,13 +87,13 @@ Gratis y de código abierto (GPL v3)
 
 **Description**
 
-> PDF Diva presents any PDF like a PowerPoint slideshow, with a presenter view.
+> PDF Diva presents any PDF as a slideshow, with a presenter view.
 >
 > Made for AV technicians and video operators: the tool you keep installed for when a speaker shows up with a PDF on a USB stick. Open the file, press F5 and you're live.
 >
 > The audience monitor shows the slide full screen on black, with no controls or borders. Your monitor shows the current page large, the next one, the page number and a timer, readable at a glance.
 >
-> It works with any standard presentation remote, because it uses the same keys as PowerPoint. If a monitor is disconnected during the show, it carries on on the remaining screen, on the same slide.
+> It works with any standard presentation remote, because it uses the same keys as the usual presentation software. If a monitor is disconnected during the show, it carries on on the remaining screen, on the same slide.
 >
 > No account, no telemetry and no internet connection: it collects no data. Everything works offline.
 >
@@ -105,6 +121,22 @@ Free and open source (GPL v3)
 **Additional system requirements**
 
 - Minimum hardware: `One monitor (with two, the audience sees the slide and you see the presenter view)`
+
+**Search terms**
+
+```
+presenter view
+pdf presenter
+pdf slideshow
+pdf full screen
+presentation timer
+slides
+clicker
+```
+
+**What's new in this version**
+
+> First release on the Microsoft Store.
 
 ## Images still needed
 
