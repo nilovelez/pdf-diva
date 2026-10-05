@@ -14,6 +14,7 @@ The app interface is in Spanish only until milestone 8, so the main listing is S
 | Markets | All |
 | Age rating (IARC questionnaire) | No violence, no user interaction, no data sharing, no purchases → expected: 3+ / Everyone |
 | Privacy policy URL | https://nilovelez.github.io/pdf-diva/privacy.html (generated from `PRIVACY.md` on every website deploy) |
+| Store listing (live, v1.0.0 approved) | https://apps.microsoft.com/detail/9nh5x0qbmhq1 |
 | Website | https://nilovelez.github.io/pdf-diva/ |
 | Support contact | https://github.com/nilovelez/pdf-diva/issues |
 | Copyright | Nilo Vélez |
