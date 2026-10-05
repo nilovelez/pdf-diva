@@ -4,7 +4,7 @@ Aplicación de escritorio para presentar PDFs, con un funcionamiento parecido al
 
 ## Estado actual
 
-- **v1.0.0 publicada** (2026-10-05): release de GitHub con el instalador NSIS y paquete MSIX enviado a certificación de la Microsoft Store. Hitos 1 a 6 hechos.
+- **v1.0.0 publicada** (2026-10-05): release de GitHub con el instalador NSIS y paquete MSIX publicado en la Microsoft Store (https://apps.microsoft.com/detail/9nh5x0qbmhq1). Hitos 1 a 6 hechos.
 - **Siguiente: hito 7** (multiidioma, el inglés primero). No se empieza sin el visto bueno del usuario (vía el Coordinador).
 - Guía técnica (arquitectura, comandos, empaquetado, flujo de publicación, pruebas): [`docs/developer-guide.md`](docs/developer-guide.md). La web se explica en [`docs/website.md`](docs/website.md). Las particularidades del equipo BOB (compilar MSIX, pruebas con monitores) están en la memoria del proyecto.
 

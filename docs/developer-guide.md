@@ -2,7 +2,7 @@
 
 Everything a new developer (or agent) needs that is not obvious from the code. Project rules and conventions are in [`CLAUDE.md`](../CLAUDE.md); user-facing text is in the README and CHANGELOG; the website is covered in [`website.md`](website.md).
 
-State at the time of writing: **v1.0.0 is published** (GitHub release + Microsoft Store submission). The next planned work is milestone 7 (multi-language, English first).
+State at the time of writing: **v1.0.0 is published** (GitHub release + Microsoft Store listing). The next planned work is milestone 7 (multi-language, English first).
 
 ## Architecture
 
