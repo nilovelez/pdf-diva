@@ -80,6 +80,8 @@ p { margin: 0; }
 .nav { display: flex; flex-wrap: wrap; align-items: center; gap: 20px; font-size: 15px; }
 .nav > a { color: var(--muted); text-decoration: none; }
 .nav > a:hover { color: var(--text); }
+/* The anchor links are a convenience; drop them on narrow screens so the bar stays on one line. */
+@media (max-width: 640px) { .nav-anchor { display: none; } }
 .btn-github {
   display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 8px 14px;
   border: 1px solid var(--line); border-radius: 8px; color: var(--text) !important; text-decoration: none;
