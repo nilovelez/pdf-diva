@@ -1,0 +1,59 @@
+# Packaging for PDF Diva. Two outputs on Windows:
+#   npm run dist        -> NSIS installer (unsigned) for GitHub Releases
+#   npm run dist:store  -> MSIX package (appx target) for the Microsoft Store
+#   npm run pack        -> unpacked folder, to try the packaged app quickly
+appId: com.nilovelez.pdfdiva
+productName: PDF Diva
+copyright: Copyright © PDF Diva contributors. GPL-3.0-or-later.
+
+directories:
+  output: release
+
+# Everything the app needs at run time is bundled into dist/ by esbuild (PDF.js included),
+# so node_modules is not shipped.
+files:
+  - dist/**/*
+  - package.json
+  - "!**/*.map"
+
+# Reuse the Electron binary installed by npm instead of downloading it again.
+electronDist: node_modules/electron/dist
+
+# License texts that must travel with every build (see CLAUDE.md). Electron itself already
+# adds LICENSE.electron.txt and LICENSES.chromium.html next to the executable.
+extraResources:
+  - from: LICENSE
+    to: licenses/LICENSE.txt
+  - from: THIRD-PARTY-NOTICES.md
+    to: licenses/THIRD-PARTY-NOTICES.md
+  - from: node_modules/pdfjs-dist/LICENSE
+    to: licenses/LICENSE-pdfjs.txt
+  - from: resources/icons/LICENSE-phosphor.txt
+    to: licenses/LICENSE-phosphor.txt
+
+win:
+  target:
+    - nsis
+
+nsis:
+  artifactName: PDF-Diva-Setup-${version}.${ext}
+  # Per-user install: no administrator rights needed.
+  oneClick: false
+  perMachine: false
+  allowToChangeInstallationDirectory: false
+  license: LICENSE
+  # Uninstalling removes the saved settings (updates keep them), as PRIVACY.md says.
+  deleteAppDataOnUninstall: true
+
+# Microsoft Store package. The identity values below are placeholders until the app is
+# reserved in Partner Center, which gives the real Identity Name and Publisher.
+appx:
+  artifactName: PDF-Diva-${version}.${ext}
+  applicationId: PDFDiva
+  identityName: PDFDiva
+  publisher: CN=00000000-0000-0000-0000-000000000000
+  publisherDisplayName: PDF Diva
+  displayName: PDF Diva
+  languages:
+    - es-ES
+    - en-US

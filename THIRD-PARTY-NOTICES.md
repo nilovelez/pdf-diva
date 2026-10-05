@@ -36,6 +36,7 @@ These tools are used during development and are not distributed with the app.
 |---|---|---|---|
 | [TypeScript](https://www.typescriptlang.org) | Type checking | Apache License 2.0 | Microsoft Corporation |
 | [esbuild](https://esbuild.github.io) | Bundling | MIT | Evan Wallace |
+| [electron-builder](https://www.electron.build) | Building the Windows installer and Store package | MIT | Loopline Systems |
 | [ESLint](https://eslint.org) | Linting | MIT | OpenJS Foundation and other contributors |
 | [typescript-eslint](https://typescript-eslint.io) | TypeScript rules for ESLint | MIT | typescript-eslint and other contributors |
 
