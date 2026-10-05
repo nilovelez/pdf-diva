@@ -8,6 +8,9 @@ copyright: Copyright © 2026 Nilo Vélez
 
 directories:
   output: release
+  # App icon set: icon.ico / icon.png and the MSIX tile assets in appx/ (the Phosphor UI icons
+  # live one level up, in resources/icons, and are not packaged as files).
+  buildResources: resources/icons/app
 
 # Everything the app needs at run time is bundled into dist/ by esbuild (PDF.js included),
 # so node_modules is not shipped.
@@ -54,6 +57,8 @@ appx:
   publisher: CN=140CA302-E9F8-47D7-BC52-9FEFCB98772E
   publisherDisplayName: Nilo Vélez
   displayName: PDF Diva
+  # Tile background: the dark surface of the PDF Diva palette.
+  backgroundColor: "#1D1C1B"
   languages:
     - es-ES
     - en-US
