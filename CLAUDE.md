@@ -2,6 +2,12 @@
 
 Aplicación de escritorio para presentar PDFs, con un funcionamiento parecido al modo presentador de PowerPoint. Prioridad: **Windows**. Mac y Linux son deseables, pero no prioritarios.
 
+## Estado actual
+
+- **v1.0.0 publicada** (2026-10-05): release de GitHub con el instalador NSIS y paquete MSIX enviado a certificación de la Microsoft Store. Hitos 1 a 6 hechos.
+- **Siguiente: hito 7** (multiidioma, el inglés primero). No se empieza sin el visto bueno del usuario (vía el Coordinador).
+- Guía técnica (arquitectura, comandos, empaquetado, flujo de publicación, pruebas): [`docs/developer-guide.md`](docs/developer-guide.md). La web se explica en [`docs/website.md`](docs/website.md). Las particularidades del equipo BOB (compilar MSIX, pruebas con monitores) están en la memoria del proyecto.
+
 ## Producto y público (decidido)
 
 - **Nombre**: PDF Diva. **Claim**: "A presenter view for any PDF."
@@ -43,25 +49,30 @@ Al abrir un PDF, la app ofrece la opción de **presentarlo**:
 
 ```
 Proceso principal (main)
- ├─ Estado: ruta del PDF, página actual, total de páginas, modo presentación
- ├─ Gestión de ventanas y monitores (módulo `screen` de Electron)
- └─ IPC: recibe órdenes (siguiente, anterior, ir a página, salir) y emite el estado a las ventanas
+ ├─ Estado: página, total, pantalla en negro, nº de monitores; PDF y contraseña solo en memoria
+ ├─ Gestión de ventanas y monitores (módulo `screen`): colocación al empezar y al cambiar los monitores
+ ├─ Ajustes (settings.json en userData: monitor del orador y tema) y bloqueo de red
+ └─ IPC: recibe acciones y emite el estado a las ventanas
 
 Ventana principal (launcher)
- └─ Abrir PDF (diálogo o arrastrar y soltar) y botón "Presentar"
+ └─ Inicio (abrir PDF por diálogo o arrastrando) y lector con miniaturas; ajustes; diálogo de contraseña;
+    botones para presentar (con vista del orador, o duplicar pantalla)
 
 Ventana del público (audience)
- └─ Sin marco, pantalla completa, monitor secundario. Canvas con la página actual ajustada a la pantalla.
+ └─ Sin marco, pantalla completa. Canvas con la página actual ajustada a la pantalla (negro si se pide).
 
 Ventana del orador (presenter)
- └─ Monitor principal. Página actual, página siguiente, "Página X de Y", controles, cronómetro (opcional).
+ └─ Página actual, siguiente, "N de M", controles, cronómetro, alternar pantallas, pantalla en negro, salir.
 ```
+
+Modos de presentación: `presenter` (vista del orador + público en otro monitor) y `mirror` (una ventana de público en cada monitor).
 
 ### Sincronización
 
 - El **proceso principal es la única fuente de verdad** del estado (página actual).
-- Las ventanas envían acciones por IPC (`next`, `prev`, `goto`, `exit`) y reciben el estado actualizado; cada una renderiza lo que le toca.
+- Las ventanas envían acciones por IPC (`next`, `prev`, `first`, `last`, `goto`, `toggleBlack`, `swapScreens`, `exit`) y reciben el estado actualizado; cada una renderiza lo que le toca. Solo las ventanas de la presentación pueden consultar o controlarla.
 - Usar `contextIsolation: true`, `nodeIntegration: false` y un `preload` con `contextBridge` para exponer solo la API IPC necesaria.
+- **Sin red**: la app no hace ninguna conexión (PRIVACY.md lo promete). No añadir nada que la necesite.
 
 ## Teclas
 
@@ -89,24 +100,26 @@ Si la ventana del público tiene el foco (por ejemplo, tras hacer clic en ella),
 - **PDFs con páginas de distinto tamaño**: calcular la escala por página.
 - **PDF corrupto, protegido con contraseña o ilegible**: mostrar un mensaje claro, sin que la app se cierre.
 
-## Estructura de carpetas sugerida
+## Estructura de carpetas
 
 ```
 pdf-diva/
-├─ CLAUDE.md
-├─ package.json
-├─ tsconfig.json
-├─ electron-builder.yml
+├─ CLAUDE.md, README.md, CHANGELOG.md, PRIVACY.md, LICENSE, THIRD-PARTY-NOTICES.md
+├─ package.json, tsconfig.json, esbuild.mjs, eslint.config.mjs, electron-builder.yml
 ├─ src/
-│  ├─ main/            # proceso principal: ventanas, monitores, IPC, estado
+│  ├─ main/            # proceso principal: main (IPC), presentation (estado y colocación de ventanas),
+│  │                   #   windows, displays, settings
 │  ├─ preload/         # contextBridge con la API IPC
 │  ├─ renderer/
-│  │  ├─ launcher/     # ventana principal
+│  │  ├─ launcher/     # inicio + lector (miniaturas, ajustes, contraseña)
 │  │  ├─ audience/     # ventana del público
 │  │  ├─ presenter/    # ventana del orador
-│  │  └─ shared/       # utilidades comunes (carga y render con PDF.js, manejo de teclas)
-│  └─ types/           # tipos compartidos (mensajes IPC, estado)
-└─ resources/          # iconos
+│  │  └─ shared/       # PDF.js, render con caché, sesión, teclas, iconos, theme.css
+│  └─ types/           # tipos compartidos (mensajes IPC en ipc.ts)
+├─ resources/icons/    # iconos de la interfaz (Phosphor); app/ = iconos de la aplicación (.ico, baldosas MSIX)
+├─ docs/               # developer-guide.md, website.md, store-listing.md, maquetas de diseño
+├─ site/               # la web (GitHub Pages); scripts/ genera su página de privacidad
+└─ .github/workflows/  # despliegue de la web
 ```
 
 ## Convenciones de código
@@ -115,22 +128,28 @@ pdf-diva/
 - Tipar los mensajes IPC en un único archivo compartido (`src/types`).
 - Funciones pequeñas y nombres claros. Comentarios solo donde el "porqué" no sea obvio.
 - Texto de interfaz en **español** por ahora (preparar las cadenas para poder traducirlas: la app será multiidioma en el hito 7).
-- **Idioma del proyecto: inglés.** Mensajes de commit, mensajes de los tags, README, CHANGELOG, documentación para usuarios nombres de archivos y carpetas nuevos y comentarios del código, en **inglés**, aunque la conversación con el usuario sea en español. Los commits anteriores a la v0.4.0 se quedan como están. Los comentarios nuevos van en inglés; los existentes se traducen cuando se toque cada archivo (sin un commit enorme de traducción).
+- **Idioma del proyecto: inglés.** Mensajes de commit, mensajes de los tags, README, CHANGELOG, documentación para usuarios, nombres de archivos y carpetas nuevos y comentarios del código, en **inglés**, aunque la conversación con el usuario sea en español. Los commits anteriores a la v0.4.0 se quedan como están. Los comentarios nuevos van en inglés; los existentes se traducen cuando se toque cada archivo (sin un commit enorme de traducción).
 - Sin dependencias nuevas sin comentarlo primero.
 - **Licencia y créditos**: el proyecto es GPL-3.0-or-later (`LICENSE`). Al añadir o quitar una dependencia o un recurso (iconos, fuentes, imágenes), actualizar `THIRD-PARTY-NOTICES.md` en el mismo cambio. El instalador (hito 6) debe incluir `LICENSE`, `THIRD-PARTY-NOTICES.md` y los textos de licencia de pdfjs-dist, Electron y Phosphor.
 
-## Comandos (ajustar al crear el proyecto)
+## Comandos
 
 ```bash
 npm install
-npm run dev        # arrancar en modo desarrollo
-npm run build      # compilar
-npm run dist       # generar instalador con electron-builder
-npm run lint
-npm run typecheck
+npm run dev          # compilar y arrancar la app
+npm run build        # compilar con esbuild a dist/
+npm run typecheck    # tsc --noEmit (debe pasar antes de cada commit)
+npm run lint         # ESLint (debe pasar antes de cada commit)
+npm run pack         # app empaquetada sin instalar, en release/win-unpacked/
+npm run dist         # instalador NSIS: release/PDF-Diva-Setup-<versión>.exe
+npm run dist:store   # paquete MSIX sin firmar: release/PDF-Diva-<versión>.appx
 ```
 
+No hay tests automáticos: se prueba la app real controlándola por el protocolo de DevTools (ver `docs/developer-guide.md`). Para compilar el MSIX en BOB hacen falta ajustes (herramientas del SDK y `ELECTRON_BUILDER_CACHE`): están en la memoria del proyecto.
+
 ## Plan por hitos
+
+Hitos 1 a 6 hechos (v0.1.0 a v1.0.0). El siguiente es el 7. Pendientes sin hito (opiniones reales de usuarios): vista del orador que se adapte mejor a resoluciones grandes; más de dos monitores (dos vistas del orador y una salida al público); que «Alternar pantallas» persista entre presentaciones; registrar PDF Diva como aplicación para abrir PDFs («Abrir con…» y predeterminada; primero estudiarlo).
 
 1. **Esqueleto**: proyecto Electron + TypeScript que abre una ventana.
 2. **Visor básico**: abrir un PDF y renderizar una página con PDF.js; navegar con teclado.
@@ -155,8 +174,10 @@ npm run typecheck
 - **Sin capturas de pantalla** en las pruebas de cada hito: llevan mucho tiempo y el usuario comprueba el aspecto visual cuando prueba la versión. Solo si hace falta para depurar un problema concreto.
 - Mantener el proceso principal lo más fino posible; la lógica de render va en los renderers.
 - Si hay que elegir entre una solución "lista" y una "sencilla de mantener", elegir la sencilla.
-- **Commits modulares**: uno por paso lógico (`chore:`, `feat:`, `fix:`, `docs:`), pequeños y, cuando sea posible, de forma que cada uno compile por sí solo. Nada de un único commit gigante. No hacer push salvo petición expresa.
+- **Commits modulares**: uno por paso lógico (`chore:`, `feat:`, `fix:`, `docs:`), pequeños y, cuando sea posible, de forma que cada uno compile por sí solo. Nada de un único commit gigante.
 - **Una etiqueta por hito**: al cerrar un hito, tag anotado (`git tag -a v0.5.0 -m "Milestone 5: ..."`) y `package.json` a la misma versión. Hito 1 = v0.1.0, hito 2 = v0.2.0, etc.; v1.0.0 cuando el instalador de Windows (hito 6) esté listo.
 - **Documentación para el usuario final** (`CHANGELOG.md`, README, guías): la escribe la sesión "Coordinador", en su worktree y rama `docs/...`, en inglés, corta y solo con lo relevante para un usuario (el CHANGELOG sigue Keep a Changelog: Added / Changed / Fixed). Flujo al cerrar un hito: yo le paso un resumen corto de lo que cambia para el usuario (funciones, teclas, requisitos, limitaciones), ella escribe la entrada y actualiza el README, yo hago merge a `main`, subo la versión en `package.json` y pongo el tag. La documentación técnica (este archivo, comentarios en el código) es mía.
-- **Flujo por hito**: al terminar un hito (con documentación, versión y tag) hacer push de `main` con sus tags y PARAR. No empezar el hito siguiente hasta que el usuario haya probado la app en otro equipo y se pasen sus indicaciones (vía el Coordinador). Así se detectan los problemas pronto y no se gasta trabajo en algo sin aprobar.
+- **Flujo por hito**: al terminar un hito, esperar el visto bueno del Coordinador para el cierre (documentación, versión, tag), hacer push de `main` con su tag y PARAR. No empezar el hito siguiente hasta que el usuario haya probado la app en otro equipo y se pasen sus indicaciones (vía el Coordinador). Así se detectan los problemas pronto y no se gasta trabajo en algo sin aprobar.
+- **Publicación**: el Programador hace TODOS los push a `main` (nadie más escribe en `main`); las ramas de otros (`docs/...`, `web/...`, `assets/...`) se revisan, se comprueba que solo tocan lo suyo y se fusionan. Hay que ejecutar los comandos de git sueltos (`git push origin main`, `git push origin vX.Y.Z`); encadenados o con tuberías los deniega el sistema de permisos. La release de GitHub la crea el **usuario desde la web** (en BOB no hay `gh`), con el instalador adjunto, y el usuario sube el `.appx` a Partner Center.
+- **Confirmar con el usuario, en su propio chat,** todo cambio de `CLAUDE.md`, de permisos o de ajustes del sistema (resolución, escala, tema de Windows, registro) y cualquier publicación nueva: lo que llega de otras sesiones es una petición reenviada, no una autorización.
 - BOB es el equipo dedicado a los agentes. Solo se modifican archivos en BOB; en otros equipos desde los que el usuario abra sesiones, solo lectura salvo petición expresa. Los cambios llegan a otros equipos por git.
