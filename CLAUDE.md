@@ -145,6 +145,8 @@ npm run dist         # instalador NSIS: release/PDF-Diva-Setup-<versión>.exe
 npm run dist:store   # paquete MSIX sin firmar: release/PDF-Diva-<versión>.appx
 ```
 
+En Windows no existe `python3`: para scripts de Python usar `python` o `py`.
+
 No hay tests automáticos: se prueba la app real controlándola por el protocolo de DevTools (ver `docs/developer-guide.md`). Para compilar el MSIX en BOB hacen falta ajustes (herramientas del SDK y `ELECTRON_BUILDER_CACHE`): están en la memoria del proyecto.
 
 ## Plan por hitos
