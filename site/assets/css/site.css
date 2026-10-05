@@ -160,3 +160,12 @@ kbd {
   html { scroll-behavior: auto; }
   body { transition: none; }
 }
+
+/* Long-form pages (privacy policy) */
+.prose { max-width: 720px; padding-block: 48px 72px; }
+.prose h1 { font-size: clamp(32px, 5vw, 44px); line-height: 1.15; margin-bottom: 8px; }
+.prose h2 { font-size: 24px; margin: 40px 0 8px; }
+.prose p, .prose li { color: var(--muted); font-size: 17px; line-height: 1.6; }
+.prose p { margin: 0 0 16px; }
+.prose ul { margin: 0 0 16px; padding-left: 22px; }
+.prose a { color: var(--accent); }
