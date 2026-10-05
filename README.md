@@ -36,6 +36,8 @@ Use this if the Microsoft Store is blocked on your computer.
 2. Run it. The app installs for your user only and doesn't ask for administrator rights.
 3. Windows may show **Windows protected your PC** (*Windows protegió su PC*), because the installer isn't digitally signed. Click **More info** (*Más información*) and then **Run anyway** (*Ejecutar de todas formas*).
 
+The first start after installing can take a minute on a slow computer, while the antivirus checks the app. Later starts are fast.
+
 To update, download and run the new installer: your settings are kept.
 
 ### Uninstalling
