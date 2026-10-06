@@ -96,6 +96,8 @@ p { margin: 0; }
 }
 .theme-switch button:hover { color: var(--text); }
 .theme-switch button[aria-pressed="true"] { background: var(--accent-soft); color: var(--accent); }
+/* The same switch with words, under the screenshot. */
+.theme-switch.with-labels button { width: auto; height: 40px; padding-inline: 18px; font: inherit; font-size: 15px; font-weight: 600; }
 
 /* Hero */
 .hero { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 20px; padding-top: 72px; padding-bottom: 40px; }
@@ -122,6 +124,7 @@ p { margin: 0; }
 /* Screenshot: one image per theme */
 .shot { padding-top: 24px; padding-bottom: 96px; }
 .shot img { display: block; width: 100%; border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shot-shadow); }
+.shot-themes { display: flex; justify-content: center; margin-top: 28px; }
 .only-dark { display: none !important; }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) .only-dark { display: block !important; }

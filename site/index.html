@@ -51,6 +51,13 @@
     <section class="shot wrap" aria-label="Screenshot">
       <img class="only-light" src="assets/img/screenshot-light.webp" alt="PDF Diva presenter view, light theme" width="1920" height="1080" loading="lazy">
       <img class="only-dark" src="assets/img/screenshot-dark.webp" alt="PDF Diva presenter view, dark theme" width="1920" height="1080" loading="lazy">
+      <!-- Same buttons as the header switch (theme.js keeps every [data-set-theme] in sync). -->
+      <div class="shot-themes">
+        <div class="theme-switch with-labels" role="group" aria-label="Theme">
+          <button type="button" data-set-theme="dark" aria-pressed="false">Dark Theme</button>
+          <button type="button" data-set-theme="light" aria-pressed="false">Light Theme</button>
+        </div>
+      </div>
     </section>
 
     <section id="features" class="band">
