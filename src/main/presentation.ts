@@ -106,6 +106,17 @@ function sameBounds(a: Electron.Rectangle, b: Electron.Rectangle): boolean {
 
 // ---- Window placement ----
 
+/**
+ * The reader is hidden while presenting (out of Alt+Tab and the taskbar), so the only windows are
+ * the presentation's; endPresentation() shows it again as it was. It is hidden once the first
+ * presentation window is on screen, so there is never a moment with no window at all.
+ */
+function hideLauncherWhenShown(p: Presentation, win: BrowserWindow): void {
+  win.once('show', () => {
+    if (current === p && !p.launcher.isDestroyed()) p.launcher.hide();
+  });
+}
+
 function createAudienceWindow(p: Presentation, display: Display): BrowserWindow {
   const win = createWindow('audience', {
     ...display.bounds,
@@ -116,6 +127,7 @@ function createAudienceWindow(p: Presentation, display: Display): BrowserWindow 
     title: t('audience.windowTitle'),
   });
   win.once('ready-to-show', () => win.show());
+  hideLauncherWhenShown(p, win);
   win.on('closed', () => {
     if (!p.quiet.has(win)) endPresentation();
   });
@@ -288,6 +300,7 @@ export function startPresentation(
     presenter.on('closed', () => {
       if (!presentation.quiet.has(presenter)) endPresentation();
     });
+    hideLauncherWhenShown(presentation, presenter);
     presenter.once('ready-to-show', () => {
       readyWindows.add(presenter);
       if (current === presentation) applyLayout(presentation);
