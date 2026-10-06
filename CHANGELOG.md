@@ -7,6 +7,15 @@ Until version 1.0.0 the interface was in Spanish only; entries up to that versio
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-10-06
+
+### Added
+- **Open PDFs from File Explorer.** PDF Diva appears in **Open with** for PDF files, and you can choose it as your default PDF viewer with **Always**. Installing it doesn't change your current default.
+
+### Changed
+- PDF Diva runs as a single app: opening a PDF from File Explorer while it's running opens it in the same window. If a presentation is running, it ends and the new PDF opens in the reader.
+- The reader window hides while you present, so Alt+Tab and the taskbar only show the presentation. It comes back when the presentation ends, on the last slide shown.
+
 ## [1.1.0] - 2026-10-06
 
 ### Added

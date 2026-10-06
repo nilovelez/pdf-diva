@@ -16,6 +16,7 @@ export const IPC = {
   setSettings: 'set-settings',
   getAppInfo: 'get-app-info',
   openWebsite: 'open-website',
+  systemOpen: 'system-open',
 } as const;
 
 /** Command-line switch that tells each window's preload its UI language. */
@@ -117,4 +118,9 @@ export interface PresenterApi {
   getAppInfo(): Promise<AppInfo>;
   /** Opens the project page in the external browser. */
   openWebsite(): void;
+  /**
+   * Called with a PDF opened from the system ("Open with…", double click), already read; null if it
+   * could not be read. Any presentation has already ended.
+   */
+  onSystemOpen(callback: (file: PdfFile | null) => void): void;
 }

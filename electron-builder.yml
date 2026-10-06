@@ -47,6 +47,8 @@ nsis:
   license: LICENSE
   # Uninstalling removes the saved settings (updates keep them), as PRIVACY.md says.
   deleteAppDataOnUninstall: true
+  # Lists PDF Diva in "Open with…" for PDFs, without making it the default viewer.
+  include: resources/installer.nsh
 
 # Microsoft Store package. Identity values come from Partner Center (the app name "PDF Diva"
 # is reserved there). The "RedViral" prefix belongs to the publisher account; users never see it.
@@ -62,3 +64,5 @@ appx:
   languages:
     - es-ES
     - en-US
+  # Lists PDF Diva in "Open with…" for PDFs (never as the default viewer).
+  customExtensionsPath: resources/appx-extensions.xml

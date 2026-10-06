@@ -57,6 +57,7 @@ Páginas nítidas en pantallas 4K y cambio de diapositiva instantáneo
 Abre PDFs protegidos con contraseña, escaneados y con texto en chino, japonés o coreano
 Tema claro y oscuro según Windows
 En español y en inglés, según el idioma de Windows
+Aparece en «Abrir con» del Explorador; puedes elegirla como visor de PDF predeterminado
 Sin cuenta, sin telemetría y sin conexión a internet
 Gratis y de código abierto (GPL v3)
 ```
@@ -84,6 +85,10 @@ v1.0.0: left blank, as Microsoft asks for a first submission.
 v1.1.0:
 
 > La interfaz ya está en inglés además de en español. PDF Diva usa el idioma de Windows (si no lo tiene, el inglés) y puedes elegir otro en Ajustes.
+
+v1.2.0:
+
+> PDF Diva aparece en «Abrir con» al hacer clic derecho en un PDF, y puedes elegirla como visor predeterminado con «Siempre». Instalarla no cambia tu visor actual.
 
 ## Listing: English (en-US)
 
@@ -121,6 +126,7 @@ Sharp pages on 4K screens and instant slide changes
 Opens password-protected, scanned and Chinese, Japanese or Korean PDFs
 Light and dark theme following Windows
 In English and Spanish, following the Windows language
+Shows up in File Explorer's Open with; you can make it your default PDF viewer
 No account, no telemetry, no internet connection
 Free and open source (GPL v3)
 ```
@@ -148,6 +154,10 @@ v1.0.0: left blank (same as the Spanish listing).
 v1.1.0:
 
 > The interface is now in English as well as Spanish. PDF Diva uses the Windows language (English if it doesn't have it), and you can pick another one in Settings.
+
+v1.2.0:
+
+> PDF Diva shows up in Open with when you right-click a PDF, and you can make it your default PDF viewer with Always. Installing it doesn't change your current viewer.
 
 ## Images still needed
 

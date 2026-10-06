@@ -10,7 +10,7 @@ It doesn't need Acrobat or any other installed program: PDFs are rendered with a
 
 ## Status
 
-**Version 1.1.0.** You can present with a speaker view (current slide, next slide and timer) or mirror the slide on every screen, choose which monitor is yours, swap screens on the fly and keep going if a cable comes loose. Password-protected PDFs open too. See the [changelog](CHANGELOG.md) for what each version includes.
+**Version 1.2.0.** You can present with a speaker view (current slide, next slide and timer) or mirror the slide on every screen, choose which monitor is yours, swap screens on the fly and keep going if a cable comes loose. Password-protected PDFs open too. See the [changelog](CHANGELOG.md) for what each version includes.
 
 The interface is in **English and Spanish**. It uses the Windows language when PDF Diva has it, and English otherwise; you can change it in the settings. Want PDF Diva in your language? See [Translating PDF Diva](docs/translating.md).
 
@@ -76,6 +76,12 @@ With a PDF open you have:
 
 The window title shows the path of the open file.
 
+### Opening PDFs from File Explorer
+
+PDF Diva appears in **Open with** when you right-click a PDF in File Explorer. Installing it doesn't change your default PDF viewer. To open every PDF with PDF Diva, right-click a PDF, choose **Open with > Choose another app**, select **PDF Diva** and click **Always** (on Windows 10, tick **Always use this app to open .pdf files**).
+
+PDF Diva opens one window only: a PDF opened from File Explorer while the app is running replaces the one in the reader. If a presentation is running, it ends and the new PDF opens in the reader.
+
 ### Presenting
 
 Connect the projector or external screen and set Windows to **Extend** mode (`Windows + P`). Press `F5` to start from the first page, or `Shift+F5` to start from the page you're on, with the speaker view. The toolbar also offers two ways to present:
@@ -83,7 +89,7 @@ Connect the projector or external screen and set Windows to **Extend** mode (`Wi
 - **With speaker view**: the audience sees the slide full screen on the external screen, and you see the speaker view on your main monitor.
 - **Mirror screens**: the slide full screen on every screen, without the speaker view.
 
-Move through the slides with the keyboard or your presentation remote, and press `Esc` to finish.
+Move through the slides with the keyboard or your presentation remote, and press `Esc` to finish. While you present, the reader window is hidden; it comes back when the presentation ends, on the last slide shown.
 
 With only one screen, the toolbar shows a single **Present** button, which opens the speaker view in a normal window. The toolbar updates by itself when you connect or disconnect a screen.
 

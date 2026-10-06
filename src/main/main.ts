@@ -1,6 +1,7 @@
 import { app, BrowserWindow, dialog, ipcMain, Menu, screen, session, shell } from 'electron';
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { IPC, type PdfFile, type SettingsPatch } from '../types/ipc';
 import { displayInfos } from './displays';
 import {
@@ -55,10 +56,58 @@ async function pickPdf(event: Electron.IpcMainInvokeEvent): Promise<PdfFile | nu
   return readPdf(file);
 }
 
+/**
+ * The PDF passed on the command line: Windows does this for "Open with…" and when PDF Diva is the
+ * default app. Linux file managers may pass a file:// URI instead of a path.
+ */
+function pdfFromArgs(argv: readonly string[], workingDirectory: string): string | null {
+  for (const arg of argv.slice(1).reverse()) {
+    if (arg.startsWith('-')) continue;
+    let file = arg;
+    if (/^file:\/\//i.test(arg)) {
+      try {
+        file = fileURLToPath(arg);
+      } catch {
+        continue;
+      }
+    }
+    if (/\.pdf$/i.test(file)) return path.resolve(workingDirectory, file);
+  }
+  return null;
+}
+
+function bringLauncherToFront(): BrowserWindow | null {
+  const win = launcherWindow;
+  if (!win || win.isDestroyed()) return null;
+  if (win.isMinimized()) win.restore();
+  win.show();
+  win.focus();
+  return win;
+}
+
+/**
+ * Opens a PDF that came from the system in the reader. A running presentation ends first: the
+ * user asked for that file, so showing it is the predictable thing to do.
+ */
+async function openFromSystem(file: string): Promise<void> {
+  endPresentation();
+  const win = bringLauncherToFront();
+  if (!win) return;
+  let pdf: PdfFile | null = null;
+  try {
+    pdf = await readPdf(file);
+  } catch {
+    /* the launcher says it could not be read */
+  }
+  if (!win.isDestroyed()) win.webContents.send(IPC.systemOpen, pdf);
+}
+
 function createLauncherWindow(): void {
   const win = createWindow('launcher', { width: 1000, height: 680, title: 'PDF Diva' });
   win.on('closed', endPresentation);
   launcherWindow = win;
+  const startupPdf = pdfFromArgs(process.argv, process.cwd());
+  if (startupPdf) win.webContents.once('did-finish-load', () => void openFromSystem(startupPdf));
 }
 
 function displaysChanged(): void {
@@ -129,16 +178,27 @@ function keepOffline(): void {
   );
 }
 
-app.whenReady().then(() => {
-  keepOffline();
-  Menu.setApplicationMenu(null);
-  loadSettings();
-  applyTheme();
-  screen.on('display-added', displaysChanged);
-  screen.on('display-removed', displaysChanged);
-  screen.on('display-metrics-changed', displaysChanged);
-  createLauncherWindow();
-});
+// One instance only: opening a PDF from Windows while PDF Diva runs hands it to the running app.
+if (!app.requestSingleInstanceLock()) {
+  app.quit();
+} else {
+  app.on('second-instance', (_event, argv, workingDirectory) => {
+    const file = pdfFromArgs(argv, workingDirectory);
+    if (file) void openFromSystem(file);
+    else bringLauncherToFront();
+  });
+
+  app.whenReady().then(() => {
+    keepOffline();
+    Menu.setApplicationMenu(null);
+    loadSettings();
+    applyTheme();
+    screen.on('display-added', displaysChanged);
+    screen.on('display-removed', displaysChanged);
+    screen.on('display-metrics-changed', displaysChanged);
+    createLauncherWindow();
+  });
+}
 
 app.on('window-all-closed', () => {
   app.quit();

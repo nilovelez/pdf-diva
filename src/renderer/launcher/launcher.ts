@@ -294,6 +294,12 @@ document.addEventListener('drop', (event) => {
 
 window.addEventListener('resize', () => void show(current));
 window.presenter.onPresentationEnded((page) => void show(page));
+// A PDF opened from Windows ("Open with…", double click) goes the same way as a dropped one.
+window.presenter.onSystemOpen((file) => {
+  settingsDialog.hidden = true;
+  if (file) void openFile(file);
+  else showNotice(t('open.readError'));
+});
 
 // With 2+ displays both ways of presenting are offered; updated when a display is plugged/unplugged.
 const showDisplays = (list: DisplayInfo[]): void => {
