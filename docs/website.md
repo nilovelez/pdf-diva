@@ -50,7 +50,8 @@ The privacy URL `https://nilovelez.github.io/pdf-diva/privacy.html` is used in t
 ## Images
 
 - **Icons**: the masters live in `resources/icons/app/` (used by the app, the installer and the Store; do not move them). The web copies are `favicon.ico`, `icon-256.png` and `icon_64.png` (as `icon-64.png`).
-- **`apple-touch-icon.png` (180) and `og.png` (1200×630)** still carry the previous version of the icon. Replace them when convenient: `og.png` is the dark background `#1D1C1B`, the rounded icon, "PDF Diva" and the tagline.
+- **`apple-touch-icon.png` (180) and `og.png` (1200×630)**: `og.png` is the dark background `#1D1C1B`, the rounded icon, "PDF Diva" and the tagline. They keep their current design on purpose.
+- **`star-icon.png`**: the small star next to "PDF Diva" in the header.
 - **Screenshots**: `screenshot-light.webp` and `screenshot-dark.webp` are the presenter view at 1920×1080 (150% scaling), same content in each theme. The originals are in OneDrive, `BOB Shared\PDF Presenter\`: `capturas-150/` (150% scaling, the ones used, files `light-3-presenter.png` and `dark-3-presenter.png`) and `capturas/` (100% scaling). They were converted to WebP at full resolution, quality 92, using the canvas of the project's own Electron (`canvas.toDataURL('image/webp', 0.92)`); any WebP encoder works. Keep the `width` and `height` attributes in `index.html` in sync with the files.
 
 ## Releasing a new version
@@ -63,6 +64,5 @@ The Microsoft Store buttons (hero and closing section) link to the live listing,
 
 ## Pending
 
-- **`apple-touch-icon.png` and `og.png`**: see Images.
 - Text says "Mac and Linux coming soon" in the hero and the closing section; update it if that changes.
 - The Store listing texts are in `docs/store-listing.md` (not published on the site).

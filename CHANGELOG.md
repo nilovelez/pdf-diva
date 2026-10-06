@@ -15,6 +15,7 @@ Until version 1.0.0 the interface was in Spanish only; entries up to that versio
 - Anyone can translate PDF Diva into another language: see [Translating PDF Diva](docs/translating.md).
 
 ### Changed
+- **Swap screens is remembered.** After swapping the screens once, the next presentations start the same way round, even after closing the app. **Settings > Speaker display** shows the monitor in use; choose **Automatic** to go back to the default.
 - If your Windows is not in Spanish, PDF Diva now opens in English. To keep using it in Spanish, choose **Español** in **Settings > Language**.
 
 ## [1.0.0] - 2026-10-05

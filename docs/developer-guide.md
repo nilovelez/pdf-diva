@@ -36,7 +36,7 @@ site/                The website (see website.md); scripts/build-privacy.mjs bui
 - The main process owns the state: `{ page, total, blank, displayCount }` plus the PDF bytes and password (memory only). Windows send actions (`next`, `prev`, `first`, `last`, `goto`, `toggleBlack`, `swapScreens`, `exit`) and receive the new state. Only presentation windows may read or control it (sender is checked).
 - Every window loads the PDF itself with PDF.js (the bytes come through IPC once). Rendering lives in the renderers, never in main.
 - Two modes: `presenter` (speaker view on the chosen/main display + audience on another) and `mirror` (an audience window on every display, no speaker view).
-- `applyLayout()` in `presentation.ts` places windows for the displays connected right now. It runs at start and on `display-added/removed/metrics-changed` (debounced). Behaviour: with one display left the speaker window is **hidden, not closed** (so the timer survives) and the audience takes the remaining display; when a display returns, the speaker view comes back with the same slide and timer. "Alternar pantallas" swaps roles (2 displays) or rotates the audience (3+). Started with one display: speaker view only, in a normal window.
+- `applyLayout()` in `presentation.ts` places windows for the displays connected right now. It runs at start and on `display-added/removed/metrics-changed` (debounced). Behaviour: with one display left the speaker window is **hidden, not closed** (so the timer survives) and the audience takes the remaining display; when a display returns, the speaker view comes back with the same slide and timer. "Swap screens" swaps roles (2 displays) or rotates the audience (3+), and saves the result (`rememberRoles()` in `settings.ts`: speaker display + audience display) so the next presentation, even after a restart, starts that way. Roles are resolved in `resolveRoles()`: this presentation's choice, then the saved displays, then the defaults (main display for the speaker, any other for the audience). Started with one display: speaker view only, in a normal window.
 - The "last PDF that opened fine" is tracked in main with an id: the launcher calls `pdfOpened(id)` only after PDF.js loaded it, so a corrupt or cancelled-password file can never be what gets presented.
 
 ### Rendering (`shared/pageview.ts`)
@@ -49,7 +49,7 @@ The app must make **no network connections** (PRIVACY.md depends on it): CSP `de
 
 ### Settings
 
-`app.getPath('userData')/settings.json`: `speakerMonitor` (id + label/size/position as a fallback match), `theme` (`system|light|dark`, applied with `nativeTheme.themeSource`) and `language` (`system` or a language code). The folder is named after `productName` (`%APPDATA%\PDF Diva`; MSIX virtualizes it into the package's `LocalCache`). Renaming the product resets users' settings.
+`app.getPath('userData')/settings.json`: `speakerMonitor` (id + label/size/position as a fallback match), `audienceMonitor` (same format; set only by "Swap screens", cleared when the speaker display is chosen in the settings), `theme` (`system|light|dark`, applied with `nativeTheme.themeSource`) and `language` (`system` or a language code). The folder is named after `productName` (`%APPDATA%\PDF Diva`; MSIX virtualizes it into the package's `LocalCache`). Renaming the product resets users' settings.
 
 ### UI text and translation
 
@@ -99,6 +99,5 @@ Launch the app with `electron . --remote-debugging-port=9333` (or a packaged `.e
 
 - Speaker view that adapts better to large resolutions (at 1280×720 CSS it leaves empty space around the slides).
 - More than two monitors: two speaker views (technician + speaker) and one audience output.
-- "Alternar pantallas" should persist for the next presentation.
 - Register PDF Diva as a PDF handler ("Open with…" and default app), in NSIS and MSIX: study first, then decide.
 - Milestone 8: Mac and Linux builds.

@@ -154,7 +154,7 @@ No hay tests automáticos: se prueba la app real controlándola por el protocolo
 
 ## Plan por hitos
 
-Hitos 1 a 7 hechos (v0.1.0 a v1.1.0). El siguiente es el 8. Pendientes sin hito (opiniones reales de usuarios): vista del orador que se adapte mejor a resoluciones grandes; más de dos monitores (dos vistas del orador y una salida al público); que «Alternar pantallas» persista entre presentaciones; registrar PDF Diva como aplicación para abrir PDFs («Abrir con…» y predeterminada; primero estudiarlo).
+Hitos 1 a 7 hechos (v0.1.0 a v1.1.0). El siguiente es el 8. Pendientes sin hito (opiniones reales de usuarios): vista del orador que se adapte mejor a resoluciones grandes; más de dos monitores (dos vistas del orador y una salida al público); registrar PDF Diva como aplicación para abrir PDFs («Abrir con…» y predeterminada; primero estudiarlo).
 
 1. **Esqueleto**: proyecto Electron + TypeScript que abre una ventana.
 2. **Visor básico**: abrir un PDF y renderizar una página con PDF.js; navegar con teclado.

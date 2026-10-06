@@ -87,7 +87,7 @@ Move through the slides with the keyboard or your presentation remote, and press
 
 With only one screen, the toolbar shows a single **Present** button, which opens the speaker view in a normal window. The toolbar updates by itself when you connect or disconnect a screen.
 
-If the slides end up on the wrong screen, press **Swap screens** in the speaker view. If a screen is disconnected during the presentation, it goes on full screen on the remaining one; when the screen is back, the speaker view returns.
+If the slides end up on the wrong screen, press **Swap screens** in the speaker view. PDF Diva remembers it: the next presentations start with the screens the same way round, even after closing the app. If a screen is disconnected during the presentation, it goes on full screen on the remaining one; when the screen is back, the speaker view returns.
 
 ### Speaker view
 
@@ -117,13 +117,13 @@ Presentation remotes send these same keys, so they work without any setup. On re
 
 The gear button on the right of the reader toolbar opens **Settings**. Changes are saved automatically.
 
-- **Speaker display**: **Automatic** uses the Windows main monitor for the speaker view, or pick a specific monitor. The slides go to another monitor.
+- **Speaker display**: **Automatic** uses the Windows main monitor for the speaker view, or pick a specific monitor. The slides go to another monitor. Using **Swap screens** during a presentation changes this setting too; choose **Automatic** to go back to the default.
 - **Theme**: **System** follows Windows (*Settings > Personalization > Colors*); you can also force **Light** or **Dark**. The audience screen is always black and PDF pages keep their original colors.
 - **Language**: **System** uses the Windows language if PDF Diva has it, and English otherwise; you can also pick a language. Each language is listed by its own name (English, Español). The change applies straight away; a presentation that is running keeps its language until it ends.
 
 ## Troubleshooting
 
-**The slides appear on the wrong screen.** Press **Swap screens** in the speaker view to swap them. To fix it for next time, choose your monitor in **Settings > Speaker display**.
+**The slides appear on the wrong screen.** Press **Swap screens** in the speaker view to swap them. PDF Diva remembers it for next time; you can also choose your monitor in **Settings > Speaker display**.
 
 **Windows warns that the installer is unsafe.** The GitHub installer isn't digitally signed, so Windows SmartScreen shows a warning the first time. Click **More info** and then **Run anyway**. The Microsoft Store version doesn't show this warning.
 
