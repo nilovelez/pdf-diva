@@ -8,7 +8,7 @@ import {
   type PresentationState,
 } from '../types/ipc';
 import { sortedDisplays } from './displays';
-import { savedSpeakerDisplay } from './settings';
+import { savedSpeakerDisplay, t } from './settings';
 import { createWindow } from './windows';
 
 interface Presentation {
@@ -113,7 +113,7 @@ function createAudienceWindow(p: Presentation, display: Display): BrowserWindow 
     fullscreen: true,
     backgroundColor: '#000000',
     show: false,
-    title: 'PDF Diva - Público',
+    title: t('audience.windowTitle'),
   });
   win.once('ready-to-show', () => win.show());
   win.on('closed', () => {
@@ -273,7 +273,7 @@ export function startPresentation(
       width: 1100,
       height: 700,
       show: false,
-      title: 'PDF Diva - Orador',
+      title: t('presenter.windowTitle'),
     });
     presenter.on('closed', () => {
       if (!presentation.quiet.has(presenter)) endPresentation();

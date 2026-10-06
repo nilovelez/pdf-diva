@@ -1,4 +1,5 @@
 // IPC contract shared by main, preload and renderers.
+import type { Language } from '../i18n/i18n';
 
 export const IPC = {
   openPdf: 'open-pdf',
@@ -16,6 +17,9 @@ export const IPC = {
   getAppInfo: 'get-app-info',
   openWebsite: 'open-website',
 } as const;
+
+/** Command-line switch that tells each window's preload its UI language. */
+export const LANGUAGE_SWITCH = '--pdfdiva-language=';
 
 export interface PdfFile {
   /** Identifies this read, so the launcher can say exactly which file it ended up opening. */
@@ -63,11 +67,19 @@ export interface DisplayInfo {
 
 export type ThemeSetting = 'system' | 'light' | 'dark';
 
+/** 'system' = the Windows language if the app has it, English otherwise. */
+export type LanguageSetting = 'system' | Language;
+
 export interface Settings {
   /** Display for the speaker view; null means automatic (the main display). */
   speakerMonitorId: number | null;
   theme: ThemeSetting;
+  language: LanguageSetting;
+  /** The language the UI uses right now (the setting resolved). Read only. */
+  uiLanguage: Language;
 }
+
+export type SettingsPatch = Partial<Pick<Settings, 'speakerMonitorId' | 'theme' | 'language'>>;
 
 export interface AppInfo {
   version: string;
@@ -99,7 +111,9 @@ export interface PresenterApi {
   onDisplaysChanged(callback: (displays: DisplayInfo[]) => void): void;
   getSettings(): Promise<Settings>;
   /** Saves and applies the given settings; resolves to the resulting settings. */
-  setSettings(patch: Partial<Settings>): Promise<Settings>;
+  setSettings(patch: SettingsPatch): Promise<Settings>;
+  /** UI language of this window, fixed when the window was created. */
+  language: Language;
   getAppInfo(): Promise<AppInfo>;
   /** Opens the project page in the external browser. */
   openWebsite(): void;

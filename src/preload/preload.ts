@@ -1,7 +1,14 @@
 import { contextBridge, ipcRenderer, webUtils } from 'electron';
-import { IPC, type PresenterApi } from '../types/ipc';
+import { DEFAULT_LANGUAGE, isLanguage, type Language } from '../i18n/i18n';
+import { IPC, LANGUAGE_SWITCH, type PresenterApi } from '../types/ipc';
+
+function windowLanguage(): Language {
+  const value = process.argv.find((arg) => arg.startsWith(LANGUAGE_SWITCH))?.slice(LANGUAGE_SWITCH.length);
+  return isLanguage(value) ? value : DEFAULT_LANGUAGE;
+}
 
 const api: PresenterApi = {
+  language: windowLanguage(),
   openPdf: () => ipcRenderer.invoke(IPC.openPdf),
   readPdf: (path) => ipcRenderer.invoke(IPC.readPdf, path),
   pdfOpened: (id) => ipcRenderer.send(IPC.pdfOpened, id),

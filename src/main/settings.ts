@@ -2,7 +2,8 @@ import { app, nativeTheme, type Display } from 'electron';
 import { readFileSync } from 'node:fs';
 import { writeFile } from 'node:fs/promises';
 import path from 'node:path';
-import type { Settings, ThemeSetting } from '../types/ipc';
+import { isLanguage, resolveLanguage, translate, type Language, type MessageKey } from '../i18n/i18n';
+import type { LanguageSetting, Settings, SettingsPatch, ThemeSetting } from '../types/ipc';
 import { sortedDisplays } from './displays';
 
 /** What identifies a display across runs: its id, with label and geometry as a fallback. */
@@ -18,10 +19,11 @@ interface StoredMonitor {
 interface StoredSettings {
   speakerMonitor: StoredMonitor | null;
   theme: ThemeSetting;
+  language: LanguageSetting;
 }
 
 const THEMES: readonly ThemeSetting[] = ['system', 'light', 'dark'];
-let stored: StoredSettings = { speakerMonitor: null, theme: 'system' };
+let stored: StoredSettings = { speakerMonitor: null, theme: 'system', language: 'system' };
 
 const file = (): string => path.join(app.getPath('userData'), 'settings.json');
 
@@ -38,15 +40,24 @@ function isStoredMonitor(value: unknown): value is StoredMonitor {
   );
 }
 
+export function isThemeSetting(value: unknown): value is ThemeSetting {
+  return THEMES.includes(value as ThemeSetting);
+}
+
+export function isLanguageSetting(value: unknown): value is LanguageSetting {
+  return value === 'system' || isLanguage(value);
+}
+
 /** Reads the settings file (a missing or damaged file just means the defaults). */
 export function loadSettings(): void {
   try {
     const raw: unknown = JSON.parse(readFileSync(file(), 'utf8'));
     if (typeof raw !== 'object' || raw === null) return;
-    const { speakerMonitor, theme } = raw as Record<string, unknown>;
+    const { speakerMonitor, theme, language } = raw as Record<string, unknown>;
     stored = {
       speakerMonitor: isStoredMonitor(speakerMonitor) ? speakerMonitor : null,
-      theme: THEMES.includes(theme as ThemeSetting) ? (theme as ThemeSetting) : 'system',
+      theme: isThemeSetting(theme) ? theme : 'system',
+      language: isLanguageSetting(language) ? language : 'system',
     };
   } catch {
     /* defaults */
@@ -55,6 +66,18 @@ export function loadSettings(): void {
 
 export function applyTheme(): void {
   nativeTheme.themeSource = stored.theme;
+}
+
+/** The language the UI uses: the saved choice, or the system's when it is "system". */
+export function uiLanguage(): Language {
+  return stored.language === 'system'
+    ? resolveLanguage(app.getPreferredSystemLanguages())
+    : stored.language;
+}
+
+/** UI text for the main process (dialogs, window titles). */
+export function t(key: MessageKey): string {
+  return translate(uiLanguage(), key);
 }
 
 function describe(display: Display): StoredMonitor {
@@ -87,18 +110,26 @@ export function savedSpeakerDisplay(): Display | null {
 }
 
 export function getSettings(): Settings {
-  return { speakerMonitorId: savedSpeakerDisplay()?.id ?? null, theme: stored.theme };
+  return {
+    speakerMonitorId: savedSpeakerDisplay()?.id ?? null,
+    theme: stored.theme,
+    language: stored.language,
+    uiLanguage: uiLanguage(),
+  };
 }
 
 /** Applies a change and writes it to disk straight away (there is no "save" button). */
-export function updateSettings(patch: Partial<Settings>): Settings {
+export function updateSettings(patch: SettingsPatch): Settings {
   if (patch.speakerMonitorId !== undefined) {
     const chosen = sortedDisplays().find((d) => d.id === patch.speakerMonitorId);
     stored.speakerMonitor = chosen ? describe(chosen) : null;
   }
-  if (patch.theme !== undefined && THEMES.includes(patch.theme)) {
+  if (patch.theme !== undefined && isThemeSetting(patch.theme)) {
     stored.theme = patch.theme;
     applyTheme();
+  }
+  if (patch.language !== undefined && isLanguageSetting(patch.language)) {
+    stored.language = patch.language;
   }
   void writeFile(file(), JSON.stringify(stored, null, 2)).catch(() => {
     /* not being able to save a preference must never break the app */

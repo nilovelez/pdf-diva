@@ -1,5 +1,7 @@
 import { BrowserWindow, nativeTheme } from 'electron';
 import path from 'node:path';
+import { LANGUAGE_SWITCH } from '../types/ipc';
+import { uiLanguage } from './settings';
 
 /** Creates a window showing the page in `src/renderer/<name>` with the shared preload. */
 export function createWindow(
@@ -16,6 +18,8 @@ export function createWindow(
       nodeIntegration: false,
       // No spellcheck: Chromium may download dictionaries, and the app must stay offline.
       spellcheck: false,
+      // Passed this way so the page can be translated before it is first painted.
+      additionalArguments: [`${LANGUAGE_SWITCH}${uiLanguage()}`],
     },
   });
   // The app never navigates away or opens new windows by itself; links go through IPC.
