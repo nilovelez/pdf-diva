@@ -8,7 +8,7 @@ import {
   type PresentationState,
 } from '../types/ipc';
 import { sortedDisplays } from './displays';
-import { savedSpeakerDisplay, t } from './settings';
+import { rememberRoles, savedAudienceDisplay, savedSpeakerDisplay, t } from './settings';
 import { createWindow } from './windows';
 
 interface Presentation {
@@ -170,12 +170,17 @@ function reconcileAudiences(p: Presentation, wanted: Display[]): void {
   for (const win of spare) closeQuietly(p, win);
 }
 
-/** Which display holds the speaker view and which one the audience, given the connected displays. */
+/**
+ * Which display holds the speaker view and which one the audience, given the connected displays:
+ * this presentation's choice, else the saved one (settings or the last swap), else the defaults.
+ */
 function resolveRoles(p: Presentation, displays: Display[]): { speaker: Display; audience: Display } {
   const speaker =
     displays.find((d) => d.id === p.speakerId) ?? savedSpeakerDisplay() ?? displays[0]!;
+  const savedAudience = savedAudienceDisplay();
   const audience =
     displays.find((d) => d.id === p.audienceId && d.id !== speaker.id) ??
+    (savedAudience && savedAudience.id !== speaker.id ? savedAudience : undefined) ??
     displays.find((d) => d.id !== speaker.id) ??
     speaker;
   return { speaker, audience };
@@ -237,6 +242,11 @@ function swapScreens(p: Presentation): void {
     p.speakerId = speaker.id;
     p.audienceId = others[(at + 1) % others.length]!.id;
   }
+  const byId = (id: number | null): Display | undefined => displays.find((d) => d.id === id);
+  const newSpeaker = byId(p.speakerId);
+  const newAudience = byId(p.audienceId);
+  // The next presentation starts the same way.
+  if (newSpeaker && newAudience) rememberRoles(newSpeaker, newAudience);
   applyLayout(p);
 }
 
