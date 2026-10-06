@@ -1,0 +1,13 @@
+<!--
+  Extensions added to the MSIX manifest (appx.customExtensionsPath in electron-builder.yml).
+  Lists PDF Diva in "Open with…" for PDFs. Packaged apps can never make themselves the default:
+  the user chooses it ("Always use this app"). Windows passes the file path on the command line.
+-->
+<uap:Extension Category="windows.fileTypeAssociation">
+  <uap:FileTypeAssociation Name="pdf">
+    <uap:DisplayName>PDF document</uap:DisplayName>
+    <uap:SupportedFileTypes>
+      <uap:FileType>.pdf</uap:FileType>
+    </uap:SupportedFileTypes>
+  </uap:FileTypeAssociation>
+</uap:Extension>

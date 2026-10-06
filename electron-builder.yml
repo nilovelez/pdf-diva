@@ -64,3 +64,5 @@ appx:
   languages:
     - es-ES
     - en-US
+  # Lists PDF Diva in "Open with…" for PDFs (never as the default viewer).
+  customExtensionsPath: resources/appx-extensions.xml
