@@ -2,7 +2,7 @@
 
 Everything a new developer (or agent) needs that is not obvious from the code. Project rules and conventions are in [`CLAUDE.md`](../CLAUDE.md); user-facing text is in the README and CHANGELOG; the website is covered in [`website.md`](website.md).
 
-State at the time of writing: **v1.0.0 is published** (GitHub release + Microsoft Store listing). Milestone 7 (multi-language: English and Spanish) is v1.1.0; next is milestone 8 (Mac and Linux).
+State at the time of writing: **v1.0.0 is published** (GitHub release + Microsoft Store listing). Milestone 7 (multi-language: English and Spanish) is v1.1.0; next is milestone 8 (opening PDFs from the system: "Open with…" and default app), then 9 (Mac and Linux; Linux means Debian and Ubuntu only).
 
 ## Architecture
 
@@ -99,5 +99,5 @@ Launch the app with `electron . --remote-debugging-port=9333` (or a packaged `.e
 
 - Speaker view that adapts better to large resolutions (at 1280×720 CSS it leaves empty space around the slides).
 - More than two monitors: two speaker views (technician + speaker) and one audience output.
-- Register PDF Diva as a PDF handler ("Open with…" and default app), in NSIS and MSIX: study first, then decide.
-- Milestone 8: Mac and Linux builds.
+- Milestone 8: register PDF Diva as a PDF handler ("Open with…" and default app), in NSIS and MSIX, and check it will also work on Mac and Linux. Study first, then decide.
+- Milestone 9: Mac and Linux builds (Linux: Debian and Ubuntu only).
