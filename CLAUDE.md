@@ -5,7 +5,8 @@ Aplicación de escritorio para presentar PDFs, con un funcionamiento parecido al
 ## Estado actual
 
 - **v1.0.0 publicada** (2026-10-05): release de GitHub con el instalador NSIS y paquete MSIX publicado en la Microsoft Store (https://apps.microsoft.com/detail/9nh5x0qbmhq1). Hitos 1 a 6 hechos.
-- **Siguiente: hito 7** (multiidioma, el inglés primero). No se empieza sin el visto bueno del usuario.
+- **v1.1.0** (hito 7): interfaz en inglés y español, según el idioma de Windows o el elegido en Ajustes.
+- **Siguiente: hito 8** (builds de Mac y Linux). No se empieza sin el visto bueno del usuario.
 - Guía técnica (arquitectura, comandos, empaquetado, flujo de publicación, pruebas): [`docs/developer-guide.md`](docs/developer-guide.md). La web se explica en [`docs/website.md`](docs/website.md). Las particularidades del equipo dedicado, Marcianito (compilar MSIX, pruebas con monitores), y el estado del trabajo en curso están en la memoria del proyecto.
 
 ## Producto y público (decidido)
@@ -114,10 +115,12 @@ pdf-diva/
 │  │  ├─ launcher/     # inicio + lector (miniaturas, ajustes, contraseña)
 │  │  ├─ audience/     # ventana del público
 │  │  ├─ presenter/    # ventana del orador
-│  │  └─ shared/       # PDF.js, render con caché, sesión, teclas, iconos, theme.css
+│  │  └─ shared/       # PDF.js, render con caché, sesión, teclas, iconos, i18n (traducir la página), theme.css
+│  ├─ i18n/            # idiomas disponibles, elección según el sistema, translate()
 │  └─ types/           # tipos compartidos (mensajes IPC en ipc.ts)
+├─ locales/            # textos de la interfaz, un JSON por idioma (en.json es la referencia)
 ├─ resources/icons/    # iconos de la interfaz (Phosphor); app/ = iconos de la aplicación (.ico, baldosas MSIX)
-├─ docs/               # developer-guide.md, website.md, store-listing.md, maquetas de diseño
+├─ docs/               # developer-guide.md, translating.md, website.md, store-listing.md, maquetas de diseño
 ├─ site/               # la web (GitHub Pages); scripts/ genera su página de privacidad
 └─ .github/workflows/  # despliegue de la web
 ```
@@ -127,7 +130,7 @@ pdf-diva/
 - TypeScript estricto; evitar `any`.
 - Tipar los mensajes IPC en un único archivo compartido (`src/types`).
 - Funciones pequeñas y nombres claros. Comentarios solo donde el "porqué" no sea obvio.
-- Texto de interfaz en **español** por ahora (preparar las cadenas para poder traducirlas: la app será multiidioma en el hito 7).
+- **Texto de interfaz**: nunca escrito directamente en el HTML ni en el código; va en `locales/*.json` (marcas `data-i18n` en el HTML y `t()` en TypeScript). Cada texto nuevo se añade a la vez a `en.json` (la referencia) y a `es.json`. Los textos deben aguantar idiomas más largos sin romper la maquetación. Detalles en `docs/developer-guide.md` y `docs/translating.md`.
 - **Idioma del proyecto: inglés.** Mensajes de commit, mensajes de los tags, README, CHANGELOG, documentación para usuarios, nombres de archivos y carpetas nuevos y comentarios del código, en **inglés**, aunque la conversación con el usuario sea en español. Los commits anteriores a la v0.4.0 se quedan como están. Los comentarios nuevos van en inglés; los existentes se traducen cuando se toque cada archivo (sin un commit enorme de traducción).
 - Sin dependencias nuevas sin comentarlo primero.
 - **Licencia y créditos**: el proyecto es GPL-3.0-or-later (`LICENSE`). Al añadir o quitar una dependencia o un recurso (iconos, fuentes, imágenes), actualizar `THIRD-PARTY-NOTICES.md` en el mismo cambio. El instalador (hito 6) debe incluir `LICENSE`, `THIRD-PARTY-NOTICES.md` y los textos de licencia de pdfjs-dist, Electron y Phosphor.
@@ -151,7 +154,7 @@ No hay tests automáticos: se prueba la app real controlándola por el protocolo
 
 ## Plan por hitos
 
-Hitos 1 a 6 hechos (v0.1.0 a v1.0.0). El siguiente es el 7. Pendientes sin hito (opiniones reales de usuarios): vista del orador que se adapte mejor a resoluciones grandes; más de dos monitores (dos vistas del orador y una salida al público); que «Alternar pantallas» persista entre presentaciones; registrar PDF Diva como aplicación para abrir PDFs («Abrir con…» y predeterminada; primero estudiarlo).
+Hitos 1 a 7 hechos (v0.1.0 a v1.1.0). El siguiente es el 8. Pendientes sin hito (opiniones reales de usuarios): vista del orador que se adapte mejor a resoluciones grandes; más de dos monitores (dos vistas del orador y una salida al público); que «Alternar pantallas» persista entre presentaciones; registrar PDF Diva como aplicación para abrir PDFs («Abrir con…» y predeterminada; primero estudiarlo).
 
 1. **Esqueleto**: proyecto Electron + TypeScript que abre una ventana.
 2. **Visor básico**: abrir un PDF y renderizar una página con PDF.js; navegar con teclado.
