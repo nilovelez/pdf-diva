@@ -1,7 +1,7 @@
 import { app, BrowserWindow, dialog, ipcMain, Menu, screen, session, shell } from 'electron';
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
-import { IPC, type PdfFile, type Settings } from '../types/ipc';
+import { IPC, type PdfFile, type SettingsPatch } from '../types/ipc';
 import { displayInfos } from './displays';
 import {
   endPresentation,
@@ -13,7 +13,15 @@ import {
   onDisplaysChanged,
   startPresentation,
 } from './presentation';
-import { applyTheme, getSettings, loadSettings, updateSettings } from './settings';
+import {
+  applyTheme,
+  getSettings,
+  isLanguageSetting,
+  isThemeSetting,
+  loadSettings,
+  t,
+  updateSettings,
+} from './settings';
 import { createWindow } from './windows';
 
 const WEBSITE_URL = 'https://nilovelez.github.io/pdf-diva/';
@@ -26,7 +34,7 @@ let lastReadId = 0;
 let launcherWindow: BrowserWindow | null = null;
 
 async function readPdf(file: string): Promise<PdfFile> {
-  if (!/\.pdf$/i.test(file)) throw new Error('No es un archivo PDF');
+  if (!/\.pdf$/i.test(file)) throw new Error('Not a PDF file');
   const data = await readFile(file);
   pendingPdf = { id: ++lastReadId, path: file, name: path.basename(file), data };
   return pendingPdf;
@@ -35,7 +43,7 @@ async function readPdf(file: string): Promise<PdfFile> {
 async function pickPdf(event: Electron.IpcMainInvokeEvent): Promise<PdfFile | null> {
   const parent = BrowserWindow.fromWebContents(event.sender) ?? undefined;
   const options: Electron.OpenDialogOptions = {
-    title: 'Abrir PDF',
+    title: t('open.dialogTitle'),
     properties: ['openFile'],
     filters: [{ name: 'PDF', extensions: ['pdf'] }],
   };
@@ -58,21 +66,21 @@ function displaysChanged(): void {
   onDisplaysChanged();
 }
 
-function isSettingsPatch(value: unknown): value is Partial<Settings> {
+function isSettingsPatch(value: unknown): value is SettingsPatch {
   if (typeof value !== 'object' || value === null) return false;
-  const { speakerMonitorId, theme } = value as Record<string, unknown>;
+  const { speakerMonitorId, theme, language } = value as Record<string, unknown>;
   const idOk =
     speakerMonitorId === undefined ||
     speakerMonitorId === null ||
     typeof speakerMonitorId === 'number';
-  const themeOk =
-    theme === undefined || theme === 'system' || theme === 'light' || theme === 'dark';
-  return idOk && themeOk;
+  const themeOk = theme === undefined || isThemeSetting(theme);
+  const languageOk = language === undefined || isLanguageSetting(language);
+  return idOk && themeOk && languageOk;
 }
 
 ipcMain.handle(IPC.openPdf, pickPdf);
 ipcMain.handle(IPC.readPdf, (_event, file: unknown) => {
-  if (typeof file !== 'string') throw new Error('Ruta no válida');
+  if (typeof file !== 'string') throw new Error('Invalid path');
   return readPdf(file);
 });
 ipcMain.on(IPC.pdfOpened, (_event, id: unknown) => {
@@ -96,7 +104,7 @@ ipcMain.handle(IPC.getSession, (event) => (isPresentationSender(event.sender) ? 
 ipcMain.handle(IPC.getDisplays, () => displayInfos());
 ipcMain.handle(IPC.getSettings, () => getSettings());
 ipcMain.handle(IPC.setSettings, (_event, patch: unknown) => {
-  if (!isSettingsPatch(patch)) throw new Error('Ajustes no válidos');
+  if (!isSettingsPatch(patch)) throw new Error('Invalid settings');
   return updateSettings(patch);
 });
 ipcMain.handle(IPC.getAppInfo, () => ({ version: app.getVersion() }));

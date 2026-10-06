@@ -2,7 +2,7 @@ import type { PresenterApi } from '../../types/ipc';
 
 declare global {
   interface Window {
-    /** API del preload (contextBridge). */
+    /** The preload API (contextBridge). */
     presenter: PresenterApi;
   }
 }

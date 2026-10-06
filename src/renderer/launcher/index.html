@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="es">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta
@@ -10,19 +10,20 @@
     <link rel="stylesheet" href="../shared/theme.css" />
     <link rel="stylesheet" href="launcher.css" />
   </head>
+  <!-- Text comes from locales/*.json through the data-i18n attributes (see shared/i18n.ts). -->
   <body>
     <section id="welcome">
       <div id="drop">
         <span class="icon big" data-icon="file-pdf"></span>
-        <p>Haz clic o arrastra un fichero pdf para abrirlo</p>
+        <p data-i18n="welcome.drop"></p>
         <button id="open-welcome" class="btn primary big-text" type="button">
-          <span class="icon" data-icon="folder-open"></span>Abrir archivo...
+          <span class="icon" data-icon="folder-open"></span><span data-i18n="welcome.open"></span>
         </button>
       </div>
       <p id="appinfo">
         <span>PDF Diva <span id="version"></span></span>
         <span aria-hidden="true">·</span>
-        <span>Licencia GPL 3.0 o posterior</span>
+        <span data-i18n="welcome.license"></span>
         <span aria-hidden="true">·</span>
         <a id="website" href="https://nilovelez.github.io/pdf-diva/">nilovelez.github.io/pdf-diva</a>
       </p>
@@ -31,31 +32,37 @@
     <section id="reader" hidden>
       <div id="toolbar">
         <button id="open" class="btn" type="button">
-          <span class="icon" data-icon="folder-open"></span>Abrir
+          <span class="icon" data-icon="folder-open"></span><span data-i18n="reader.open"></span>
         </button>
         <button id="present" class="btn single-only" type="button">
-          <span class="icon" data-icon="presentation-chart"></span>Presentar
+          <span class="icon" data-icon="presentation-chart"></span><span data-i18n="reader.present"></span>
         </button>
         <span class="divider multi-only" aria-hidden="true"></span>
-        <span class="group-label multi-only">Presentar</span>
+        <span class="group-label multi-only" data-i18n="reader.present"></span>
         <button id="present-presenter" class="btn multi-only" type="button">
-          <span class="icon" data-icon="presentation-chart"></span>Con vista del orador
+          <span class="icon" data-icon="presentation-chart"></span><span data-i18n="reader.presentWithSpeakerView"></span>
         </button>
         <button id="present-mirror" class="btn multi-only" type="button">
-          <span class="icon" data-icon="copy"></span>Duplicar pantalla
+          <span class="icon" data-icon="copy"></span><span data-i18n="reader.presentMirror"></span>
         </button>
         <span class="spacer"></span>
         <span id="pager">
-          <button id="prev" type="button" title="Página anterior" aria-label="Página anterior">
+          <button id="prev" type="button" data-i18n-title="reader.prevPage" data-i18n-label="reader.prevPage">
             <span class="icon" data-icon="caret-left"></span>
           </button>
           <span id="page"></span>
-          <button id="next" type="button" title="Página siguiente" aria-label="Página siguiente">
+          <button id="next" type="button" data-i18n-title="reader.nextPage" data-i18n-label="reader.nextPage">
             <span class="icon" data-icon="caret-right"></span>
           </button>
         </span>
         <span class="divider" aria-hidden="true"></span>
-        <button id="settings-open" class="btn icon-only" type="button" title="Ajustes" aria-label="Ajustes">
+        <button
+          id="settings-open"
+          class="btn icon-only"
+          type="button"
+          data-i18n-title="reader.settings"
+          data-i18n-label="reader.settings"
+        >
           <span class="icon" data-icon="gear-six"></span>
         </button>
       </div>
@@ -71,30 +78,38 @@
       <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="settings-title">
         <header>
           <span class="icon" data-icon="gear-six"></span>
-          <h2 id="settings-title">Ajustes</h2>
-          <button class="close" type="button" data-close title="Cerrar" aria-label="Cerrar">
+          <h2 id="settings-title" data-i18n="settings.title"></h2>
+          <button
+            class="close"
+            type="button"
+            data-close
+            data-i18n-title="dialog.close"
+            data-i18n-label="dialog.close"
+          >
             <span class="icon" data-icon="x"></span>
           </button>
         </header>
         <label class="field" for="speaker-monitor">
-          <span>Monitor del orador</span>
+          <span data-i18n="settings.speakerMonitor"></span>
           <select id="speaker-monitor"></select>
-          <small>
-            La diapositiva se proyecta en el otro monitor. Si te equivocas, durante la presentación
-            puedes cambiarlo con <b>Alternar pantallas</b>.
-          </small>
+          <small data-i18n="settings.speakerMonitor.hint"></small>
         </label>
         <div class="field">
-          <span>Tema</span>
-          <div class="segmented" role="group" aria-label="Tema">
-            <button type="button" data-theme="system" aria-pressed="false">Sistema</button>
-            <button type="button" data-theme="light" aria-pressed="false">Claro</button>
-            <button type="button" data-theme="dark" aria-pressed="false">Oscuro</button>
+          <span data-i18n="settings.theme"></span>
+          <div class="segmented" role="group" data-i18n-label="settings.theme">
+            <button type="button" data-theme="system" aria-pressed="false" data-i18n="settings.theme.system"></button>
+            <button type="button" data-theme="light" aria-pressed="false" data-i18n="settings.theme.light"></button>
+            <button type="button" data-theme="dark" aria-pressed="false" data-i18n="settings.theme.dark"></button>
           </div>
-          <small>«Sistema» sigue el tema de Windows. La pantalla del público es siempre negra.</small>
+          <small data-i18n="settings.theme.hint"></small>
         </div>
+        <label class="field" for="language">
+          <span data-i18n="settings.language"></span>
+          <select id="language"></select>
+          <small data-i18n="settings.language.hint"></small>
+        </label>
         <div class="actions">
-          <button class="btn" type="button" data-close>Cerrar</button>
+          <button class="btn" type="button" data-close data-i18n="dialog.close"></button>
         </div>
       </div>
     </div>
@@ -104,18 +119,18 @@
         <div class="lead">
           <span class="icon" data-icon="lock-key"></span>
           <div>
-            <h2 id="password-title">PDF protegido con contraseña</h2>
+            <h2 id="password-title" data-i18n="password.title"></h2>
             <p id="password-text"></p>
           </div>
         </div>
         <label class="field" for="password-input">
-          <span>Contraseña</span>
+          <span data-i18n="password.label"></span>
           <input id="password-input" type="password" autocomplete="off" />
         </label>
-        <p class="error" id="password-error" hidden>La contraseña no es correcta. Inténtalo de nuevo.</p>
+        <p class="error" id="password-error" hidden data-i18n="password.wrong"></p>
         <div class="actions">
-          <button class="btn" type="button" id="password-cancel">Cancelar</button>
-          <button class="btn primary" type="submit">Abrir</button>
+          <button class="btn" type="button" id="password-cancel" data-i18n="dialog.cancel"></button>
+          <button class="btn primary" type="submit" data-i18n="password.open"></button>
         </div>
       </form>
     </div>

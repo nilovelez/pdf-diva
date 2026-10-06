@@ -148,6 +148,8 @@ body.dragging #reader {
 
 #page {
   min-width: 104px;
+  /* Never split "Page 12 of 140" over two lines, whatever the language. */
+  white-space: nowrap;
   text-align: center;
   color: var(--text);
 }

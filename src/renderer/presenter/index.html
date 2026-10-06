@@ -1,35 +1,36 @@
 <!doctype html>
-<html lang="es">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta
       http-equiv="Content-Security-Policy"
       content="default-src 'self'; script-src 'self'; style-src 'self'; worker-src 'self'"
     />
-    <title>PDF Diva - Orador</title>
+    <title data-i18n="presenter.windowTitle"></title>
     <link rel="stylesheet" href="../shared/theme.css" />
     <link rel="stylesheet" href="presenter.css" />
   </head>
+  <!-- Text comes from locales/*.json through the data-i18n attributes (see shared/i18n.ts). -->
   <body>
     <header id="top">
       <span class="icon timer-icon" data-icon="timer"></span>
       <span id="clock">00:00:00</span>
       <button id="pause" class="btn" type="button">
-        <span class="icon" id="pause-icon" data-icon="pause"></span><span id="pause-label">Pausar</span>
+        <span class="icon" id="pause-icon" data-icon="pause"></span><span id="pause-label"></span>
       </button>
       <button id="reset" class="btn" type="button">
-        <span class="icon" data-icon="arrow-counter-clockwise"></span>Reiniciar
+        <span class="icon" data-icon="arrow-counter-clockwise"></span><span data-i18n="presenter.reset"></span>
       </button>
-      <span id="paused" hidden>En pausa</span>
+      <span id="paused" hidden data-i18n="presenter.paused"></span>
       <span class="spacer"></span>
       <button id="swap" class="btn" type="button" hidden>
-        <span class="icon" data-icon="arrows-left-right"></span>Alternar pantallas
+        <span class="icon" data-icon="arrows-left-right"></span><span data-i18n="presenter.swap"></span>
       </button>
       <button id="black" class="btn tool" type="button" aria-pressed="false">
-        <span class="icon" data-icon="eye-slash"></span>Pantalla en negro
+        <span class="icon" data-icon="eye-slash"></span><span data-i18n="presenter.black"></span>
       </button>
       <button id="exit" class="btn tool exit" type="button">
-        <span class="icon" data-icon="x"></span>Salir
+        <span class="icon" data-icon="x"></span><span data-i18n="presenter.exit"></span>
       </button>
     </header>
 
@@ -37,26 +38,26 @@
       <div id="maincol">
         <div id="current">
           <span id="badge" hidden>
-            <span class="icon" data-icon="eye-slash"></span>Pantalla del público en negro
+            <span class="icon" data-icon="eye-slash"></span><span data-i18n="presenter.blackBadge"></span>
           </span>
           <canvas id="canvas"></canvas>
         </div>
         <div id="row">
           <button id="prev" class="nav" type="button">
-            <span class="icon" data-icon="caret-left"></span>Anterior
+            <span class="icon" data-icon="caret-left"></span><span data-i18n="presenter.prev"></span>
           </button>
           <div id="count"></div>
           <button id="forward" class="nav go" type="button">
-            Siguiente<span class="icon" data-icon="caret-right"></span>
+            <span data-i18n="presenter.next"></span><span class="icon" data-icon="caret-right"></span>
           </button>
         </div>
       </div>
       <div id="side">
-        <div id="next" role="button" title="Ir a la siguiente">
+        <div id="next" role="button" data-i18n-title="presenter.goNext">
           <canvas id="next-canvas"></canvas>
-          <span id="end" hidden>Fin de la presentación</span>
+          <span id="end" hidden data-i18n="presenter.end"></span>
         </div>
-        <h3>Siguiente</h3>
+        <h3 data-i18n="presenter.nextHeading"></h3>
       </div>
     </main>
     <script src="presenter.js"></script>

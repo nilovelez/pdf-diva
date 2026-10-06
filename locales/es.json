@@ -1,0 +1,67 @@
+{
+  "_language": "Español",
+
+  "welcome.drop": "Haz clic o arrastra un fichero pdf para abrirlo",
+  "welcome.open": "Abrir archivo...",
+  "welcome.license": "Licencia GPL 3.0 o posterior",
+
+  "reader.open": "Abrir",
+  "reader.present": "Presentar",
+  "reader.presentWithSpeakerView": "Con vista del orador",
+  "reader.presentMirror": "Duplicar pantalla",
+  "reader.prevPage": "Página anterior",
+  "reader.nextPage": "Página siguiente",
+  "reader.pageOf": "Página {page} de {total}",
+  "reader.settings": "Ajustes",
+  "reader.drawError": "No se ha podido dibujar la página.",
+
+  "open.dialogTitle": "Abrir PDF",
+  "open.onlyPdf": "Solo se pueden abrir archivos PDF.",
+  "open.readError": "No se ha podido leer el archivo.",
+  "open.damaged": "El archivo está dañado o no es un PDF válido.",
+  "open.pdfError": "No se ha podido leer el PDF.",
+
+  "dialog.close": "Cerrar",
+  "dialog.cancel": "Cancelar",
+
+  "settings.title": "Ajustes",
+  "settings.speakerMonitor": "Monitor del orador",
+  "settings.speakerMonitor.auto": "Automático (el principal)",
+  "settings.speakerMonitor.option": "Monitor {index} · {width}×{height}",
+  "settings.speakerMonitor.optionMain": "Monitor {index} · {width}×{height} · principal",
+  "settings.speakerMonitor.hint": "La diapositiva se proyecta en el otro monitor. Si te equivocas, durante la presentación puedes cambiarlo con **Alternar pantallas**.",
+  "settings.theme": "Tema",
+  "settings.theme.system": "Sistema",
+  "settings.theme.light": "Claro",
+  "settings.theme.dark": "Oscuro",
+  "settings.theme.hint": "«Sistema» sigue el tema de Windows. La pantalla del público es siempre negra.",
+  "settings.language": "Idioma",
+  "settings.language.system": "Sistema",
+  "settings.language.hint": "«Sistema» usa el idioma de Windows si PDF Diva lo tiene y, si no, el inglés.",
+
+  "password.title": "PDF protegido con contraseña",
+  "password.prompt": "Escribe la contraseña para abrir «{name}».",
+  "password.label": "Contraseña",
+  "password.wrong": "La contraseña no es correcta. Inténtalo de nuevo.",
+  "password.open": "Abrir",
+
+  "presenter.windowTitle": "PDF Diva - Orador",
+  "presenter.pause": "Pausar",
+  "presenter.resume": "Reanudar",
+  "presenter.reset": "Reiniciar",
+  "presenter.paused": "En pausa",
+  "presenter.swap": "Alternar pantallas",
+  "presenter.black": "Pantalla en negro",
+  "presenter.exit": "Salir",
+  "presenter.blackBadge": "Pantalla del público en negro",
+  "presenter.prev": "Anterior",
+  "presenter.next": "Siguiente",
+  "presenter.pageOf": "**{page}** de {total}",
+  "presenter.goNext": "Ir a la siguiente",
+  "presenter.end": "Fin de la presentación",
+  "presenter.nextHeading": "Siguiente",
+
+  "audience.windowTitle": "PDF Diva - Público",
+
+  "presentation.loadError": "No se ha podido cargar la presentación."
+}

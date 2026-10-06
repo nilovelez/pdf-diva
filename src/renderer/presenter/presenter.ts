@@ -1,3 +1,4 @@
+import { setRichText, t, translatePage } from '../shared/i18n';
 import { paintIcons, setIcon } from '../shared/icons';
 import { keepFocusOffButtons, onKeyAction } from '../shared/keys';
 import { createPageRenderer } from '../shared/pageview';
@@ -5,9 +6,11 @@ import { connectToPresentation } from '../shared/session';
 
 function byId<T extends HTMLElement>(id: string): T {
   const el = document.getElementById(id);
-  if (!el) throw new Error(`Falta #${id}`);
+  if (!el) throw new Error(`Missing #${id}`);
   return el as T;
 }
+
+translatePage();
 
 const top = byId('top');
 const clock = byId('clock');
@@ -38,7 +41,7 @@ blackButton.addEventListener('click', () => window.presenter.sendAction({ type: 
 byId('exit').addEventListener('click', () => window.presenter.sendAction({ type: 'exit' }));
 const swapButton = byId('swap');
 swapButton.addEventListener('click', () => window.presenter.sendAction({ type: 'swapScreens' }));
-// On the last page the preview shows "Fin de la presentación" and clicking it does nothing.
+// On the last page the preview shows "End of presentation" and clicking it does nothing.
 next.addEventListener('click', () => {
   if (!next.classList.contains('is-end')) window.presenter.sendAction({ type: 'next' });
 });
@@ -52,7 +55,7 @@ const pad = (n: number): string => String(n).padStart(2, '0');
 function showPaused(): void {
   top.classList.toggle('paused', !running);
   pausedTag.hidden = running;
-  pauseLabel.textContent = running ? 'Pausar' : 'Reanudar';
+  pauseLabel.textContent = t(running ? 'presenter.pause' : 'presenter.resume');
   setIcon(pauseIcon, running ? 'pause' : 'play');
 }
 
@@ -76,10 +79,11 @@ byId('reset').addEventListener('click', () => {
   showPaused();
   tick();
 });
+showPaused();
 window.setInterval(tick, 250);
 
 connectToPresentation((doc, state) => {
-  count.innerHTML = `<b>${state.page}</b> de ${state.total}`;
+  setRichText(count, t('presenter.pageOf', { page: state.page, total: state.total }));
   current.classList.toggle('black', state.blank);
   badge.hidden = !state.blank;
   blackButton.setAttribute('aria-pressed', String(state.blank));
@@ -93,5 +97,5 @@ connectToPresentation((doc, state) => {
   end.hidden = hasNext;
   if (hasNext) drawNext(doc, state.page + 1).catch(logError);
 }).catch(() => {
-  count.textContent = 'No se ha podido cargar la presentación.';
+  count.textContent = t('presentation.loadError');
 });

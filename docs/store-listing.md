@@ -2,7 +2,7 @@
 
 Text and settings for the PDF Diva listing in Partner Center. Keep this file in sync with what is published.
 
-The app interface is in Spanish only until milestone 8, so the main listing is Spanish (matches the package) and the English listing is an additional language that says so.
+Since v1.1.0 the app is in English and Spanish (it follows the Windows language, English otherwise), and both listings say so. The Spanish listing was the first one published; both are full listings now.
 
 ## Product setup
 
@@ -41,7 +41,7 @@ The app interface is in Spanish only until milestone 8, so the main listing is S
 >
 > PDF Diva es software libre (GPL v3) y gratuito.
 >
-> La interfaz está en español; la versión en inglés llegará más adelante.
+> La interfaz está en español y en inglés, y usa el idioma de Windows.
 
 **Product features** (one per line, no bullets, max. 200 characters each)
 
@@ -56,6 +56,7 @@ Sigue funcionando si se conecta o desconecta un monitor durante la presentación
 Páginas nítidas en pantallas 4K y cambio de diapositiva instantáneo
 Abre PDFs protegidos con contraseña, escaneados y con texto en chino, japonés o coreano
 Tema claro y oscuro según Windows
+En español y en inglés, según el idioma de Windows
 Sin cuenta, sin telemetría y sin conexión a internet
 Gratis y de código abierto (GPL v3)
 ```
@@ -78,13 +79,17 @@ mando presentador
 
 **What's new in this version**
 
-Leave it blank on the first submission, as Microsoft asks. Text for the first update goes here.
+v1.0.0: left blank, as Microsoft asks for a first submission.
 
-## Listing: English (en-US, additional language)
+v1.1.0:
+
+> La interfaz ya está en inglés además de en español. PDF Diva usa el idioma de Windows (si no lo tiene, el inglés) y puedes elegir otro en Ajustes.
+
+## Listing: English (en-US)
 
 **Short description**
 
-> A presenter view for any PDF. Show the slide full screen on the audience monitor and see the current page, the next one and a timer on yours. No account, works offline, free and open source. Interface currently in Spanish.
+> A presenter view for any PDF. Show the slide full screen on the audience monitor and see the current page, the next one and a timer on yours. No account, works offline, free and open source.
 
 **Description**
 
@@ -100,7 +105,7 @@ Leave it blank on the first submission, as Microsoft asks. Text for the first up
 >
 > PDF Diva is free and open-source software (GPL v3).
 >
-> The interface is currently in Spanish. English is planned.
+> The interface is in English and Spanish, and follows the Windows language.
 
 **Product features**
 
@@ -110,11 +115,12 @@ Full-screen slide on the audience monitor, centered on black
 Works with presentation remotes: next, previous, black screen, exit
 F5 starts from the beginning, Shift+F5 from the current page
 Choose the projection monitor, or swap screens without stopping the show
-Duplicate screen: the slide on every monitor at once
+Mirror screens: the slide on every monitor at once
 Keeps going when a monitor is connected or disconnected mid-show
 Sharp pages on 4K screens and instant slide changes
 Opens password-protected, scanned and Chinese, Japanese or Korean PDFs
 Light and dark theme following Windows
+In English and Spanish, following the Windows language
 No account, no telemetry, no internet connection
 Free and open source (GPL v3)
 ```
@@ -137,7 +143,11 @@ clicker
 
 **What's new in this version**
 
-Leave it blank on the first submission (same as the Spanish listing).
+v1.0.0: left blank (same as the Spanish listing).
+
+v1.1.0:
+
+> The interface is now in English as well as Spanish. PDF Diva uses the Windows language (English if it doesn't have it), and you can pick another one in Settings.
 
 ## Images still needed
 

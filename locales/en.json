@@ -1,0 +1,67 @@
+{
+  "_language": "English",
+
+  "welcome.drop": "Click or drop a PDF file to open it",
+  "welcome.open": "Open file...",
+  "welcome.license": "GPL 3.0 or later license",
+
+  "reader.open": "Open",
+  "reader.present": "Present",
+  "reader.presentWithSpeakerView": "With speaker view",
+  "reader.presentMirror": "Mirror screens",
+  "reader.prevPage": "Previous page",
+  "reader.nextPage": "Next page",
+  "reader.pageOf": "Page {page} of {total}",
+  "reader.settings": "Settings",
+  "reader.drawError": "The page could not be drawn.",
+
+  "open.dialogTitle": "Open PDF",
+  "open.onlyPdf": "Only PDF files can be opened.",
+  "open.readError": "The file could not be read.",
+  "open.damaged": "The file is damaged or is not a valid PDF.",
+  "open.pdfError": "The PDF could not be read.",
+
+  "dialog.close": "Close",
+  "dialog.cancel": "Cancel",
+
+  "settings.title": "Settings",
+  "settings.speakerMonitor": "Speaker display",
+  "settings.speakerMonitor.auto": "Automatic (the main display)",
+  "settings.speakerMonitor.option": "Display {index} · {width}×{height}",
+  "settings.speakerMonitor.optionMain": "Display {index} · {width}×{height} · main",
+  "settings.speakerMonitor.hint": "The slide is shown on the other display. If you get it wrong, you can change it during the presentation with **Swap screens**.",
+  "settings.theme": "Theme",
+  "settings.theme.system": "System",
+  "settings.theme.light": "Light",
+  "settings.theme.dark": "Dark",
+  "settings.theme.hint": "“System” follows the Windows theme. The audience screen is always black.",
+  "settings.language": "Language",
+  "settings.language.system": "System",
+  "settings.language.hint": "“System” uses the Windows language if PDF Diva has it, and English otherwise.",
+
+  "password.title": "Password-protected PDF",
+  "password.prompt": "Enter the password to open “{name}”.",
+  "password.label": "Password",
+  "password.wrong": "The password is not correct. Try again.",
+  "password.open": "Open",
+
+  "presenter.windowTitle": "PDF Diva - Speaker view",
+  "presenter.pause": "Pause",
+  "presenter.resume": "Resume",
+  "presenter.reset": "Reset",
+  "presenter.paused": "Paused",
+  "presenter.swap": "Swap screens",
+  "presenter.black": "Black screen",
+  "presenter.exit": "Exit",
+  "presenter.blackBadge": "Audience screen is black",
+  "presenter.prev": "Previous",
+  "presenter.next": "Next",
+  "presenter.pageOf": "**{page}** of {total}",
+  "presenter.goNext": "Go to the next slide",
+  "presenter.end": "End of presentation",
+  "presenter.nextHeading": "Next",
+
+  "audience.windowTitle": "PDF Diva - Audience",
+
+  "presentation.loadError": "The presentation could not be loaded."
+}
