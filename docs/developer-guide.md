@@ -2,7 +2,7 @@
 
 Everything a new developer (or agent) needs that is not obvious from the code. Project rules and conventions are in [`CLAUDE.md`](../CLAUDE.md); user-facing text is in the README and CHANGELOG; the website is covered in [`website.md`](website.md).
 
-State at the time of writing: **v1.0.0 is published** (GitHub release + Microsoft Store listing). The next planned work is milestone 7 (multi-language, English first).
+State at the time of writing: **v1.0.0 is published** (GitHub release + Microsoft Store listing). Milestone 7 (multi-language: English and Spanish) is v1.1.0; next is milestone 8 (Mac and Linux).
 
 ## Architecture
 
@@ -24,6 +24,8 @@ src/
     shared/          pdf.ts (PDF.js), pageview.ts (render queue + cache), session.ts, keys.ts,
                      icons.ts (SVG inlined at build time), theme.css (design tokens)
   types/           ipc.ts: every IPC channel and message type lives here
+  i18n/            i18n.ts: language list, system language matching, translate()
+locales/           UI text, one JSON file per language (en.json is the reference)
 resources/icons/     Phosphor UI icons (MIT) ; resources/icons/app/ = app icon set (icon.ico, appx/ tiles)
 electron-builder.yml Packaging (NSIS + MSIX)
 site/                The website (see website.md); scripts/build-privacy.mjs builds its privacy page
@@ -47,11 +49,17 @@ The app must make **no network connections** (PRIVACY.md depends on it): CSP `de
 
 ### Settings
 
-`app.getPath('userData')/settings.json`: `speakerMonitor` (id + label/size/position as a fallback match) and `theme` (`system|light|dark`, applied with `nativeTheme.themeSource`). The folder is named after `productName` (`%APPDATA%\PDF Diva`; MSIX virtualizes it into the package's `LocalCache`). Renaming the product resets users' settings.
+`app.getPath('userData')/settings.json`: `speakerMonitor` (id + label/size/position as a fallback match), `theme` (`system|light|dark`, applied with `nativeTheme.themeSource`) and `language` (`system` or a language code). The folder is named after `productName` (`%APPDATA%\PDF Diva`; MSIX virtualizes it into the package's `LocalCache`). Renaming the product resets users' settings.
 
 ### UI text and translation
 
-All UI strings are Spanish and live inline in the HTML files and renderer TypeScript. There is no i18n layer yet: building one (and the English strings) is milestone 7.
+All UI text is in `locales/<code>.json`: flat keys grouped by screen (`reader.pageOf`), `{name}` placeholders, and `**bold**` as the only markup. `en.json` is the reference: `MessageKey` is derived from it, so `typecheck` rejects an unknown key, and a key missing from another language falls back to English. The files are bundled by esbuild (nothing is loaded at run time). How to add a language: [`translating.md`](translating.md).
+
+- **Choosing the language** (main, `settings.ts`): the `language` setting, or with `system` the first of `app.getPreferredSystemLanguages()` whose base code (`es-MX` → `es`) the app has; English otherwise.
+- **Getting it to a window**: `createWindow()` adds `--pdfdiva-language=<code>` to the renderer's command line (`additionalArguments`); the preload reads it and exposes `window.presenter.language`. It is synchronous, so each page translates itself before it is first painted.
+- **In the pages** (`renderer/shared/i18n.ts`): static text is marked in the HTML with `data-i18n="key"` (text), `data-i18n-title` and `data-i18n-label` (`aria-label`), and `translatePage()` fills them; text built in code uses `t(key, vars)`. `setRichText()` turns `**bold**` into `<b>` without ever parsing HTML, so a translation file cannot inject markup.
+- **Changing it**: only the launcher has settings. `setSettings` returns the resolved `uiLanguage`; the launcher calls `setLanguage()` and refreshes its dynamic text (page label, settings lists), so the open PDF stays open. Presentation windows get the language when they are created. The main process's own text (open dialog, initial window titles) uses `t()` from `settings.ts`.
+- **Layout**: labels must survive longer languages. A pseudo-locale check (every text 40% longer) passes at the default window sizes; the two-display reader toolbar is the tightest place. Keep one-line labels on one line (`white-space: nowrap`), as the reader's page label does.
 
 ## Commands
 
@@ -93,4 +101,4 @@ Launch the app with `electron . --remote-debugging-port=9333` (or a packaged `.e
 - More than two monitors: two speaker views (technician + speaker) and one audience output.
 - "Alternar pantallas" should persist for the next presentation.
 - Register PDF Diva as a PDF handler ("Open with…" and default app), in NSIS and MSIX: study first, then decide.
-- Milestone 7: multi-language (English first). Milestone 8: Mac and Linux builds.
+- Milestone 8: Mac and Linux builds.
