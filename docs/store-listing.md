@@ -19,7 +19,7 @@ Since v1.1.0 the app is in English and Spanish (it follows the Windows language,
 | Support contact | https://github.com/nilovelez/pdf-diva/issues |
 | Copyright | Nilo Vélez |
 | Additional license terms | GNU General Public License v3.0 or later: https://www.gnu.org/licenses/gpl-3.0.html |
-| Restricted capability `runFullTrust` (justification) | PDF Diva is a desktop app built with Electron and packaged as MSIX. It needs full trust to run as a regular desktop app and to place its windows on different monitors. It makes no network connections. |
+| Restricted capability `runFullTrust` (justification; goes in each submission's **Submission options > Restricted capabilities**, the upload warning about it is expected) | PDF Diva is a desktop app built with Electron and packaged as MSIX. It needs full trust to run as a regular desktop app: it opens PDF files the user chooses from any folder (including "Open with" from File Explorer) and places its presentation windows full screen on different monitors. It makes no network connections and collects no data. |
 
 ## Listing: Spanish (es-ES)
 
@@ -86,7 +86,11 @@ v1.1.0:
 
 > La interfaz ya está en inglés además de en español. PDF Diva usa el idioma de Windows (si no lo tiene, el inglés) y puedes elegir otro en Ajustes.
 
-v1.2.0:
+v1.2.0 as published in the Store (submission 2; 1.1.0 never reached the Store, so this covers both):
+
+> La interfaz ya está en español y en inglés, según el idioma de Windows, y puedes elegir otro en Ajustes. «Alternar pantallas» se recuerda para las siguientes presentaciones. PDF Diva aparece en «Abrir con» al hacer clic derecho en un PDF, y puedes elegirla como visor predeterminado con «Siempre»; instalarla no cambia tu visor actual. La ventana del lector se oculta mientras presentas.
+
+v1.2.0 alone (if 1.1.0 had been published):
 
 > PDF Diva aparece en «Abrir con» al hacer clic derecho en un PDF, y puedes elegirla como visor predeterminado con «Siempre». Instalarla no cambia tu visor actual.
 
@@ -155,7 +159,11 @@ v1.1.0:
 
 > The interface is now in English as well as Spanish. PDF Diva uses the Windows language (English if it doesn't have it), and you can pick another one in Settings.
 
-v1.2.0:
+v1.2.0 as published in the Store (submission 2; covers 1.1.0 too):
+
+> The interface is now in English and Spanish, following the Windows language, and you can pick another one in Settings. Swap screens is remembered for the next presentations. PDF Diva shows up in Open with when you right-click a PDF, and you can make it your default PDF viewer with Always; installing it doesn't change your current viewer. The reader window hides while you present.
+
+v1.2.0 alone (if 1.1.0 had been published):
 
 > PDF Diva shows up in Open with when you right-click a PDF, and you can make it your default PDF viewer with Always. Installing it doesn't change your current viewer.
 
