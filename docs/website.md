@@ -9,7 +9,7 @@ The PDF Diva website is a static site published with GitHub Pages: <https://nilo
 - Colors come from the app's palette (`src/renderer/shared/theme.css`); do not invent new ones. Accent: fuchsia `#C2185B` in light, gold `#E8BA30` in dark.
 - UI icons are Phosphor Regular, inlined as SVG (credited in `THIRD-PARTY-NOTICES.md`).
 - Everything in the repo is in English.
-- Only Programador writes to `main`. Work on a `web/...` or `docs/...` branch and ask for a merge.
+- The agent session writes to `main`; manual edits by the user go on the `development` branch and are merged from there (see the release flow in `docs/developer-guide.md`).
 
 ## Structure
 
@@ -57,7 +57,7 @@ The privacy URL `https://nilovelez.github.io/pdf-diva/privacy.html` is used in t
 
 1. In `site/index.html`, change the version in the `meta` line under the hero buttons.
 2. Update the two "Download installer" links (hero and closing section). They point to the exact file, `https://github.com/nilovelez/pdf-diva/releases/download/vX.Y.Z/PDF-Diva-Setup-X.Y.Z.exe`.
-3. Check that the file exists on the GitHub release before merging.
+3. Check that the file exists on the GitHub release before pushing these changes (the user creates the release, so this push comes after it).
 
 The Microsoft Store buttons (hero and closing section) link to the live listing, `https://apps.microsoft.com/detail/9nh5x0qbmhq1`. They need no change per release.
 
