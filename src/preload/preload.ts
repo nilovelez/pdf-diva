@@ -31,6 +31,9 @@ const api: PresenterApi = {
   setSettings: (patch) => ipcRenderer.invoke(IPC.setSettings, patch),
   getAppInfo: () => ipcRenderer.invoke(IPC.getAppInfo),
   openWebsite: () => ipcRenderer.send(IPC.openWebsite),
+  onSystemOpen: (callback) => {
+    ipcRenderer.on(IPC.systemOpen, (_event, file) => callback(file));
+  },
 };
 
 contextBridge.exposeInMainWorld('presenter', api);
