@@ -3,9 +3,19 @@
 All notable changes for users are recorded here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
-The app's interface is currently in Spanish; button names are quoted as they appear on screen.
+Until version 1.0.0 the interface was in Spanish only; entries up to that version quote the Spanish button names.
 
 ## [Unreleased]
+
+## [1.1.0] - 2026-10-06
+
+### Added
+- **The interface is in English and Spanish.** PDF Diva uses the Windows language when it has it, and English otherwise.
+- **Language** in Settings, to choose a language instead of following Windows. The change applies straight away, without closing the open PDF.
+- Anyone can translate PDF Diva into another language: see [Translating PDF Diva](docs/translating.md).
+
+### Changed
+- If your Windows is not in Spanish, PDF Diva now opens in English. To keep using it in Spanish, choose **Español** in **Settings > Language**.
 
 ## [1.0.0] - 2026-10-05
 
