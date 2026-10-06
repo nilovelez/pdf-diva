@@ -89,7 +89,7 @@ Connect the projector or external screen and set Windows to **Extend** mode (`Wi
 - **With speaker view**: the audience sees the slide full screen on the external screen, and you see the speaker view on your main monitor.
 - **Mirror screens**: the slide full screen on every screen, without the speaker view.
 
-Move through the slides with the keyboard or your presentation remote, and press `Esc` to finish.
+Move through the slides with the keyboard or your presentation remote, and press `Esc` to finish. While you present, the reader window is hidden; it comes back when the presentation ends, on the last slide shown.
 
 With only one screen, the toolbar shows a single **Present** button, which opens the speaker view in a normal window. The toolbar updates by itself when you connect or disconnect a screen.
 
