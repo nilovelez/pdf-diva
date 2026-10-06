@@ -22,7 +22,7 @@ export async function connectToPresentation(
   window.addEventListener('resize', update);
 
   const session = await window.presenter.getSession();
-  if (!session) throw new Error('No hay presentación en curso');
+  if (!session) throw new Error('No presentation running');
   state = session.state;
   doc = await loadPdf(session.data, session.password);
   update();

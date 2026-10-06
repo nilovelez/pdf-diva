@@ -1,4 +1,13 @@
-import type { DisplayInfo, PdfFile, PresentationMode, Settings, ThemeSetting } from '../../types/ipc';
+import { LANGUAGES, languageName } from '../../i18n/i18n';
+import type {
+  DisplayInfo,
+  LanguageSetting,
+  PdfFile,
+  PresentationMode,
+  Settings,
+  ThemeSetting,
+} from '../../types/ipc';
+import { setLanguage, t, translatePage } from '../shared/i18n';
 import { paintIcons } from '../shared/icons';
 import { keepFocusOffButtons, onKeyAction } from '../shared/keys';
 import { createPageRenderer } from '../shared/pageview';
@@ -13,9 +22,12 @@ import { createThumbnails } from './thumbnails';
 
 function byId<T extends HTMLElement>(id: string): T {
   const el = document.getElementById(id);
-  if (!el) throw new Error(`Falta #${id}`);
+  if (!el) throw new Error(`Missing #${id}`);
   return el as T;
 }
+
+// Before anything else, so the page is never painted untranslated.
+translatePage();
 
 const welcome = byId('welcome');
 const reader = byId('reader');
@@ -24,6 +36,7 @@ const stage = byId('stage');
 const notice = byId('notice');
 const settingsDialog = byId('settings');
 const speakerSelect = byId<HTMLSelectElement>('speaker-monitor');
+const languageSelect = byId<HTMLSelectElement>('language');
 const passwordDialog = byId('password');
 const passwordForm = byId<HTMLFormElement>('password-form');
 const passwordInput = byId<HTMLInputElement>('password-input');
@@ -46,15 +59,19 @@ function showNotice(text: string): void {
   noticeTimer = window.setTimeout(() => (notice.hidden = true), 6000);
 }
 
+function showPageLabel(): void {
+  if (doc) pageLabel.textContent = t('reader.pageOf', { page: current, total: doc.numPages });
+}
+
 async function show(page: number): Promise<void> {
   if (!doc) return;
   current = Math.min(Math.max(page, 1), doc.numPages);
-  pageLabel.textContent = `Página ${current} de ${doc.numPages}`;
+  showPageLabel();
   thumbnails.select(current);
   try {
     await draw(doc, current);
   } catch {
-    showNotice('No se ha podido dibujar la página.');
+    showNotice(t('reader.drawError'));
   }
 }
 
@@ -64,7 +81,7 @@ let cancelPassword: (() => void) | null = null;
 
 /** Asks for the password of `file` until it works; resolves to null if the user cancels. */
 function askPassword(file: PdfFile): Promise<{ doc: PDFDocumentProxy; password: string } | null> {
-  byId('password-text').textContent = `Escribe la contraseña para abrir «${file.name}».`;
+  byId('password-text').textContent = t('password.prompt', { name: file.name });
   passwordInput.value = '';
   passwordError.hidden = true;
   passwordDialog.hidden = false;
@@ -156,13 +173,13 @@ async function pickFile(): Promise<void> {
 
 async function openDropped(dropped: File): Promise<void> {
   if (!/\.pdf$/i.test(dropped.name)) {
-    showNotice('Solo se pueden abrir archivos PDF.');
+    showNotice(t('open.onlyPdf'));
     return;
   }
   try {
     await openFile(await window.presenter.readPdf(window.presenter.pathForFile(dropped)));
   } catch {
-    showNotice('No se ha podido leer el archivo.');
+    showNotice(t('open.readError'));
   }
 }
 
@@ -183,17 +200,34 @@ window.addEventListener('keydown', (event) => {
 // ---- Settings dialog ----
 
 const monitorLabel = (d: DisplayInfo): string =>
-  `Monitor ${d.index} · ${d.width}×${d.height}${d.primary ? ' · principal' : ''}`;
+  t(d.primary ? 'settings.speakerMonitor.optionMain' : 'settings.speakerMonitor.option', {
+    index: d.index,
+    width: d.width,
+    height: d.height,
+  });
 
 function fillSettings(settings: Settings): void {
   speakerSelect.replaceChildren(
-    new Option('Automático (el principal)', 'auto'),
+    new Option(t('settings.speakerMonitor.auto'), 'auto'),
     ...displays.map((d) => new Option(monitorLabel(d), String(d.id))),
   );
   speakerSelect.value = settings.speakerMonitorId === null ? 'auto' : String(settings.speakerMonitorId);
   settingsDialog.querySelectorAll<HTMLButtonElement>('[data-theme]').forEach((button) => {
     button.setAttribute('aria-pressed', String(button.dataset.theme === settings.theme));
   });
+  // Each language is listed by its own name, so it can be found whatever the UI language is.
+  languageSelect.replaceChildren(
+    new Option(t('settings.language.system'), 'system'),
+    ...LANGUAGES.map((language) => new Option(languageName(language), language)),
+  );
+  languageSelect.value = settings.language;
+}
+
+/** Retranslates this window after the language changed (the open PDF stays as it is). */
+function applyLanguage(settings: Settings): void {
+  setLanguage(settings.uiLanguage);
+  showPageLabel();
+  fillSettings(settings);
 }
 
 async function openSettings(): Promise<void> {
@@ -205,6 +239,11 @@ async function openSettings(): Promise<void> {
 speakerSelect.addEventListener('change', () => {
   const id = speakerSelect.value === 'auto' ? null : Number(speakerSelect.value);
   void window.presenter.setSettings({ speakerMonitorId: id });
+});
+languageSelect.addEventListener('change', () => {
+  void window.presenter
+    .setSettings({ language: languageSelect.value as LanguageSetting })
+    .then(applyLanguage);
 });
 settingsDialog.querySelectorAll<HTMLButtonElement>('[data-theme]').forEach((button) => {
   button.addEventListener('click', () => {

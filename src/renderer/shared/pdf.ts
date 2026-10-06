@@ -1,5 +1,6 @@
 import * as pdfjs from 'pdfjs-dist';
 import type { PDFDocumentProxy, RenderTask } from 'pdfjs-dist';
+import { t } from './i18n';
 
 // Relative to each renderer (dist/renderer/<window>/); esbuild.mjs copies the worker next to it.
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
@@ -36,8 +37,8 @@ export function isWrongPassword(err: unknown): boolean {
 
 export function describeLoadError(err: unknown): string {
   const name = err instanceof Error ? err.name : '';
-  if (name === 'InvalidPDFException') return 'El archivo está dañado o no es un PDF válido.';
-  return 'No se ha podido leer el PDF.';
+  if (name === 'InvalidPDFException') return t('open.damaged');
+  return t('open.pdfError');
 }
 
 export interface Box {
