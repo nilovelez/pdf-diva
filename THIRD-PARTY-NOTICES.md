@@ -40,4 +40,10 @@ These tools are used during development and are not distributed with the app.
 | [ESLint](https://eslint.org) | Linting | MIT | OpenJS Foundation and other contributors |
 | [typescript-eslint](https://typescript-eslint.io) | TypeScript rules for ESLint | MIT | typescript-eslint and other contributors |
 
+## Used on the website
+
+| Asset | Used for | Terms | Owner |
+|---|---|---|---|
+| "Download from the Microsoft Store" badge (`site/assets/img/ms-store-badge-*.svg`) | Link to the Store listing | Microsoft's badge guidelines for Store apps; not covered by this project's license | Microsoft Corporation (Microsoft and the Windows logo are trademarks of Microsoft) |
+
 When a dependency is added or removed, update this file in the same change.
