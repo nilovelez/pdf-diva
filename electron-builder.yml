@@ -33,6 +33,9 @@ extraResources:
     to: licenses/LICENSE-pdfjs.txt
   - from: resources/icons/LICENSE-phosphor.txt
     to: licenses/LICENSE-phosphor.txt
+  # Icon for PDFs opened with PDF Diva (installer.nsh). The MSIX uses PNGs in appx/ instead.
+  - from: resources/icons/app/document_icon.ico
+    to: document_icon.ico
 
 win:
   target:

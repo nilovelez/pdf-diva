@@ -10,7 +10,8 @@
 
 !macro customInstall
   WriteRegStr SHCTX "Software\Classes\${PDFDIVA_PROGID}" "" "PDF document"
-  WriteRegStr SHCTX "Software\Classes\${PDFDIVA_PROGID}\DefaultIcon" "" "$INSTDIR\${APP_EXECUTABLE_FILENAME},0"
+  ; PDFs opened with PDF Diva show the document icon (extraResources in electron-builder.yml).
+  WriteRegStr SHCTX "Software\Classes\${PDFDIVA_PROGID}\DefaultIcon" "" "$INSTDIR\resources\document_icon.ico"
   WriteRegStr SHCTX "Software\Classes\${PDFDIVA_PROGID}\shell\open\command" "" '"$INSTDIR\${APP_EXECUTABLE_FILENAME}" "%1"'
   WriteRegStr SHCTX "Software\Classes\.pdf\OpenWithProgids" "${PDFDIVA_PROGID}" ""
   ; Tell Explorer the associations changed.

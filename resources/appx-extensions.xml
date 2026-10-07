@@ -6,6 +6,8 @@
 <uap:Extension Category="windows.fileTypeAssociation">
   <uap:FileTypeAssociation Name="pdf">
     <uap:DisplayName>PDF document</uap:DisplayName>
+    <!-- Icon of PDFs opened with PDF Diva: PdfFileLogo*.png in resources/icons/app/appx/. -->
+    <uap:Logo>assets\PdfFileLogo.png</uap:Logo>
     <uap:SupportedFileTypes>
       <uap:FileType>.pdf</uap:FileType>
     </uap:SupportedFileTypes>
