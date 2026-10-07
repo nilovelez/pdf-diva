@@ -1,4 +1,4 @@
-import { screen, type BrowserWindow, type Display, type WebContents } from 'electron';
+import { type BrowserWindow, type Display, type WebContents } from 'electron';
 import {
   IPC,
   type PdfFile,
@@ -134,7 +134,8 @@ function createAudienceWindow(p: Presentation, display: Display): BrowserWindow 
   return win;
 }
 
-function placeAudience(win: BrowserWindow, display: Display): void {
+/** Puts a frameless window full screen on `display` (both the audience and the speaker view). */
+function placeFullScreen(win: BrowserWindow, display: Display): void {
   if (win.isDestroyed()) return;
   if (win.isFullScreen() && sameBounds(win.getBounds(), display.bounds)) return;
   if (win.isFullScreen()) win.setFullScreen(false);
@@ -144,19 +145,16 @@ function placeAudience(win: BrowserWindow, display: Display): void {
 }
 
 /**
- * Speaker views that have painted their page. Until then they are not placed or shown (maximize()
- * would show them too), so no blank window flashes; the layout runs again on 'ready-to-show'.
+ * Speaker views that have painted their page. Until then they are not placed or shown
+ * (setFullScreen() would show them too), so no blank window flashes; the layout runs again on
+ * 'ready-to-show'.
  */
 const readyWindows = new WeakSet<BrowserWindow>();
 
 function placeSpeaker(win: BrowserWindow, display: Display): void {
   if (win.isDestroyed() || !readyWindows.has(win)) return;
-  // Compare displays, not bounds: on Windows a maximized window reaches 8 px past the work area.
-  const onDisplay = screen.getDisplayMatching(win.getBounds()).id === display.id;
-  if (win.isMaximized() && onDisplay && win.isVisible()) return;
-  if (win.isMaximized()) win.unmaximize();
-  win.setBounds(display.workArea);
-  win.maximize();
+  placeFullScreen(win, display);
+  // It may still be hidden from when only one display was left.
   win.show();
 }
 
@@ -172,11 +170,11 @@ function reconcileAudiences(p: Presentation, wanted: Display[]): void {
   for (const display of wanted) {
     const existing = p.audiences.get(display.id);
     if (existing) {
-      placeAudience(existing, display);
+      placeFullScreen(existing, display);
       continue;
     }
     const reused = spare.pop();
-    if (reused) placeAudience(reused, display);
+    if (reused) placeFullScreen(reused, display);
     p.audiences.set(display.id, reused ?? createAudienceWindow(p, display));
   }
   for (const win of spare) closeQuietly(p, win);
@@ -213,9 +211,9 @@ function layoutSpeakerMode(p: Presentation, displays: Display[]): void {
     reconcileAudiences(p, displays);
     p.audiences.values().next().value?.focus();
   } else {
-    // Started with a single display: only the speaker view, in a normal window.
+    // Started with a single display: only the speaker view, full screen.
     reconcileAudiences(p, []);
-    if (readyWindows.has(presenter)) presenter.show();
+    placeSpeaker(presenter, displays[0]!);
   }
 }
 
@@ -294,6 +292,7 @@ export function startPresentation(
     const presenter = createWindow('presenter', {
       width: 1100,
       height: 700,
+      frame: false,
       show: false,
       title: t('presenter.windowTitle'),
     });
