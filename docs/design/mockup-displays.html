@@ -55,26 +55,24 @@ small { color: var(--muted); font-size: 12.5px; display: block; margin-top: 4px;
 .fake-select { display: inline-block; min-width: 200px; padding: 6px 10px; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--surface); }
 .actions { display: flex; justify-content: flex-end; gap: 8px; }
 
-/* Display map: rectangles at scale, placed as in the Windows display arrangement. */
-.map { position: relative; height: 190px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-md); }
-.screen { position: absolute; border-radius: 4px; background: #000; color: #fff; border: 2px solid #4a4744; overflow: hidden;
+/* Displays in a row (main display first, then left to right), each with its details and a role selector below. */
+.displays { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; padding: 14px;
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-md); }
+.mon { flex: 1 1 160px; max-width: 200px; display: grid; gap: 6px; align-content: start; padding: 10px;
+  background: var(--bg); border: 2px solid var(--line); border-radius: var(--radius-md); }
+.mon.changed { border-color: var(--accent); background: var(--accent-soft); }
+.screen { position: relative; aspect-ratio: 4 / 3; border-radius: 4px; background: #000; color: #fff; overflow: hidden;
   display: grid; place-items: center; }
-.screen.changed { border-color: var(--accent); }
-.screen svg.art { width: 70%; height: 70%; }
-.screen .num { position: absolute; top: 3px; left: 6px; font-size: 13px; font-weight: 700; line-height: 1; }
-
-/* One row per display: the details and the role selector. */
-.rows { display: grid; gap: 6px; }
-.row { display: grid; grid-template-columns: 28px 1fr auto; gap: 10px; align-items: center; padding: 8px 10px;
-  border: 1px solid var(--line); border-left: 3px solid var(--line); border-radius: var(--radius-sm); background: var(--bg); }
-.row.changed { border-left-color: var(--accent); background: var(--accent-soft); }
-.row .n { font-weight: 700; text-align: center; font-size: 15px; }
-.row .name { font-weight: 600; overflow-wrap: anywhere; }
-.row .meta { color: var(--muted); font-size: 12.5px; }
-.tag { display: inline-block; font-size: 11px; padding: 0 6px; border-radius: 99px; background: var(--surface-2); color: var(--muted); margin-left: 4px; font-weight: 500; }
-select { font: inherit; color: var(--text); background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 5px 8px; }
+.screen svg.art { width: 78px; height: 58px; }
+.screen .num { position: absolute; top: 5px; left: 7px; font-size: 14px; font-weight: 700; line-height: 1; }
+.screen .badge { position: absolute; top: 4px; right: 5px; font-size: 10px; font-weight: 600; line-height: 1; padding: 3px 6px;
+  border-radius: 99px; background: var(--accent); color: var(--on-accent); }
+.screen .res { position: absolute; bottom: 6px; left: 0; right: 0; text-align: center; font-size: 11.5px; opacity: .85; white-space: nowrap; }
+.mon .name { font-weight: 600; font-size: 13px; overflow-wrap: anywhere; }
+select { font: inherit; font-size: 13px; width: 100%; color: var(--text); background: var(--surface); border: 1px solid var(--line);
+  border-radius: var(--radius-sm); padding: 5px 8px; }
 .warn { color: var(--warn); font-weight: 600; font-size: 13px; }
-@media (max-width: 520px) { .row { grid-template-columns: 24px 1fr; } .row select { grid-column: 2; } }
+@media (max-width: 480px) { .mon { max-width: none; } }
 
 /* Speaker view toolbar */
 .bar { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; background: #0b0c0e; color: #e8e8e8; padding: 8px 12px; border-radius: var(--radius-md);
@@ -103,7 +101,7 @@ select { font: inherit; color: var(--text); background: var(--surface); border: 
     <ul class="intro">
       <li><b>One display:</b> the reader shows only <b>Present</b>. It opens the audience view full screen, with no buttons (like any PDF viewer in full screen); the speaker uses the keyboard shortcuts or a slide clicker.</li>
       <li><b>Two or more displays:</b> the reader shows <b>Configure displays</b> and <b>Present</b>. Present is the main action (accent colour). There is no separate "Mirror" button any more: setting every display to Audience View is mirroring.</li>
-      <li><b>Configure displays</b> is its own dialog. It shows the displays at scale, placed as in the Windows display arrangement, and one row per display with its role. Names are the system's; the built-in display of a laptop is called "Built-in display". Changes are applied only with <b>Apply</b>, which is enabled when something changed and there is at least one Audience View.</li>
+      <li><b>Configure displays</b> is its own dialog. It shows the displays in a row (main display first, then left to right), each with its number, "Main" badge, resolution and scale, name and a role selector below. Names are the system's; the built-in display of a laptop is called "Built-in display" and drawn as a laptop. Changes are applied only with <b>Apply</b>, which is enabled when something changed and there is at least one Audience View.</li>
       <li><b>Settings</b> (gear) keeps only theme and language, applied instantly as today.</li>
       <li>The selectors in the dialogs below work, so you can try the rules. Light/dark follows your system.</li>
     </ul>
@@ -137,13 +135,13 @@ select { font: inherit; color: var(--text); background: var(--surface); border: 
 
   <section class="case">
     <h2>3 displays, defaults</h2>
-    <p>Defaults with three displays: two speaker views (technician and speaker) and the audience on the last display (main display first, then left to right). Here the laptop sits below two monitors in the Windows arrangement, and the map shows it that way.</p>
+    <p>Defaults with three displays: two speaker views (technician and speaker) and the audience on the last display (main display first, then left to right).</p>
     <div class="stage"><div class="dialog" data-case="three"></div></div>
   </section>
 
   <section class="case">
     <h2>3 displays, changed: every display shows the audience (mirror)</h2>
-    <p>Changed rows and screens are highlighted, and Apply is enabled. Every display in Audience View is valid: that is mirroring.</p>
+    <p>Changed displays are highlighted, and Apply is enabled. Every display in Audience View is valid: that is mirroring.</p>
     <div class="stage"><div class="dialog" data-case="mirror"></div></div>
   </section>
 
@@ -174,17 +172,17 @@ select { font: inherit; color: var(--text); background: var(--surface); border: 
 </div>
 
 <script>
-// Logical bounds (DIP) as Electron reports them; res is what Windows shows (physical pixels).
+// Displays in the order the app lists them; res is what Windows shows (physical pixels and scale).
 const LAPTOP = { name: 'Built-in display', internal: true, primary: true };
 const CASES = {
   two: { displays: [
-    { ...LAPTOP, x: 0, y: 0, w: 1536, h: 864, res: '1920 × 1080 · 125%', role: 'speaker' },
-    { name: 'EPSON PJ', x: 1536, y: 0, w: 1920, h: 1080, res: '1920 × 1080 · 100%', role: 'audience' },
+    { ...LAPTOP, res: '1920 × 1080 · 125%', role: 'speaker' },
+    { name: 'EPSON PJ', res: '1920 × 1080 · 100%', role: 'audience' },
   ] },
   three: { displays: [
-    { ...LAPTOP, x: 640, y: 1080, w: 1707, h: 1067, res: '2560 × 1600 · 150%', role: 'speaker' },
-    { name: 'DELL P2422H', x: 0, y: 0, w: 1920, h: 1080, res: '1920 × 1080 · 100%', role: 'speaker' },
-    { name: 'EPSON PJ', x: 1920, y: 0, w: 1920, h: 1200, res: '1920 × 1200 · 100%', role: 'audience' },
+    { ...LAPTOP, res: '2560 × 1600 · 150%', role: 'speaker' },
+    { name: 'DELL P2422H', res: '1920 × 1080 · 100%', role: 'speaker' },
+    { name: 'EPSON PJ', res: '1920 × 1200 · 100%', role: 'audience' },
   ] },
 };
 CASES.mirror = { displays: CASES.three.displays, start: ['audience', 'audience', 'audience'] };
@@ -198,51 +196,34 @@ function render(el, def) {
 
   el.innerHTML = `
     <header><svg class="icon" style="width:20px;height:20px"><use href="#i-monitor"/></svg><h3>Configure displays</h3><span class="x">✕</span></header>
-    <div class="map"></div>
-    <div class="rows"></div>
+    <div class="displays"></div>
     <div class="warn" hidden>At least one display must be the Audience View.</div>
     <div class="actions"><button class="btn" type="button">Cancel</button><button class="btn primary apply" type="button">Apply</button></div>`;
-  const map = el.querySelector('.map');
-  const rows = el.querySelector('.rows');
+  const list = el.querySelector('.displays');
 
   def.displays.forEach((d, i) => {
-    const row = document.createElement('div');
-    row.className = 'row';
-    row.innerHTML = `<span class="n">${i + 1}</span>
-      <span><span class="name">${d.name}</span>${d.primary ? '<span class="tag">Main</span>' : ''}<br><span class="meta">${d.res}</span></span>
+    const mon = document.createElement('div');
+    mon.className = 'mon';
+    mon.innerHTML = `<div class="screen"><span class="num">${i + 1}</span>${d.primary ? '<span class="badge">Main</span>' : ''}
+        <svg class="art"><use href=""/></svg><span class="res">${d.res}</span></div>
+      <div class="name">${d.name}</div>
       <select aria-label="Role of display ${i + 1}">${Object.entries(ROLE).map(([v, l]) => `<option value="${v}">${l}</option>`).join('')}</select>`;
-    row.querySelector('select').value = roles[i];
-    row.querySelector('select').addEventListener('change', (e) => { roles[i] = e.target.value; update(); });
-    rows.append(row);
+    mon.querySelector('select').value = roles[i];
+    mon.querySelector('select').addEventListener('change', (e) => { roles[i] = e.target.value; update(); });
+    list.append(mon);
   });
-
-  function drawMap() {
-    const pad = 14;
-    const minX = Math.min(...def.displays.map((d) => d.x)), minY = Math.min(...def.displays.map((d) => d.y));
-    const maxX = Math.max(...def.displays.map((d) => d.x + d.w)), maxY = Math.max(...def.displays.map((d) => d.y + d.h));
-    const scale = Math.min((map.clientWidth - pad * 2) / (maxX - minX), (map.clientHeight - pad * 2) / (maxY - minY));
-    const offX = (map.clientWidth - (maxX - minX) * scale) / 2, offY = (map.clientHeight - (maxY - minY) * scale) / 2;
-    map.innerHTML = '';
-    def.displays.forEach((d, i) => {
-      const s = document.createElement('div');
-      s.className = 'screen' + (roles[i] !== saved[i] ? ' changed' : '');
-      Object.assign(s.style, { left: `${offX + (d.x - minX) * scale + 2}px`, top: `${offY + (d.y - minY) * scale + 2}px`,
-        width: `${d.w * scale - 4}px`, height: `${d.h * scale - 4}px` });
-      s.innerHTML = `<span class="num">${i + 1}</span><svg class="art"><use href="#${d.internal ? 'laptop' : 'monitor'}-${roles[i]}"/></svg>`;
-      map.append(s);
-    });
-  }
 
   function update() {
     const changed = roles.some((r, i) => r !== saved[i]);
     const valid = roles.includes('audience');
-    [...rows.children].forEach((row, i) => row.classList.toggle('changed', roles[i] !== saved[i]));
+    [...list.children].forEach((mon, i) => {
+      mon.classList.toggle('changed', roles[i] !== saved[i]);
+      mon.querySelector('use').setAttribute('href', `#${def.displays[i].internal ? 'laptop' : 'monitor'}-${roles[i]}`);
+    });
     el.querySelector('.warn').hidden = valid;
     el.querySelector('.apply').disabled = !changed || !valid;
-    drawMap();
   }
   update();
-  addEventListener('resize', drawMap);
 }
 
 document.querySelectorAll('[data-case]').forEach((el) => render(el, CASES[el.dataset.case]));
