@@ -132,11 +132,15 @@ const sameMonitor = (saved: StoredMonitor, display: Display): boolean =>
   saved.width === display.size.width &&
   saved.height === display.size.height;
 
-/** The role saved for a connected display (matched by id, else by name and size), or null. */
-export function savedRole(display: Display): DisplayRole | null {
+/**
+ * The role saved for `display`, or null. Matched by id; else by name and size, but only with an
+ * entry whose own display is not connected (two identical monitors must not share one entry).
+ */
+export function savedRole(display: Display, connected: Display[]): DisplayRole | null {
+  const isConnected = (id: number): boolean => connected.some((d) => d.id === id);
   const entry =
     stored.displayRoles.find((r) => r.monitor.id === display.id) ??
-    stored.displayRoles.find((r) => sameMonitor(r.monitor, display));
+    stored.displayRoles.find((r) => !isConnected(r.monitor.id) && sameMonitor(r.monitor, display));
   return entry?.role ?? null;
 }
 

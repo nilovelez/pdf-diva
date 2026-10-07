@@ -25,7 +25,7 @@ function defaultRole(index: number, count: number): DisplayRole {
  */
 export function displayRoles(displays: Display[]): DisplayRole[] {
   if (displays.length === 1) return ['audience'];
-  const saved = displays.map(savedRole);
+  const saved = displays.map((d) => savedRole(d, displays));
   const roles = saved.map((role, i) => role ?? defaultRole(i, displays.length));
   if (roles.includes('audience')) return roles;
   const free = saved.lastIndexOf(null);
@@ -36,16 +36,15 @@ export function displayRoles(displays: Display[]): DisplayRole[] {
   return displays.map((_d, i) => defaultRole(i, displays.length));
 }
 
-/** Resolution in physical pixels, as Windows shows it. */
-function physicalSize(display: Display): { width: number; height: number } {
-  if (process.platform === 'win32') {
-    const { width, height } = screen.dipToScreenRect(null, display.bounds);
-    return { width, height };
-  }
-  return {
-    width: Math.round(display.size.width * display.scaleFactor),
-    height: Math.round(display.size.height * display.scaleFactor),
-  };
+/**
+ * DIP to physical pixels. Electron may round a DIP size up by one (a 3840-pixel display at 150 %
+ * comes as 2561 wide, not 2560), so the size one DIP smaller is used when it is exact.
+ */
+function physical(dip: number, scale: number): number {
+  const exact = dip * scale;
+  if (Number.isInteger(exact)) return exact;
+  const smaller = (dip - 1) * scale;
+  return Number.isInteger(smaller) ? smaller : Math.round(exact);
 }
 
 export function displayInfos(): DisplayInfo[] {
@@ -55,7 +54,8 @@ export function displayInfos(): DisplayInfo[] {
   return displays.map((display, i) => ({
     id: display.id,
     index: i + 1,
-    ...physicalSize(display),
+    width: physical(display.size.width, display.scaleFactor),
+    height: physical(display.size.height, display.scaleFactor),
     scale: Math.round(display.scaleFactor * 100),
     primary: display.id === mainId,
     internal: display.internal,
