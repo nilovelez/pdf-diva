@@ -110,11 +110,13 @@ Milestone 9 (multi-monitor and UI improvements, from user feedback). First, adap
 
 Agreed design for the displays (mockup: `docs/design/mockup-displays.html`, open it in a browser):
 
-- Settings lists every detected display as a tile: number (top left), "Primary" badge (top right), a mini-mockup icon (laptop for the built-in display, monitor for the others; speaker or audience content), resolution and scale at the bottom, name below, and a selector "Speaker View" / "Audience View".
-- Changes are not applied live. **Apply** is enabled only when something changed; it saves and applies. Apply is disabled, with a message ("At least one display must be the Audience."), when no display is left as audience.
-- Defaults are today's behaviour: primary = speaker view, the rest = audience.
-- With one display the only option is the audience view (selector disabled, hint "Connect a second monitor to enable speaker view."). Pressing "Present" shows the presentation full screen, with no buttons; the speaker moves with the keyboard shortcuts or a slide clicker (the existing keys, including Esc and B). This replaces the current single-monitor behaviour (speaker view in a window) and CLAUDE.md's "Un solo monitor" requirement: update both when implementing.
-- In the speaker view, the "Swap screens" button becomes a Settings button like the reader's.
-- Open questions for the user: do two speaker views share the timer and black screen; how a display is identified between runs (name, connector or position); with two displays, can both be speaker or both audience.
+- **One display:** the reader shows only **Present**. It opens the audience view full screen, with no buttons and no speaker view, like any PDF viewer in full screen; the speaker uses the keyboard shortcuts or a slide clicker (Esc and B included). This replaces today's behaviour (speaker view in a normal window); CLAUDE.md already describes the new one.
+- **Two or more displays:** the reader shows **Configure displays** and **Present**. Present is the main action (accent colour). The "With speaker view" and "Mirror screens" buttons go away: mirroring is every display set to Audience View. F5 and Shift+F5 do the same as Present.
+- **Configure displays** is its own dialog: the displays drawn at scale, placed as in the Windows arrangement, and one row per display (number, system name with a "Main" tag, resolution and scale, selector "Speaker View" / "Audience View"). The built-in display of a laptop (`display.internal`) is called "Built-in display", translated; check what name Windows gives each display. Changes apply only with **Apply** (enabled when something changed), with **Cancel** next to it. Apply is disabled with the message "At least one display must be the Audience View." when no display is left as audience. If a display is connected or disconnected while the dialog is open, it closes without applying.
+- **Settings** (gear) keeps only theme and language, applied instantly as today.
+- **Defaults:** 2 displays = main display speaker view, the other audience; 3 displays = two speaker views (technician and speaker) and the audience on the last display (displays ordered main first, then left to right). 4 or more: not decided yet, ask the user.
+- **Speaker view:** "Swap screens" is replaced by "Configure displays" (only with two or more displays). It opens the same dialog over the speaker view; Apply moves the windows without stopping the presentation. The timer is shared by every speaker view (today each window has its own); black screen is already shared state.
+- **Hot plug:** a presentation started on one display switches to the saved configuration when a second display is connected (as today it switches to the speaker view).
+- Displays are recognised between runs as today (id, then name and size).
 
 Milestone 10: Mac and Linux builds (Linux: Debian and Ubuntu only).
