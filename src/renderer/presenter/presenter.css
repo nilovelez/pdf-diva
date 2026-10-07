@@ -1,6 +1,18 @@
+/*
+ * Everything in the speaker view scales with the window, so the timer and the page count stay
+ * readable on large screens: --k is 1 at 1280×720 (and below), and grows with the window up to 3×
+ * (4K at 100 %). Sizes are written as calc(<size at 1280×720> * var(--k)).
+ */
+:root {
+  --k: clamp(1, min(100vw / 1280px, 100vh / 720px), 3);
+  --bar: calc(64px * var(--k));
+  --radius-sm: calc(6px * var(--k));
+  --radius-md: calc(8px * var(--k));
+}
+
 body {
   display: grid;
-  grid-template-rows: 64px 1fr;
+  grid-template-rows: var(--bar) 1fr;
   background: var(--surface);
 }
 
@@ -8,27 +20,39 @@ body {
   flex: 1;
 }
 
+/* Shared components (theme.css), at the speaker view's scale */
+.btn {
+  gap: calc(8px * var(--k));
+  padding: calc(7px * var(--k)) calc(14px * var(--k));
+  font-size: calc(14px * var(--k));
+}
+
+.icon svg {
+  width: calc(18px * var(--k));
+  height: calc(18px * var(--k));
+}
+
 /* Top bar: timer on the left, blackout and exit on the right */
 #top {
   display: flex;
   align-items: center;
-  gap: 14px;
-  padding: 0 16px;
+  gap: calc(14px * var(--k));
+  padding: 0 calc(16px * var(--k));
   border-bottom: 1px solid var(--line);
   background: var(--bg);
 }
 
 .timer-icon svg {
-  width: 34px;
-  height: 34px;
+  width: calc(34px * var(--k));
+  height: calc(34px * var(--k));
 }
 
 #clock {
-  min-width: 150px;
+  min-width: calc(150px * var(--k));
   font-family: var(--ui-display);
-  font-size: 34px;
+  font-size: calc(34px * var(--k));
   font-weight: 600;
-  letter-spacing: 0.5px;
+  letter-spacing: calc(0.5px * var(--k));
   font-variant-numeric: tabular-nums;
 }
 
@@ -37,10 +61,10 @@ body {
 }
 
 #paused {
-  font-size: 12px;
+  font-size: calc(12px * var(--k));
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.6px;
+  letter-spacing: calc(0.6px * var(--k));
   color: var(--warn);
 }
 
@@ -60,8 +84,8 @@ body {
 #main {
   display: grid;
   grid-template-columns: minmax(0, 7fr) minmax(0, 3fr);
-  gap: 16px;
-  padding: 16px;
+  gap: calc(16px * var(--k));
+  padding: calc(16px * var(--k));
   min-height: 0;
   align-items: start;
   align-content: center;
@@ -69,7 +93,7 @@ body {
 
 #maincol {
   display: grid;
-  gap: 12px;
+  gap: calc(12px * var(--k));
   min-width: 0;
 }
 
@@ -77,11 +101,12 @@ body {
   position: relative;
   box-sizing: border-box;
   aspect-ratio: 16 / 9;
-  /* On short windows, leave room for the button row instead of overflowing */
-  max-height: calc(100vh - 64px - 32px - 12px - 48px);
+  /* On short windows, leave room for the button row instead of overflowing:
+     top bar, #main padding, #maincol gap and #row */
+  max-height: calc(100vh - var(--bar) - (32px + 12px + 48px) * var(--k));
   display: grid;
   place-items: center;
-  padding: 12px;
+  padding: calc(12px * var(--k));
   overflow: hidden;
   border-radius: var(--radius-md);
   background: var(--presenter-stage);
@@ -93,19 +118,19 @@ body {
 
 #badge {
   position: absolute;
-  top: 14px;
+  top: calc(14px * var(--k));
   left: 50%;
   transform: translateX(-50%);
   z-index: 1;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 6px 14px;
+  gap: calc(8px * var(--k));
+  padding: calc(6px * var(--k)) calc(14px * var(--k));
   border-radius: 999px;
   background: var(--warn);
   color: var(--on-warn);
   font-weight: 600;
-  font-size: 14px;
+  font-size: calc(14px * var(--k));
 }
 
 #badge[hidden] {
@@ -113,8 +138,8 @@ body {
 }
 
 #badge .icon svg {
-  width: 16px;
-  height: 16px;
+  width: calc(16px * var(--k));
+  height: calc(16px * var(--k));
 }
 
 /* Previous, "1 of 6" and next on one line, aligned with the edges of the current slide */
@@ -122,15 +147,15 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  min-height: 48px;
+  gap: calc(12px * var(--k));
+  min-height: calc(48px * var(--k));
 }
 
-/* No word "Página": just "1 de 6" */
+/* No word "Page": just "1 of 6" */
 #count {
   text-align: center;
   font-family: var(--ui-display);
-  font-size: 34px;
+  font-size: calc(34px * var(--k));
   font-weight: 400;
   font-variant-numeric: tabular-nums;
   color: var(--muted);
@@ -145,13 +170,13 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  min-width: 150px;
-  padding: 10px 20px;
+  gap: calc(8px * var(--k));
+  min-width: calc(150px * var(--k));
+  padding: calc(10px * var(--k)) calc(20px * var(--k));
   border: 1px solid var(--line);
   border-radius: var(--radius-md);
   background: var(--bg);
-  font-size: 16px;
+  font-size: calc(16px * var(--k));
 }
 
 .nav:hover {
@@ -169,22 +194,22 @@ body {
 }
 
 .nav .icon svg {
-  width: 22px;
-  height: 22px;
+  width: calc(22px * var(--k));
+  height: calc(22px * var(--k));
 }
 
 #side {
   display: grid;
-  gap: 8px;
+  gap: calc(8px * var(--k));
   min-width: 0;
 }
 
 #side h3 {
   margin: 0;
   text-align: center;
-  font-size: 12px;
+  font-size: calc(12px * var(--k));
   font-weight: 600;
-  letter-spacing: 0.7px;
+  letter-spacing: calc(0.7px * var(--k));
   text-transform: uppercase;
   color: var(--muted);
 }
@@ -195,7 +220,7 @@ body {
   aspect-ratio: 16 / 9;
   display: grid;
   place-items: center;
-  padding: 8px;
+  padding: calc(8px * var(--k));
   overflow: hidden;
   border-radius: var(--radius-md);
   background: var(--presenter-stage);
@@ -216,7 +241,7 @@ body {
 
 #end {
   color: #9aa1ad;
-  font-size: 15px;
+  font-size: calc(15px * var(--k));
 }
 
 #end[hidden],
