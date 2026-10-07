@@ -3,192 +3,249 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Mockup: displays in Settings</title>
+<title>Mockup: configure displays</title>
 <style>
-/* Mockup for milestone 9: the Settings dialog lists every detected display, with a role for each one.
+/* Mockup for milestone 9: the "Configure displays" dialog, the reader toolbar and the speaker view toolbar.
    Tokens copied from src/renderer/shared/theme.css (light and dark). */
 :root {
   --ui: "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif;
   --bg: #fbfaf8; --surface: #f4f2ef; --surface-2: #ebe8e4; --line: #ddd9d3; --text: #1f1d1b; --muted: #645f59;
-  --accent: #c2185b; --on-accent: #ffffff; --accent-soft: #f9e8ef; --hover: #ece9e5; --warn: #e85d04; --danger: #c62a1f;
+  --accent: #c2185b; --on-accent: #ffffff; --accent-soft: #f9e8ef; --warn: #e85d04;
   --page: #e6e3df; --radius-sm: 6px; --radius-md: 8px; --radius-lg: 14px;
   color-scheme: light;
 }
 @media (prefers-color-scheme: dark) { :root {
   --bg: #1d1c1b; --surface: #242321; --surface-2: #2e2c2a; --line: #3c3a37; --text: #ece9e5; --muted: #a8a39c;
-  --accent: #e8ba30; --on-accent: #1a1206; --accent-soft: #3e351e; --hover: #33312f; --warn: #ff6b1a; --danger: #ff7d6e;
+  --accent: #e8ba30; --on-accent: #1a1206; --accent-soft: #3e351e; --warn: #ff6b1a;
   --page: #141312; color-scheme: dark; } }
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--page); color: var(--text); font: 14px/1.45 var(--ui); }
-.wrap { max-width: 1100px; margin: 0 auto; padding: 24px 16px 56px; display: grid; gap: 28px; }
+.wrap { max-width: 1000px; margin: 0 auto; padding: 24px 16px 56px; display: grid; gap: 28px; }
 h1 { font-size: 22px; margin: 0; }
-.intro { color: var(--muted); margin: 4px 0 0; max-width: 70ch; }
+.intro { color: var(--muted); margin: 6px 0 0; max-width: 75ch; }
+.intro li { margin: 2px 0; }
 .case h2 { font-size: 15px; margin: 0 0 4px; }
 .case > p { margin: 0 0 10px; color: var(--muted); max-width: 80ch; }
-.stage { display: grid; place-items: center; padding: 24px 12px; border-radius: var(--radius-lg); background: rgb(0 0 0 / .06); }
+.stage { display: grid; place-items: center; gap: 14px; padding: 24px 12px; border-radius: var(--radius-lg); background: rgb(0 0 0 / .06); }
 
-.dialog { width: 100%; max-width: 760px; background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius-lg);
-  box-shadow: 0 16px 48px rgb(0 0 0 / .25); padding: 18px 20px 16px; display: grid; gap: 16px; }
+.icon { width: 16px; height: 16px; fill: currentColor; flex: none; }
+.btn { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: var(--radius-sm); border: 1px solid var(--line);
+  background: var(--surface); color: var(--text); font: inherit; cursor: pointer; white-space: nowrap; }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); font-weight: 600; }
+.btn:disabled { opacity: .45; cursor: default; }
+
+/* Reader toolbar */
+.toolbar { width: 100%; max-width: 760px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; padding: 8px 10px;
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-md); }
+.toolbar .spacer { flex: 1; }
+.toolbar .pager { color: var(--muted); }
+.caption { font-size: 12.5px; color: var(--muted); }
+
+/* Dialogs */
+.dialog { width: 100%; max-width: 640px; background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius-lg);
+  box-shadow: 0 16px 48px rgb(0 0 0 / .25); padding: 18px 20px 16px; display: grid; gap: 14px; }
 .dialog header { display: flex; align-items: center; gap: 10px; }
 .dialog header h3 { margin: 0; font-size: 17px; flex: 1; }
 .dialog header .x { width: 28px; height: 28px; display: grid; place-items: center; border-radius: var(--radius-sm); color: var(--muted); }
-.field > span, .label { display: block; font-weight: 600; margin-bottom: 4px; }
-small, .hint { color: var(--muted); font-size: 12.5px; display: block; }
+.field > span { display: block; font-weight: 600; margin-bottom: 4px; }
+small { color: var(--muted); font-size: 12.5px; display: block; margin-top: 4px; }
 .seg { display: inline-flex; border: 1px solid var(--line); border-radius: var(--radius-md); padding: 3px; gap: 2px; background: var(--surface); }
 .seg span { padding: 4px 12px; border-radius: var(--radius-sm); }
 .seg .on { background: var(--accent); color: var(--on-accent); }
-.fake-select { display: inline-block; min-width: 180px; padding: 6px 10px; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--surface); }
-
-/* Displays area: tiles follow the layout of Windows' display arrangement (relative positions). */
-.displays { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-md); padding: 14px; }
-.layout { display: flex; gap: 10px; justify-content: center; align-items: flex-start; flex-wrap: wrap; }
-.mon { flex: 1 1 170px; max-width: 200px; background: var(--bg); border: 2px solid var(--line); border-radius: var(--radius-md); padding: 10px; display: grid; gap: 6px; }
-.screen { aspect-ratio: 4 / 3; border-radius: 4px; display: grid; place-items: center; align-content: center; gap: 2px; padding: 4px; background: #000; color: #fff; position: relative; overflow: hidden; }
-.screen svg { width: 78px; height: 58px; fill: currentColor; opacity: .9; }
-.num { position: absolute; top: 5px; left: 7px; font-size: 14px; font-weight: 700; line-height: 1; opacity: .9; }
-.badge { position: absolute; top: 4px; right: 5px; font-size: 10px; line-height: 1; font-weight: 600; padding: 3px 6px; border-radius: 99px; background: var(--accent); color: var(--on-accent); }
-.name { font-weight: 600; font-size: 13px; overflow-wrap: anywhere; }
-.res { position: absolute; bottom: 6px; left: 0; right: 0; text-align: center; font-size: 11.5px; opacity: .85; white-space: nowrap; }
-.tag { display: inline-block; font-size: 11px; padding: 0 6px; border-radius: 99px; background: var(--surface-2); color: var(--muted); margin-left: 4px; font-weight: 500; }
-.mon .fake-select { min-width: 0; width: 100%; font-size: 13px; }
-.note { margin-top: 10px; font-size: 12.5px; color: var(--muted); display: flex; gap: 6px; align-items: center; }
-.note.warn { color: var(--warn); font-weight: 600; }
+.fake-select { display: inline-block; min-width: 200px; padding: 6px 10px; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--surface); }
 .actions { display: flex; justify-content: flex-end; gap: 8px; }
-.btn { padding: 6px 16px; border-radius: var(--radius-sm); border: 1px solid var(--line); background: var(--surface); }
-.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); font-weight: 600; }
-.btn[disabled] { opacity: .45; }
-@media (max-width: 480px) { .mon { max-width: none; } }
 
-/* Speaker view toolbar fragment */
-.bar { display: flex; gap: 6px; align-items: center; background: #0b0c0e; color: #e8e8e8; padding: 8px 12px; border-radius: var(--radius-md); font-size: 13px; width: 100%; max-width: 560px; }
-.bar b { flex: 1; font-weight: 600; }
+/* Display map: rectangles at scale, placed as in the Windows display arrangement. */
+.map { position: relative; height: 190px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-md); }
+.screen { position: absolute; border-radius: 4px; background: #000; color: #fff; border: 2px solid #4a4744; overflow: hidden;
+  display: grid; place-items: center; }
+.screen.changed { border-color: var(--accent); }
+.screen svg.art { width: 70%; height: 70%; }
+.screen .num { position: absolute; top: 3px; left: 6px; font-size: 13px; font-weight: 700; line-height: 1; }
+
+/* One row per display: the details and the role selector. */
+.rows { display: grid; gap: 6px; }
+.row { display: grid; grid-template-columns: 28px 1fr auto; gap: 10px; align-items: center; padding: 8px 10px;
+  border: 1px solid var(--line); border-left: 3px solid var(--line); border-radius: var(--radius-sm); background: var(--bg); }
+.row.changed { border-left-color: var(--accent); background: var(--accent-soft); }
+.row .n { font-weight: 700; text-align: center; font-size: 15px; }
+.row .name { font-weight: 600; overflow-wrap: anywhere; }
+.row .meta { color: var(--muted); font-size: 12.5px; }
+.tag { display: inline-block; font-size: 11px; padding: 0 6px; border-radius: 99px; background: var(--surface-2); color: var(--muted); margin-left: 4px; font-weight: 500; }
+select { font: inherit; color: var(--text); background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 5px 8px; }
+.warn { color: var(--warn); font-weight: 600; font-size: 13px; }
+@media (max-width: 520px) { .row { grid-template-columns: 24px 1fr; } .row select { grid-column: 2; } }
+
+/* Speaker view toolbar */
+.bar { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; background: #0b0c0e; color: #e8e8e8; padding: 8px 12px; border-radius: var(--radius-md);
+  font-size: 13px; width: 100%; max-width: 760px; }
+.bar .clock { font-variant-numeric: tabular-nums; font-weight: 600; }
+.bar .spacer { flex: 1; }
 .bar i { font-style: normal; padding: 4px 10px; border: 1px solid #3c3a37; border-radius: 6px; display: inline-flex; gap: 6px; align-items: center; }
 .bar i.new { border-color: #e8ba30; }
-.bar svg { width: 16px; height: 16px; fill: currentColor; }
 </style>
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <symbol id="monitor-speaker" viewBox="0 0 96 72"><rect x="5" y="4" width="86" height="52" rx="4" stroke="#e8e8e8" stroke-width="3" fill="#0b0c0e"/><path d="M48 56v7M32 66h32" stroke="#e8e8e8" stroke-width="3" stroke-linecap="round" fill="none"/><rect x="11" y="10" width="48.36" height="40" rx="1.5" fill="#f4f2ef"/><rect x="16.8" y="18.0" width="24.2" height="4.8" fill="#c2185b"/><rect x="16.8" y="30.0" width="36.8" height="2.8" fill="#9a958e"/><rect x="16.8" y="37.2" width="29.0" height="2.8" fill="#9a958e"/><rect x="62.36" y="10" width="22.64" height="14.0368" rx="1.5" fill="#f4f2ef"/><rect x="65.1" y="12.8" width="11.3" height="1.7" fill="#c2185b"/><rect x="65.1" y="17.0" width="17.2" height="1.0" fill="#9a958e"/><rect x="65.1" y="19.5" width="13.6" height="1.0" fill="#9a958e"/><rect x="62.4" y="27.0" width="22.6" height="2" fill="#e8ba30"/><rect x="62.4" y="31.0" width="13.6" height="2" fill="#6d6a65"/></symbol>
   <symbol id="monitor-audience" viewBox="0 0 96 72"><rect x="5" y="4" width="86" height="52" rx="4" stroke="#e8e8e8" stroke-width="3" fill="#0b0c0e"/><path d="M48 56v7M32 66h32" stroke="#e8e8e8" stroke-width="3" stroke-linecap="round" fill="none"/><rect x="10" y="9" width="76" height="42" rx="1.5" fill="#f4f2ef"/><rect x="19.1" y="17.4" width="38.0" height="5.0" fill="#c2185b"/><rect x="19.1" y="30.0" width="57.8" height="2.9" fill="#9a958e"/><rect x="19.1" y="37.6" width="45.6" height="2.9" fill="#9a958e"/></symbol>
-  <symbol id="laptop-speaker" viewBox="0 0 96 72"><rect x="14" y="6" width="68" height="46" rx="3.5" stroke="#e8e8e8" stroke-width="3" fill="#0b0c0e"/><path d="M4 57h88l-4 7H8z" fill="#e8e8e8"/><rect x="20" y="12" width="37.2" height="34" rx="1.5" fill="#f4f2ef"/><rect x="24.5" y="18.8" width="18.6" height="4.1" fill="#c2185b"/><rect x="24.5" y="29.0" width="28.3" height="2.4" fill="#9a958e"/><rect x="24.5" y="35.1" width="22.3" height="2.4" fill="#9a958e"/><rect x="60.2" y="12" width="15.799999999999997" height="9.795999999999998" rx="1.5" fill="#f4f2ef"/><rect x="62.1" y="14.0" width="7.9" height="1.6" fill="#c2185b"/><rect x="62.1" y="16.9" width="12.0" height="1.0" fill="#9a958e"/><rect x="62.1" y="18.7" width="9.5" height="1.0" fill="#9a958e"/><rect x="60.2" y="24.8" width="15.8" height="2" fill="#e8ba30"/><rect x="60.2" y="28.8" width="9.5" height="2" fill="#6d6a65"/></symbol>
+  <symbol id="laptop-speaker" viewBox="0 0 96 72"><rect x="14" y="6" width="68" height="46" rx="3.5" stroke="#e8e8e8" stroke-width="3" fill="#0b0c0e"/><path d="M4 57h88l-4 7H8z" fill="#e8e8e8"/><rect x="20" y="12" width="37.2" height="34" rx="1.5" fill="#f4f2ef"/><rect x="24.5" y="18.8" width="18.6" height="4.1" fill="#c2185b"/><rect x="24.5" y="29.0" width="28.3" height="2.4" fill="#9a958e"/><rect x="24.5" y="35.1" width="22.3" height="2.4" fill="#9a958e"/><rect x="60.2" y="12" width="15.8" height="9.8" rx="1.5" fill="#f4f2ef"/><rect x="62.1" y="14.0" width="7.9" height="1.6" fill="#c2185b"/><rect x="62.1" y="16.9" width="12.0" height="1.0" fill="#9a958e"/><rect x="62.1" y="18.7" width="9.5" height="1.0" fill="#9a958e"/><rect x="60.2" y="24.8" width="15.8" height="2" fill="#e8ba30"/><rect x="60.2" y="28.8" width="9.5" height="2" fill="#6d6a65"/></symbol>
   <symbol id="laptop-audience" viewBox="0 0 96 72"><rect x="14" y="6" width="68" height="46" rx="3.5" stroke="#e8e8e8" stroke-width="3" fill="#0b0c0e"/><path d="M4 57h88l-4 7H8z" fill="#e8e8e8"/><rect x="19" y="11" width="58" height="36" rx="1.5" fill="#f4f2ef"/><rect x="26.0" y="18.2" width="29.0" height="4.3" fill="#c2185b"/><rect x="26.0" y="29.0" width="44.1" height="2.5" fill="#9a958e"/><rect x="26.0" y="35.5" width="34.8" height="2.5" fill="#9a958e"/></symbol>
-  <symbol id="monitor" viewBox="0 0 256 256"><path d="M208 40H48a24 24 0 0 0-24 24v112a24 24 0 0 0 24 24h72v16H96a8 8 0 0 0 0 16h64a8 8 0 0 0 0-16h-24v-16h72a24 24 0 0 0 24-24V64a24 24 0 0 0-24-24Zm8 136a8 8 0 0 1-8 8H48a8 8 0 0 1-8-8V64a8 8 0 0 1 8-8h160a8 8 0 0 1 8 8Z"/></symbol>
-  <symbol id="laptop" viewBox="0 0 256 256"><path d="M232 168h-8V72a24 24 0 0 0-24-24H56A24 24 0 0 0 32 72v96h-8a8 8 0 0 0-8 8v16a24 24 0 0 0 24 24h160a24 24 0 0 0 24-24v-16a8 8 0 0 0-8-8ZM48 72a8 8 0 0 1 8-8h144a8 8 0 0 1 8 8v96H48Zm168 120a8 8 0 0 1-8 8H48a8 8 0 0 1-8-8v-8h176Z"/></symbol>
-  <symbol id="gear" viewBox="0 0 256 256"><path d="M128 80a48 48 0 1 0 48 48 48.05 48.05 0 0 0-48-48Zm0 80a32 32 0 1 1 32-32 32 32 0 0 1-32 32Zm88-29.84q.06-2.16 0-4.32l14.92-18.64a8 8 0 0 0 1.48-7.06 107.6 107.6 0 0 0-10.88-26.25 8 8 0 0 0-6-3.93l-23.72-2.64q-1.48-1.56-3-3L186 40.54a8 8 0 0 0-3.94-6 107.29 107.29 0 0 0-26.25-10.86 8 8 0 0 0-7.06 1.48L130.16 40q-2.16-.06-4.32 0L107.2 25.11a8 8 0 0 0-7.06-1.48A107.6 107.6 0 0 0 73.89 34.51a8 8 0 0 0-3.93 6L67.32 64.27q-1.56 1.49-3 3L40.54 70a8 8 0 0 0-6 3.94 107.71 107.71 0 0 0-10.87 26.25 8 8 0 0 0 1.49 7.06L40 125.84q-.06 2.16 0 4.32L25.11 148.8a8 8 0 0 0-1.48 7.06 107.6 107.6 0 0 0 10.88 26.25 8 8 0 0 0 6 3.93l23.72 2.64q1.49 1.56 3 3L70 215.46a8 8 0 0 0 3.94 6 107.71 107.71 0 0 0 26.25 10.87 8 8 0 0 0 7.06-1.49L125.84 216q2.16.06 4.32 0l18.64 14.92a8 8 0 0 0 7.06 1.48 107.21 107.21 0 0 0 26.25-10.88 8 8 0 0 0 3.93-6l2.64-23.72q1.56-1.48 3-3L215.46 186a8 8 0 0 0 6-3.94 107.71 107.71 0 0 0 10.87-26.25 8 8 0 0 0-1.49-7.06Z"/></symbol>
+  <symbol id="i-monitor" viewBox="0 0 256 256"><path d="M208 40H48a24 24 0 0 0-24 24v112a24 24 0 0 0 24 24h72v16H96a8 8 0 0 0 0 16h64a8 8 0 0 0 0-16h-24v-16h72a24 24 0 0 0 24-24V64a24 24 0 0 0-24-24Zm8 136a8 8 0 0 1-8 8H48a8 8 0 0 1-8-8V64a8 8 0 0 1 8-8h160a8 8 0 0 1 8 8Z"/></symbol>
+  <symbol id="i-present" viewBox="0 0 256 256"><path d="M216 40H136V24a8 8 0 0 0-16 0v16H40a16 16 0 0 0-16 16v120a16 16 0 0 0 16 16h39.36L57.75 219a8 8 0 0 0 12.5 10l29.59-37h56.32l29.59 37a8 8 0 1 0 12.5-10l-21.61-27H216a16 16 0 0 0 16-16V56a16 16 0 0 0-16-16Zm0 136H40V56h176Z"/></symbol>
+  <symbol id="i-folder" viewBox="0 0 256 256"><path d="M245 110.64a16 16 0 0 0-13-6.64h-16V88a16 16 0 0 0-16-16h-69.33l-27.73-20.8a16.14 16.14 0 0 0-9.6-3.2H40a16 16 0 0 0-16 16v144a8 8 0 0 0 8 8h179.1a8 8 0 0 0 7.59-5.47l28.49-85.47a16.05 16.05 0 0 0-2.18-14.42ZM93.34 64l27.73 20.8a16.12 16.12 0 0 0 9.6 3.2H200v16H69.77a16 16 0 0 0-15.18 10.94L40 158.7V64Z"/></symbol>
+  <symbol id="i-gear" viewBox="0 0 256 256"><path d="M128 80a48 48 0 1 0 48 48 48.05 48.05 0 0 0-48-48Zm0 80a32 32 0 1 1 32-32 32 32 0 0 1-32 32Zm88-29.84q.06-2.16 0-4.32l14.92-18.64a8 8 0 0 0 1.48-7.06 107.6 107.6 0 0 0-10.88-26.25 8 8 0 0 0-6-3.93l-23.72-2.64q-1.48-1.56-3-3L186 40.54a8 8 0 0 0-3.94-6 107.29 107.29 0 0 0-26.25-10.86 8 8 0 0 0-7.06 1.48L130.16 40q-2.16-.06-4.32 0L107.2 25.11a8 8 0 0 0-7.06-1.48A107.6 107.6 0 0 0 73.89 34.51a8 8 0 0 0-3.93 6L67.32 64.27q-1.56 1.49-3 3L40.54 70a8 8 0 0 0-6 3.94 107.71 107.71 0 0 0-10.87 26.25 8 8 0 0 0 1.49 7.06L40 125.84q-.06 2.16 0 4.32L25.11 148.8a8 8 0 0 0-1.48 7.06 107.6 107.6 0 0 0 10.88 26.25 8 8 0 0 0 6 3.93l23.72 2.64q1.49 1.56 3 3L70 215.46a8 8 0 0 0 3.94 6 107.71 107.71 0 0 0 26.25 10.87 8 8 0 0 0 7.06-1.49L125.84 216q2.16.06 4.32 0l18.64 14.92a8 8 0 0 0 7.06 1.48 107.21 107.21 0 0 0 26.25-10.88 8 8 0 0 0 3.93-6l2.64-23.72q1.56-1.48 3-3L215.46 186a8 8 0 0 0 6-3.94 107.71 107.71 0 0 0 10.87-26.25 8 8 0 0 0-1.49-7.06Z"/></symbol>
 </svg>
 
 <div class="wrap">
   <div>
-    <h1>Settings → Displays (milestone 9 mockup)</h1>
-    <p class="intro">Every detected display is a tile (tiles follow the arrangement in Windows). Each tile shows its name and resolution and has a selector: Speaker or Audience. Changes are not applied live: <b>Apply</b> becomes enabled and saves + applies them. Apply is disabled if no display is left as Audience. Light/dark follows your system.</p>
+    <h1>Configure displays (milestone 9 mockup)</h1>
+    <ul class="intro">
+      <li><b>One display:</b> the reader shows only <b>Present</b>. It opens the audience view full screen, with no buttons (like any PDF viewer in full screen); the speaker uses the keyboard shortcuts or a slide clicker.</li>
+      <li><b>Two or more displays:</b> the reader shows <b>Configure displays</b> and <b>Present</b>. Present is the main action (accent colour). There is no separate "Mirror" button any more: setting every display to Audience View is mirroring.</li>
+      <li><b>Configure displays</b> is its own dialog. It shows the displays at scale, placed as in the Windows display arrangement, and one row per display with its role. Names are the system's; the built-in display of a laptop is called "Built-in display". Changes are applied only with <b>Apply</b>, which is enabled when something changed and there is at least one Audience View.</li>
+      <li><b>Settings</b> (gear) keeps only theme and language, applied instantly as today.</li>
+      <li>The selectors in the dialogs below work, so you can try the rules. Light/dark follows your system.</li>
+    </ul>
   </div>
 
-  <!-- 1 monitor -->
   <section class="case">
-    <h2>1 display detected</h2>
-    <p>Nothing to choose: with a single display the only option is the audience view. The selector is disabled.</p>
-    <div class="stage"><div class="dialog">
-      <header><svg width="20" height="20" fill="currentColor"><use href="#gear"/></svg><h3>Settings</h3><span class="x">✕</span></header>
-      <div class="field"><span>Displays</span>
-        <div class="displays">
-          <div class="layout">
-            <div class="mon">
-              <div class="screen"><span class="num">1</span><svg><use href="#laptop-audience"/></svg><span class="res">1920 × 1080 · 125%</span><span class="badge">Primary</span></div>
-              <div class="name">Built-in display</div>
-              <div class="fake-select" style="opacity:.6">Audience View</div>
-            </div>
-          </div>
-          <div class="note">Connect a second monitor to enable speaker view.</div>
-        </div>
+    <h2>Reader toolbar</h2>
+    <p>Top: one display. Bottom: two or more. The toolbar updates by itself when a display is connected or disconnected. F5 and Shift+F5 do the same as Present.</p>
+    <div class="stage">
+      <div class="toolbar">
+        <span class="btn"><svg class="icon"><use href="#i-folder"/></svg>Open</span>
+        <span class="btn primary"><svg class="icon"><use href="#i-present"/></svg>Present</span>
+        <span class="spacer"></span><span class="pager">‹ 3 / 30 ›</span>
+        <span class="btn"><svg class="icon"><use href="#i-gear"/></svg></span>
       </div>
+      <div class="toolbar">
+        <span class="btn"><svg class="icon"><use href="#i-folder"/></svg>Open</span>
+        <span class="btn"><svg class="icon"><use href="#i-monitor"/></svg>Configure displays</span>
+        <span class="btn primary"><svg class="icon"><use href="#i-present"/></svg>Present</span>
+        <span class="spacer"></span><span class="pager">‹ 3 / 30 ›</span>
+        <span class="btn"><svg class="icon"><use href="#i-gear"/></svg></span>
+      </div>
+    </div>
+  </section>
+
+  <section class="case">
+    <h2>2 displays, defaults</h2>
+    <p>Defaults: the main display shows the speaker view, the other one the audience. Apply stays disabled until something changes.</p>
+    <div class="stage"><div class="dialog" data-case="two"></div></div>
+  </section>
+
+  <section class="case">
+    <h2>3 displays, defaults</h2>
+    <p>Defaults with three displays: two speaker views (technician and speaker) and the audience on the last display (main display first, then left to right). Here the laptop sits below two monitors in the Windows arrangement, and the map shows it that way.</p>
+    <div class="stage"><div class="dialog" data-case="three"></div></div>
+  </section>
+
+  <section class="case">
+    <h2>3 displays, changed: every display shows the audience (mirror)</h2>
+    <p>Changed rows and screens are highlighted, and Apply is enabled. Every display in Audience View is valid: that is mirroring.</p>
+    <div class="stage"><div class="dialog" data-case="mirror"></div></div>
+  </section>
+
+  <section class="case">
+    <h2>3 displays, invalid: no audience</h2>
+    <p>With no display in Audience View, a message appears and Apply is disabled.</p>
+    <div class="stage"><div class="dialog" data-case="invalid"></div></div>
+  </section>
+
+  <section class="case">
+    <h2>Speaker view toolbar</h2>
+    <p>"Swap screens" is replaced by "Configure displays" (only with two or more displays). It opens the same dialog over the speaker view; Apply moves the windows without stopping the presentation. The timer is shared by every speaker view.</p>
+    <div class="stage">
+      <div class="bar"><span class="clock">00:12:48</span><i>Pause</i><i>Reset</i><span class="spacer"></span><i class="new"><svg class="icon"><use href="#i-monitor"/></svg>Configure displays</i><i>Black screen</i><i>Exit</i></div>
+    </div>
+  </section>
+
+  <section class="case">
+    <h2>Settings (gear)</h2>
+    <p>Only theme and language, applied instantly. No Apply button.</p>
+    <div class="stage"><div class="dialog">
+      <header><svg class="icon" style="width:20px;height:20px"><use href="#i-gear"/></svg><h3>Settings</h3><span class="x">✕</span></header>
       <div class="field"><span>Theme</span><div class="seg"><span class="on">System</span><span>Light</span><span>Dark</span></div></div>
       <div class="field"><span>Language</span><div class="fake-select">System default</div></div>
-      <div class="actions"><span class="btn primary" style="opacity:.45">Apply</span><span class="btn">Close</span></div>
+      <div class="actions"><span class="btn">Close</span></div>
     </div></div>
   </section>
-
-  <!-- 2 monitors -->
-  <section class="case">
-    <h2>2 displays detected (default, nothing changed)</h2>
-    <p>Same result as today: speaker view on the primary, audience on the other. Apply stays disabled until something changes.</p>
-    <div class="stage"><div class="dialog">
-      <header><svg width="20" height="20" fill="currentColor"><use href="#gear"/></svg><h3>Settings</h3><span class="x">✕</span></header>
-      <div class="field"><span>Displays</span>
-        <div class="displays">
-          <div class="layout">
-            <div class="mon speaker">
-              <div class="screen"><span class="num">1</span><svg><use href="#laptop-speaker"/></svg><span class="res">1920 × 1080 · 125%</span><span class="badge">Primary</span></div>
-              <div class="name">Built-in display</div>
-              <div class="fake-select">Speaker View ▾</div>
-            </div>
-            <div class="mon">
-              <div class="screen"><span class="num">2</span><svg><use href="#monitor-audience"/></svg><span class="res">1920 × 1080 · 100%</span></div>
-              <div class="name">Projector (HDMI)</div>
-              <div class="fake-select">Audience View ▾</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="field"><span>Theme</span><div class="seg"><span class="on">System</span><span>Light</span><span>Dark</span></div></div>
-      <div class="field"><span>Language</span><div class="fake-select">System default</div></div>
-      <div class="actions"><span class="btn primary" style="opacity:.45">Apply</span><span class="btn">Close</span></div>
-    </div></div>
-  </section>
-
-  <!-- 3 monitors default -->
-  <section class="case">
-    <h2>3 displays detected, changed and ready to apply</h2>
-    <p>Here the user has made the confidence monitor (display 2) a second Speaker view. The changed tile is highlighted and Apply is enabled. Default for 3 displays before any change would be: primary = Speaker, the others = Audience (as today).</p>
-    <div class="stage"><div class="dialog">
-      <header><svg width="20" height="20" fill="currentColor"><use href="#gear"/></svg><h3>Settings</h3><span class="x">✕</span></header>
-      <div class="field"><span>Displays</span>
-        <div class="displays">
-          <div class="layout">
-            <div class="mon speaker">
-              <div class="screen"><span class="num">1</span><svg><use href="#laptop-speaker"/></svg><span class="res">2560 × 1600 · 150%</span><span class="badge">Primary</span></div>
-              <div class="name">Built-in display</div>
-              <div class="fake-select">Speaker View ▾</div>
-            </div>
-            <div class="mon speaker changed">
-              <div class="screen"><span class="num">2</span><svg><use href="#monitor-speaker"/></svg><span class="res">1920 × 1080 · 100%</span></div>
-              <div class="name">Confidence monitor</div>
-              <div class="fake-select">Speaker View ▾</div>
-            </div>
-            <div class="mon">
-              <div class="screen"><span class="num">3</span><svg><use href="#monitor-audience"/></svg><span class="res">3840 × 2160 · 100%</span></div>
-              <div class="name">Projector (DisplayPort)</div>
-              <div class="fake-select">Audience View ▾</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="field"><span>Theme</span><div class="seg"><span class="on">System</span><span>Light</span><span>Dark</span></div></div>
-      <div class="field"><span>Language</span><div class="fake-select">System default</div></div>
-      <div class="actions"><span class="btn primary">Apply</span><span class="btn">Close</span></div>
-    </div></div>
-  </section>
-
-  <!-- invalid -->
-  <section class="case">
-    <h2>3 displays: invalid choice (no audience)</h2>
-    <p>The unwanted all-speaker setup is caught before applying: a clear message and Apply disabled.</p>
-    <div class="stage"><div class="dialog">
-      <header><svg width="20" height="20" fill="currentColor"><use href="#gear"/></svg><h3>Settings</h3><span class="x">✕</span></header>
-      <div class="field"><span>Displays</span>
-        <div class="displays">
-          <div class="layout">
-            <div class="mon speaker"><div class="screen"><span class="num">1</span><svg><use href="#laptop-speaker"/></svg><span class="res">2560 × 1600 · 150%</span><span class="badge">Primary</span></div><div class="name">Built-in display</div><div class="fake-select">Speaker View ▾</div></div>
-            <div class="mon speaker changed"><div class="screen"><span class="num">2</span><svg><use href="#monitor-speaker"/></svg><span class="res">1920 × 1080 · 100%</span></div><div class="name">Confidence monitor</div><div class="fake-select">Speaker View ▾</div></div>
-            <div class="mon speaker changed"><div class="screen"><span class="num">3</span><svg><use href="#monitor-speaker"/></svg><span class="res">3840 × 2160 · 100%</span></div><div class="name">Projector (DisplayPort)</div><div class="fake-select">Speaker View ▾</div></div>
-          </div>
-          <div class="note warn">At least one display must be the Audience.</div>
-        </div>
-      </div>
-      <div class="actions"><span class="btn primary" style="opacity:.45">Apply</span><span class="btn">Close</span></div>
-    </div></div>
-  </section>
-
 </div>
+
+<script>
+// Logical bounds (DIP) as Electron reports them; res is what Windows shows (physical pixels).
+const LAPTOP = { name: 'Built-in display', internal: true, primary: true };
+const CASES = {
+  two: { displays: [
+    { ...LAPTOP, x: 0, y: 0, w: 1536, h: 864, res: '1920 × 1080 · 125%', role: 'speaker' },
+    { name: 'EPSON PJ', x: 1536, y: 0, w: 1920, h: 1080, res: '1920 × 1080 · 100%', role: 'audience' },
+  ] },
+  three: { displays: [
+    { ...LAPTOP, x: 640, y: 1080, w: 1707, h: 1067, res: '2560 × 1600 · 150%', role: 'speaker' },
+    { name: 'DELL P2422H', x: 0, y: 0, w: 1920, h: 1080, res: '1920 × 1080 · 100%', role: 'speaker' },
+    { name: 'EPSON PJ', x: 1920, y: 0, w: 1920, h: 1200, res: '1920 × 1200 · 100%', role: 'audience' },
+  ] },
+};
+CASES.mirror = { displays: CASES.three.displays, start: ['audience', 'audience', 'audience'] };
+CASES.invalid = { displays: CASES.three.displays, start: ['speaker', 'speaker', 'speaker'] };
+
+const ROLE = { speaker: 'Speaker View', audience: 'Audience View' };
+
+function render(el, def) {
+  const saved = def.displays.map((d) => d.role);
+  const roles = def.start ? [...def.start] : [...saved];
+
+  el.innerHTML = `
+    <header><svg class="icon" style="width:20px;height:20px"><use href="#i-monitor"/></svg><h3>Configure displays</h3><span class="x">✕</span></header>
+    <div class="map"></div>
+    <div class="rows"></div>
+    <div class="warn" hidden>At least one display must be the Audience View.</div>
+    <div class="actions"><button class="btn" type="button">Cancel</button><button class="btn primary apply" type="button">Apply</button></div>`;
+  const map = el.querySelector('.map');
+  const rows = el.querySelector('.rows');
+
+  def.displays.forEach((d, i) => {
+    const row = document.createElement('div');
+    row.className = 'row';
+    row.innerHTML = `<span class="n">${i + 1}</span>
+      <span><span class="name">${d.name}</span>${d.primary ? '<span class="tag">Main</span>' : ''}<br><span class="meta">${d.res}</span></span>
+      <select aria-label="Role of display ${i + 1}">${Object.entries(ROLE).map(([v, l]) => `<option value="${v}">${l}</option>`).join('')}</select>`;
+    row.querySelector('select').value = roles[i];
+    row.querySelector('select').addEventListener('change', (e) => { roles[i] = e.target.value; update(); });
+    rows.append(row);
+  });
+
+  function drawMap() {
+    const pad = 14;
+    const minX = Math.min(...def.displays.map((d) => d.x)), minY = Math.min(...def.displays.map((d) => d.y));
+    const maxX = Math.max(...def.displays.map((d) => d.x + d.w)), maxY = Math.max(...def.displays.map((d) => d.y + d.h));
+    const scale = Math.min((map.clientWidth - pad * 2) / (maxX - minX), (map.clientHeight - pad * 2) / (maxY - minY));
+    const offX = (map.clientWidth - (maxX - minX) * scale) / 2, offY = (map.clientHeight - (maxY - minY) * scale) / 2;
+    map.innerHTML = '';
+    def.displays.forEach((d, i) => {
+      const s = document.createElement('div');
+      s.className = 'screen' + (roles[i] !== saved[i] ? ' changed' : '');
+      Object.assign(s.style, { left: `${offX + (d.x - minX) * scale + 2}px`, top: `${offY + (d.y - minY) * scale + 2}px`,
+        width: `${d.w * scale - 4}px`, height: `${d.h * scale - 4}px` });
+      s.innerHTML = `<span class="num">${i + 1}</span><svg class="art"><use href="#${d.internal ? 'laptop' : 'monitor'}-${roles[i]}"/></svg>`;
+      map.append(s);
+    });
+  }
+
+  function update() {
+    const changed = roles.some((r, i) => r !== saved[i]);
+    const valid = roles.includes('audience');
+    [...rows.children].forEach((row, i) => row.classList.toggle('changed', roles[i] !== saved[i]));
+    el.querySelector('.warn').hidden = valid;
+    el.querySelector('.apply').disabled = !changed || !valid;
+    drawMap();
+  }
+  update();
+  addEventListener('resize', drawMap);
+}
+
+document.querySelectorAll('[data-case]').forEach((el) => render(el, CASES[el.dataset.case]));
+</script>
 </body>
 </html>
