@@ -17,7 +17,7 @@ translatePage();
 const top = byId('top');
 const clock = byId('clock');
 const pauseIcon = byId('pause-icon');
-const pauseLabel = byId('pause-label');
+const pauseButton = byId('pause');
 const pausedTag = byId('paused');
 const current = byId('current');
 const badge = byId('badge');
@@ -63,7 +63,9 @@ function showTimer(next: TimerState): void {
   timer = next;
   top.classList.toggle('paused', !next.running);
   pausedTag.hidden = next.running;
-  pauseLabel.textContent = t(next.running ? 'presenter.pause' : 'presenter.resume');
+  const label = t(next.running ? 'presenter.pause' : 'presenter.resume');
+  pauseButton.title = label;
+  pauseButton.setAttribute('aria-label', label);
   setIcon(pauseIcon, next.running ? 'pause' : 'play');
   tick();
 }
@@ -75,7 +77,7 @@ function tick(): void {
   clock.textContent = `${pad(Math.floor(s / 3600))}:${pad(Math.floor(s / 60) % 60)}:${pad(s % 60)}`;
 }
 
-byId('pause').addEventListener('click', () => window.presenter.sendAction({ type: 'toggleTimer' }));
+pauseButton.addEventListener('click', () => window.presenter.sendAction({ type: 'toggleTimer' }));
 byId('reset').addEventListener('click', () => window.presenter.sendAction({ type: 'resetTimer' }));
 window.setInterval(tick, 250);
 

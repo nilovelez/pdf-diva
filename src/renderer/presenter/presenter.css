@@ -32,6 +32,18 @@ body {
   height: calc(18px * var(--k));
 }
 
+/* Top bar buttons share one height; the icon-only ones (timer) are square. */
+#top .btn {
+  box-sizing: border-box;
+  height: calc(36px * var(--k));
+}
+
+#top .btn.icon-only {
+  width: calc(36px * var(--k));
+  padding: 0;
+  justify-content: center;
+}
+
 /* Top bar: timer on the left, blackout and exit on the right */
 #top {
   display: flex;

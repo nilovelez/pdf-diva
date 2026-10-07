@@ -16,11 +16,18 @@
     <header id="top">
       <span class="icon timer-icon" data-icon="timer"></span>
       <span id="clock">00:00:00</span>
-      <button id="pause" class="btn" type="button">
-        <span class="icon" id="pause-icon" data-icon="pause"></span><span id="pause-label"></span>
+      <!-- Timer buttons are icon-only: a secondary function, and words could suggest they act on the slides. -->
+      <button id="pause" class="btn icon-only" type="button">
+        <span class="icon" id="pause-icon" data-icon="pause"></span>
       </button>
-      <button id="reset" class="btn" type="button">
-        <span class="icon" data-icon="arrow-counter-clockwise"></span><span data-i18n="presenter.reset"></span>
+      <button
+        id="reset"
+        class="btn icon-only"
+        type="button"
+        data-i18n-title="presenter.reset"
+        data-i18n-label="presenter.reset"
+      >
+        <span class="icon" data-icon="arrow-counter-clockwise"></span>
       </button>
       <span id="paused" hidden data-i18n="presenter.paused"></span>
       <span class="spacer"></span>
