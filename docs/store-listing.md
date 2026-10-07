@@ -96,7 +96,7 @@ v1.2.0 alone (if 1.1.0 had been published):
 
 v1.3.0:
 
-> Nuevo «Configurar monitores»: elige qué muestra cada monitor, la vista del orador o la del público, también durante la presentación. Con tres monitores, dos vistas del orador y el público. La vista del orador ocupa toda la pantalla y se lee bien en monitores grandes. Con un solo monitor, «Presentar» muestra solo la diapositiva. El diálogo de abrir empieza en la carpeta del último PDF.
+> Nuevo «Configurar monitores»: elige qué muestra cada monitor, la vista del orador o la del público, también durante la presentación. Con tres monitores, dos vistas del orador y el público. La vista del orador ocupa toda la pantalla y se lee bien en monitores grandes. Con un solo monitor, «Presentar» muestra solo la diapositiva. El diálogo de abrir empieza en la carpeta del último PDF. Nuevo icono.
 
 ## Listing: English (en-US)
 
@@ -173,7 +173,7 @@ v1.2.0 alone (if 1.1.0 had been published):
 
 v1.3.0:
 
-> New Configure displays: choose what each monitor shows, the speaker view or the audience view, even during the presentation. With three monitors, two speaker views plus the audience. The speaker view fills the screen and stays readable on large monitors. With a single monitor, Present shows just the slide. The Open dialog starts in the folder of the last PDF.
+> New Configure displays: choose what each monitor shows, the speaker view or the audience view, even during the presentation. With three monitors, two speaker views plus the audience. The speaker view fills the screen and stays readable on large monitors. With a single monitor, Present shows just the slide. The Open dialog starts in the folder of the last PDF. New icon.
 
 ## Images still needed
 
