@@ -1,6 +1,6 @@
 # Privacy Policy
 
-_Last updated: 2026-10-05_
+_Last updated: 2026-10-07_
 
 PDF Diva is a free, open-source desktop app for presenting PDF files. It is built to work completely offline.
 
@@ -15,7 +15,7 @@ Nothing. PDF Diva:
 
 ## What stays on your computer
 
-PDF Diva saves a few settings on your computer so it remembers them next time: the monitor chosen for the speaker view (its name, size and position, as Windows reports them) and the theme (System, Light or Dark). It does not keep a list of recent files or any file paths. The settings are stored in your Windows user profile, next to the technical caches that the app's rendering engine creates, which contain no personal data and nothing from your PDFs. None of this ever leaves your computer, and uninstalling the app removes it.
+PDF Diva saves a few settings on your computer so it remembers them next time: what each monitor shows when you present (with the monitor's name, size and position, as Windows reports them), the theme, the language, and the folder of the last PDF you opened, so the Open dialog starts there. It does not keep a list of recent files. The settings are stored in your Windows user profile, next to the technical caches that the app's rendering engine creates, which contain no personal data and nothing from your PDFs. None of this ever leaves your computer, and uninstalling the app removes it.
 
 PDF Diva only opens the PDF files you choose. It does not copy, change or upload them. Passwords for protected PDFs are kept only in memory while the PDF is open and are never written to disk.
 

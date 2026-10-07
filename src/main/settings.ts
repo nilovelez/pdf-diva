@@ -31,6 +31,8 @@ interface StoredSettings {
   displayRoles: StoredRole[];
   theme: ThemeSetting;
   language: LanguageSetting;
+  /** Folder of the last PDF opened, where the Open dialog starts. Not shown in Settings. */
+  lastFolder: string | null;
 }
 
 /** Enough for every display a laptop meets in its life; the oldest are forgotten first. */
@@ -40,6 +42,7 @@ let stored: StoredSettings = {
   displayRoles: [],
   theme: 'system',
   language: 'system',
+  lastFolder: null,
 };
 
 const file = (): string => path.join(app.getPath('userData'), 'settings.json');
@@ -93,6 +96,7 @@ export function loadSettings(): void {
       displayRoles: readRoles(values),
       theme: isThemeSetting(values.theme) ? values.theme : 'system',
       language: isLanguageSetting(values.language) ? values.language : 'system',
+      lastFolder: typeof values.lastFolder === 'string' ? values.lastFolder : null,
     };
   } catch {
     /* defaults */
@@ -157,6 +161,16 @@ export function saveRoles(roles: { display: Display; role: DisplayRole }[]): voi
     (r) => !roles.some(({ display }) => r.monitor.id === display.id || sameMonitor(r.monitor, display)),
   );
   stored.displayRoles = [...fresh, ...others].slice(0, MAX_STORED_ROLES);
+  save();
+}
+
+export function lastFolder(): string | null {
+  return stored.lastFolder;
+}
+
+export function rememberFolder(folder: string): void {
+  if (stored.lastFolder === folder) return;
+  stored.lastFolder = folder;
   save();
 }
 

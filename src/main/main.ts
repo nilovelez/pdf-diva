@@ -1,5 +1,5 @@
 import { app, BrowserWindow, dialog, ipcMain, Menu, screen, session, shell } from 'electron';
-import { readFile } from 'node:fs/promises';
+import { readFile, stat } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { IPC, type DisplayRoleChoice, type PdfFile, type SettingsPatch } from '../types/ipc';
@@ -19,7 +19,9 @@ import {
   getSettings,
   isLanguageSetting,
   isThemeSetting,
+  lastFolder,
   loadSettings,
+  rememberFolder,
   saveRoles,
   t,
   updateSettings,
@@ -42,10 +44,22 @@ async function readPdf(file: string): Promise<PdfFile> {
   return pendingPdf;
 }
 
+/** The folder of the last PDF opened, if it still exists (a pendrive may be gone). */
+async function startFolder(): Promise<string | undefined> {
+  const folder = lastFolder();
+  if (!folder) return undefined;
+  try {
+    return (await stat(folder)).isDirectory() ? folder : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
 async function pickPdf(event: Electron.IpcMainInvokeEvent): Promise<PdfFile | null> {
   const parent = BrowserWindow.fromWebContents(event.sender) ?? undefined;
   const options: Electron.OpenDialogOptions = {
     title: t('open.dialogTitle'),
+    defaultPath: await startFolder(),
     properties: ['openFile'],
     filters: [{ name: 'PDF', extensions: ['pdf'] }],
   };
@@ -155,7 +169,10 @@ ipcMain.handle(IPC.readPdf, (_event, file: unknown) => {
   return readPdf(file);
 });
 ipcMain.on(IPC.pdfOpened, (_event, id: unknown) => {
-  if (pendingPdf && pendingPdf.id === id) openedPdf = pendingPdf;
+  if (!pendingPdf || pendingPdf.id !== id) return;
+  openedPdf = pendingPdf;
+  // The next Open dialog starts here, however this PDF was opened.
+  rememberFolder(path.dirname(openedPdf.path));
 });
 
 ipcMain.handle(
