@@ -1,12 +1,6 @@
 import { LANGUAGES, languageName } from '../../i18n/i18n';
-import type {
-  DisplayInfo,
-  LanguageSetting,
-  PdfFile,
-  PresentationMode,
-  Settings,
-  ThemeSetting,
-} from '../../types/ipc';
+import type { DisplayInfo, LanguageSetting, PdfFile, Settings, ThemeSetting } from '../../types/ipc';
+import { createDisplaysDialog } from '../shared/displays-dialog';
 import { setLanguage, t, translatePage } from '../shared/i18n';
 import { paintIcons } from '../shared/icons';
 import { keepFocusOffButtons, onKeyAction } from '../shared/keys';
@@ -35,7 +29,7 @@ const pageLabel = byId('page');
 const stage = byId('stage');
 const notice = byId('notice');
 const settingsDialog = byId('settings');
-const speakerSelect = byId<HTMLSelectElement>('speaker-monitor');
+const displaysDialog = createDisplaysDialog();
 const languageSelect = byId<HTMLSelectElement>('language');
 const passwordDialog = byId('password');
 const passwordForm = byId<HTMLFormElement>('password-form');
@@ -50,7 +44,6 @@ let doc: PDFDocumentProxy | null = null;
 let docPassword: string | undefined;
 let current = 1;
 let noticeTimer: number | undefined;
-let displays: DisplayInfo[] = [];
 
 function showNotice(text: string): void {
   notice.textContent = text;
@@ -183,35 +176,26 @@ async function openDropped(dropped: File): Promise<void> {
   }
 }
 
-function present(mode: PresentationMode, page = current): void {
-  if (doc) void window.presenter.startPresentation(doc.numPages, page, mode, docPassword);
+/** Presents with the display roles from "Configure displays" (only the audience with one display). */
+function present(page = current): void {
+  if (doc) void window.presenter.startPresentation(doc.numPages, page, docPassword);
 }
 
+const anyDialogOpen = (): boolean =>
+  !passwordDialog.hidden || !settingsDialog.hidden || displaysDialog.isOpen();
+
 // F5 presents from the first page and Shift+F5 from the current one, as in PowerPoint
-// (many clickers have a "play" button that sends F5). It uses the default mode: speaker view
-// plus audience, or the single-display presentation when there is only one display.
+// (many clickers have a "play" button that sends F5).
 window.addEventListener('keydown', (event) => {
   if (event.key !== 'F5' || event.ctrlKey || event.altKey || event.metaKey) return;
   event.preventDefault();
-  if (!doc || !passwordDialog.hidden || !settingsDialog.hidden) return;
-  present('presenter', event.shiftKey ? current : 1);
+  if (!doc || anyDialogOpen()) return;
+  present(event.shiftKey ? current : 1);
 });
 
 // ---- Settings dialog ----
 
-const monitorLabel = (d: DisplayInfo): string =>
-  t(d.primary ? 'settings.speakerMonitor.optionMain' : 'settings.speakerMonitor.option', {
-    index: d.index,
-    width: d.width,
-    height: d.height,
-  });
-
 function fillSettings(settings: Settings): void {
-  speakerSelect.replaceChildren(
-    new Option(t('settings.speakerMonitor.auto'), 'auto'),
-    ...displays.map((d) => new Option(monitorLabel(d), String(d.id))),
-  );
-  speakerSelect.value = settings.speakerMonitorId === null ? 'auto' : String(settings.speakerMonitorId);
   settingsDialog.querySelectorAll<HTMLButtonElement>('[data-theme]').forEach((button) => {
     button.setAttribute('aria-pressed', String(button.dataset.theme === settings.theme));
   });
@@ -233,13 +217,9 @@ function applyLanguage(settings: Settings): void {
 async function openSettings(): Promise<void> {
   fillSettings(await window.presenter.getSettings());
   settingsDialog.hidden = false;
-  speakerSelect.focus();
+  languageSelect.focus();
 }
 
-speakerSelect.addEventListener('change', () => {
-  const id = speakerSelect.value === 'auto' ? null : Number(speakerSelect.value);
-  void window.presenter.setSettings({ speakerMonitorId: id });
-});
 languageSelect.addEventListener('change', () => {
   void window.presenter
     .setSettings({ language: languageSelect.value as LanguageSetting })
@@ -263,9 +243,8 @@ keepFocusOffButtons();
 
 byId('drop').addEventListener('click', () => void pickFile());
 byId('open').addEventListener('click', () => void pickFile());
-byId('present').addEventListener('click', () => present('presenter'));
-byId('present-presenter').addEventListener('click', () => present('presenter'));
-byId('present-mirror').addEventListener('click', () => present('mirror'));
+byId('present').addEventListener('click', () => present());
+byId('configure-displays').addEventListener('click', () => void displaysDialog.open());
 byId('prev').addEventListener('click', () => void show(current - 1));
 byId('next').addEventListener('click', () => void show(current + 1));
 byId('settings-open').addEventListener('click', () => void openSettings());
@@ -297,15 +276,14 @@ window.presenter.onPresentationEnded((page) => void show(page));
 // A PDF opened from Windows ("Open with…", double click) goes the same way as a dropped one.
 window.presenter.onSystemOpen((file) => {
   settingsDialog.hidden = true;
+  displaysDialog.close();
   if (file) void openFile(file);
   else showNotice(t('open.readError'));
 });
 
-// With 2+ displays both ways of presenting are offered; updated when a display is plugged/unplugged.
+// "Configure displays" only with 2+ displays; updated when a display is plugged/unplugged.
 const showDisplays = (list: DisplayInfo[]): void => {
-  displays = list;
   document.body.classList.toggle('multi', list.length >= 2);
-  if (!settingsDialog.hidden) void window.presenter.getSettings().then(fillSettings);
 };
 void window.presenter.getDisplays().then(showDisplays);
 window.presenter.onDisplaysChanged(showDisplays);
@@ -318,6 +296,10 @@ onKeyAction(
     }
     if (!settingsDialog.hidden) {
       if (action === 'exit') settingsDialog.hidden = true;
+      return;
+    }
+    if (displaysDialog.isOpen()) {
+      if (action === 'exit') displaysDialog.close();
       return;
     }
     if (!doc) return;

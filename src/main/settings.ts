@@ -3,8 +3,13 @@ import { readFileSync } from 'node:fs';
 import { writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { isLanguage, resolveLanguage, translate, type Language, type MessageKey } from '../i18n/i18n';
-import type { LanguageSetting, Settings, SettingsPatch, ThemeSetting } from '../types/ipc';
-import { sortedDisplays } from './displays';
+import type {
+  DisplayRole,
+  LanguageSetting,
+  Settings,
+  SettingsPatch,
+  ThemeSetting,
+} from '../types/ipc';
 
 /** What identifies a display across runs: its id, with label and geometry as a fallback. */
 interface StoredMonitor {
@@ -16,18 +21,23 @@ interface StoredMonitor {
   y: number;
 }
 
+interface StoredRole {
+  monitor: StoredMonitor;
+  role: DisplayRole;
+}
+
 interface StoredSettings {
-  speakerMonitor: StoredMonitor | null;
-  /** Where the audience went the last time the screens were swapped; null = any other display. */
-  audienceMonitor: StoredMonitor | null;
+  /** Roles chosen in "Configure displays", including displays not connected right now. */
+  displayRoles: StoredRole[];
   theme: ThemeSetting;
   language: LanguageSetting;
 }
 
+/** Enough for every display a laptop meets in its life; the oldest are forgotten first. */
+const MAX_STORED_ROLES = 32;
 const THEMES: readonly ThemeSetting[] = ['system', 'light', 'dark'];
 let stored: StoredSettings = {
-  speakerMonitor: null,
-  audienceMonitor: null,
+  displayRoles: [],
   theme: 'system',
   language: 'system',
 };
@@ -47,6 +57,12 @@ function isStoredMonitor(value: unknown): value is StoredMonitor {
   );
 }
 
+function isStoredRole(value: unknown): value is StoredRole {
+  if (typeof value !== 'object' || value === null) return false;
+  const { monitor, role } = value as Record<string, unknown>;
+  return isStoredMonitor(monitor) && (role === 'speaker' || role === 'audience');
+}
+
 export function isThemeSetting(value: unknown): value is ThemeSetting {
   return THEMES.includes(value as ThemeSetting);
 }
@@ -55,17 +71,28 @@ export function isLanguageSetting(value: unknown): value is LanguageSetting {
   return value === 'system' || isLanguage(value);
 }
 
+/**
+ * Display roles from the file. Up to 1.2.0 the file had the speaker display and the display the
+ * audience was last swapped to; they become the same roles.
+ */
+function readRoles(raw: Record<string, unknown>): StoredRole[] {
+  if (Array.isArray(raw.displayRoles)) return raw.displayRoles.filter(isStoredRole);
+  const roles: StoredRole[] = [];
+  if (isStoredMonitor(raw.speakerMonitor)) roles.push({ monitor: raw.speakerMonitor, role: 'speaker' });
+  if (isStoredMonitor(raw.audienceMonitor)) roles.push({ monitor: raw.audienceMonitor, role: 'audience' });
+  return roles;
+}
+
 /** Reads the settings file (a missing or damaged file just means the defaults). */
 export function loadSettings(): void {
   try {
     const raw: unknown = JSON.parse(readFileSync(file(), 'utf8'));
     if (typeof raw !== 'object' || raw === null) return;
-    const { speakerMonitor, audienceMonitor, theme, language } = raw as Record<string, unknown>;
+    const values = raw as Record<string, unknown>;
     stored = {
-      speakerMonitor: isStoredMonitor(speakerMonitor) ? speakerMonitor : null,
-      audienceMonitor: isStoredMonitor(audienceMonitor) ? audienceMonitor : null,
-      theme: isThemeSetting(theme) ? theme : 'system',
-      language: isLanguageSetting(language) ? language : 'system',
+      displayRoles: readRoles(values),
+      theme: isThemeSetting(values.theme) ? values.theme : 'system',
+      language: isLanguageSetting(values.language) ? values.language : 'system',
     };
   } catch {
     /* defaults */
@@ -99,31 +126,18 @@ function describe(display: Display): StoredMonitor {
   };
 }
 
-/** The saved display if it is connected right now, otherwise null. */
-function findDisplay(saved: StoredMonitor | null): Display | null {
-  if (!saved) return null;
-  const displays = sortedDisplays();
-  return (
-    displays.find((d) => d.id === saved.id) ??
-    displays.find(
-      (d) =>
-        saved.label !== '' &&
-        d.label === saved.label &&
-        d.size.width === saved.width &&
-        d.size.height === saved.height,
-    ) ??
-    null
-  );
-}
+const sameMonitor = (saved: StoredMonitor, display: Display): boolean =>
+  saved.label !== '' &&
+  saved.label === display.label &&
+  saved.width === display.size.width &&
+  saved.height === display.size.height;
 
-/** The saved speaker display if it is connected right now, otherwise null (= automatic). */
-export function savedSpeakerDisplay(): Display | null {
-  return findDisplay(stored.speakerMonitor);
-}
-
-/** The display the audience was last swapped to, if it is connected right now. */
-export function savedAudienceDisplay(): Display | null {
-  return findDisplay(stored.audienceMonitor);
+/** The role saved for a connected display (matched by id, else by name and size), or null. */
+export function savedRole(display: Display): DisplayRole | null {
+  const entry =
+    stored.displayRoles.find((r) => r.monitor.id === display.id) ??
+    stored.displayRoles.find((r) => sameMonitor(r.monitor, display));
+  return entry?.role ?? null;
 }
 
 function save(): void {
@@ -132,19 +146,18 @@ function save(): void {
   });
 }
 
-/**
- * Remembers the roles chosen with "Swap screens", so the next presentation starts that way.
- * The speaker display is the same setting the settings dialog shows.
- */
-export function rememberRoles(speaker: Display, audience: Display): void {
-  stored.speakerMonitor = describe(speaker);
-  stored.audienceMonitor = describe(audience);
+/** Remembers the role of each of these displays; roles of other displays are kept. */
+export function saveRoles(roles: { display: Display; role: DisplayRole }[]): void {
+  const fresh = roles.map(({ display, role }) => ({ monitor: describe(display), role }));
+  const others = stored.displayRoles.filter(
+    (r) => !roles.some(({ display }) => r.monitor.id === display.id || sameMonitor(r.monitor, display)),
+  );
+  stored.displayRoles = [...fresh, ...others].slice(0, MAX_STORED_ROLES);
   save();
 }
 
 export function getSettings(): Settings {
   return {
-    speakerMonitorId: savedSpeakerDisplay()?.id ?? null,
     theme: stored.theme,
     language: stored.language,
     uiLanguage: uiLanguage(),
@@ -153,12 +166,6 @@ export function getSettings(): Settings {
 
 /** Applies a change and writes it to disk straight away (there is no "save" button). */
 export function updateSettings(patch: SettingsPatch): Settings {
-  if (patch.speakerMonitorId !== undefined) {
-    const chosen = sortedDisplays().find((d) => d.id === patch.speakerMonitorId);
-    stored.speakerMonitor = chosen ? describe(chosen) : null;
-    // A speaker display picked by hand replaces whatever the last swap left.
-    stored.audienceMonitor = null;
-  }
   if (patch.theme !== undefined && isThemeSetting(patch.theme)) {
     stored.theme = patch.theme;
     applyTheme();

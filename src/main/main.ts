@@ -2,16 +2,16 @@ import { app, BrowserWindow, dialog, ipcMain, Menu, screen, session, shell } fro
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { IPC, type PdfFile, type SettingsPatch } from '../types/ipc';
-import { displayInfos } from './displays';
+import { IPC, type DisplayRoleChoice, type PdfFile, type SettingsPatch } from '../types/ipc';
+import { displayInfos, sortedDisplays } from './displays';
 import {
   endPresentation,
   getSession,
   handleAction,
   isPresentAction,
-  isPresentationMode,
   isPresentationSender,
   onDisplaysChanged,
+  onRolesChanged,
   startPresentation,
 } from './presentation';
 import {
@@ -20,6 +20,7 @@ import {
   isLanguageSetting,
   isThemeSetting,
   loadSettings,
+  saveRoles,
   t,
   updateSettings,
 } from './settings';
@@ -110,21 +111,42 @@ function createLauncherWindow(): void {
   if (startupPdf) win.webContents.once('did-finish-load', () => void openFromSystem(startupPdf));
 }
 
+/** Every window shows the displays (the reader's toolbar, "Configure displays" anywhere). */
+function notifyDisplays(): void {
+  const displays = displayInfos();
+  for (const win of BrowserWindow.getAllWindows()) win.webContents.send(IPC.displaysChanged, displays);
+}
+
 function displaysChanged(): void {
-  launcherWindow?.webContents.send(IPC.displaysChanged, displayInfos());
+  notifyDisplays();
   onDisplaysChanged();
 }
 
 function isSettingsPatch(value: unknown): value is SettingsPatch {
   if (typeof value !== 'object' || value === null) return false;
-  const { speakerMonitorId, theme, language } = value as Record<string, unknown>;
-  const idOk =
-    speakerMonitorId === undefined ||
-    speakerMonitorId === null ||
-    typeof speakerMonitorId === 'number';
+  const { theme, language } = value as Record<string, unknown>;
   const themeOk = theme === undefined || isThemeSetting(theme);
   const languageOk = language === undefined || isLanguageSetting(language);
-  return idOk && themeOk && languageOk;
+  return themeOk && languageOk;
+}
+
+function isRoleChoice(value: unknown): value is DisplayRoleChoice {
+  if (typeof value !== 'object' || value === null) return false;
+  const { id, role } = value as Record<string, unknown>;
+  return typeof id === 'number' && (role === 'speaker' || role === 'audience');
+}
+
+/** Saves the roles chosen in "Configure displays"; there must be an audience among them. */
+function setDisplayRoles(choices: unknown): void {
+  if (!Array.isArray(choices) || !choices.every(isRoleChoice)) throw new Error('Invalid roles');
+  const roles = sortedDisplays().flatMap((display) => {
+    const choice = choices.find((c) => c.id === display.id);
+    return choice ? [{ display, role: choice.role }] : [];
+  });
+  if (!roles.some((r) => r.role === 'audience')) throw new Error('No audience display');
+  saveRoles(roles);
+  notifyDisplays();
+  onRolesChanged();
 }
 
 ipcMain.handle(IPC.openPdf, pickPdf);
@@ -138,19 +160,19 @@ ipcMain.on(IPC.pdfOpened, (_event, id: unknown) => {
 
 ipcMain.handle(
   IPC.startPresentation,
-  (event, total: unknown, page: unknown, mode: unknown, password: unknown) => {
+  (event, total: unknown, page: unknown, password: unknown) => {
     const launcher = BrowserWindow.fromWebContents(event.sender);
     if (!launcher || !openedPdf) return;
     if (typeof total !== 'number' || typeof page !== 'number' || !(total >= 1)) return;
     if (!Number.isFinite(total) || !Number.isFinite(page)) return;
-    if (!isPresentationMode(mode)) return;
     const pdfPassword = typeof password === 'string' && password !== '' ? password : undefined;
-    startPresentation(launcher, openedPdf, Math.trunc(total), page, mode, pdfPassword);
+    startPresentation(launcher, openedPdf, Math.trunc(total), page, pdfPassword);
   },
 );
 
 ipcMain.handle(IPC.getSession, (event) => (isPresentationSender(event.sender) ? getSession() : null));
 ipcMain.handle(IPC.getDisplays, () => displayInfos());
+ipcMain.handle(IPC.setDisplayRoles, (_event, roles: unknown) => setDisplayRoles(roles));
 ipcMain.handle(IPC.getSettings, () => getSettings());
 ipcMain.handle(IPC.setSettings, (_event, patch: unknown) => {
   if (!isSettingsPatch(patch)) throw new Error('Invalid settings');

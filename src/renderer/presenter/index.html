@@ -8,6 +8,7 @@
     />
     <title data-i18n="presenter.windowTitle"></title>
     <link rel="stylesheet" href="../shared/theme.css" />
+    <link rel="stylesheet" href="../shared/dialog.css" />
     <link rel="stylesheet" href="presenter.css" />
   </head>
   <!-- Text comes from locales/*.json through the data-i18n attributes (see shared/i18n.ts). -->
@@ -23,8 +24,8 @@
       </button>
       <span id="paused" hidden data-i18n="presenter.paused"></span>
       <span class="spacer"></span>
-      <button id="swap" class="btn" type="button" hidden>
-        <span class="icon" data-icon="arrows-left-right"></span><span data-i18n="presenter.swap"></span>
+      <button id="configure-displays" class="btn" type="button" hidden>
+        <span class="icon" data-icon="monitor"></span><span data-i18n="presenter.configureDisplays"></span>
       </button>
       <button id="black" class="btn tool" type="button" aria-pressed="false">
         <span class="icon" data-icon="eye-slash"></span><span data-i18n="presenter.black"></span>

@@ -3,12 +3,12 @@ import {
   IPC,
   type PdfFile,
   type PresentAction,
-  type PresentationMode,
   type PresentationSession,
   type PresentationState,
+  type TimerState,
 } from '../types/ipc';
-import { sortedDisplays } from './displays';
-import { rememberRoles, savedAudienceDisplay, savedSpeakerDisplay, t } from './settings';
+import { displayRoles, sortedDisplays } from './displays';
+import { t } from './settings';
 import { createWindow } from './windows';
 
 interface Presentation {
@@ -17,16 +17,9 @@ interface Presentation {
   password: string | undefined;
   state: PresentationState;
   launcher: BrowserWindow;
-  mode: PresentationMode;
-  /** Speaker view window (presenter mode). It is hidden, never closed, while only one display is left. */
-  presenter: BrowserWindow | null;
-  /** Audience windows by the id of the display they are on (one in presenter mode, one per display in mirror mode). */
+  /** Speaker view and audience windows by the id of the display they are on. */
+  speakers: Map<number, BrowserWindow>;
   audiences: Map<number, BrowserWindow>;
-  /** Displays assigned to the speaker view and the audience; they change only when swapping. */
-  speakerId: number | null;
-  audienceId: number | null;
-  /** Whether two displays were available at some point: with one left the audience takes over. */
-  dualSeen: boolean;
   /** Windows closed on purpose, which must not end the presentation. */
   quiet: Set<BrowserWindow>;
 }
@@ -40,7 +33,8 @@ const ACTIONS = new Set([
   'first',
   'last',
   'toggleBlack',
-  'swapScreens',
+  'toggleTimer',
+  'resetTimer',
   'exit',
   'goto',
 ]);
@@ -52,18 +46,22 @@ export function isPresentAction(value: unknown): value is PresentAction {
   return type !== 'goto' || (typeof page === 'number' && Number.isFinite(page));
 }
 
-export function isPresentationMode(value: unknown): value is PresentationMode {
-  return value === 'presenter' || value === 'mirror';
-}
-
 function clamp(page: number, total: number): number {
   return Math.min(Math.max(Math.trunc(page), 1), total);
+}
+
+const startTimer = (): TimerState => ({ running: true, elapsedMs: 0, since: Date.now() });
+
+function toggleTimer(timer: TimerState): TimerState {
+  const now = Date.now();
+  return timer.running
+    ? { running: false, elapsedMs: timer.elapsedMs + now - timer.since, since: now }
+    : { running: true, elapsedMs: timer.elapsedMs, since: now };
 }
 
 function reduce(state: PresentationState, action: PresentAction): PresentationState {
   switch (action.type) {
     case 'exit':
-    case 'swapScreens':
       return state;
     case 'next':
       return { ...state, page: clamp(state.page + 1, state.total) };
@@ -77,13 +75,15 @@ function reduce(state: PresentationState, action: PresentAction): PresentationSt
       return { ...state, page: clamp(action.page, state.total) };
     case 'toggleBlack':
       return { ...state, blank: !state.blank };
+    case 'toggleTimer':
+      return { ...state, timer: toggleTimer(state.timer) };
+    case 'resetTimer':
+      return { ...state, timer: startTimer() };
   }
 }
 
 function windows(p: Presentation): BrowserWindow[] {
-  return [p.presenter, ...p.audiences.values()].filter(
-    (w): w is BrowserWindow => w !== null && !w.isDestroyed(),
-  );
+  return [...p.speakers.values(), ...p.audiences.values()].filter((w) => !w.isDestroyed());
 }
 
 function broadcast(p: Presentation): void {
@@ -104,7 +104,7 @@ function sameBounds(a: Electron.Rectangle, b: Electron.Rectangle): boolean {
   return a.x === b.x && a.y === b.y && a.width === b.width && a.height === b.height;
 }
 
-// ---- Window placement ----
+// ---- Windows ----
 
 /**
  * The reader is hidden while presenting (out of Alt+Tab and the taskbar), so the only windows are
@@ -117,16 +117,34 @@ function hideLauncherWhenShown(p: Presentation, win: BrowserWindow): void {
   });
 }
 
-function createAudienceWindow(p: Presentation, display: Display): BrowserWindow {
-  const win = createWindow('audience', {
+/**
+ * Speaker views that have painted their page. Until then they are not placed or shown
+ * (setFullScreen() would show them too), so no blank window flashes; the layout runs again on
+ * 'ready-to-show'.
+ */
+const readyWindows = new WeakSet<BrowserWindow>();
+
+/** Both kinds of window are frameless and full screen: while presenting there is nothing else. */
+function createPresentationWindow(
+  p: Presentation,
+  kind: 'audience' | 'presenter',
+  display: Display,
+): BrowserWindow {
+  const win = createWindow(kind, {
     ...display.bounds,
     frame: false,
-    fullscreen: true,
-    backgroundColor: '#000000',
     show: false,
-    title: t('audience.windowTitle'),
+    title: t(kind === 'audience' ? 'audience.windowTitle' : 'presenter.windowTitle'),
+    ...(kind === 'audience' ? { fullscreen: true, backgroundColor: '#000000' } : {}),
   });
-  win.once('ready-to-show', () => win.show());
+  if (kind === 'audience') {
+    win.once('ready-to-show', () => win.show());
+  } else {
+    win.once('ready-to-show', () => {
+      readyWindows.add(win);
+      if (current === p) applyLayout(p);
+    });
+  }
   hideLauncherWhenShown(p, win);
   win.on('closed', () => {
     if (!p.quiet.has(win)) endPresentation();
@@ -134,7 +152,6 @@ function createAudienceWindow(p: Presentation, display: Display): BrowserWindow 
   return win;
 }
 
-/** Puts a frameless window full screen on `display` (both the audience and the speaker view). */
 function placeFullScreen(win: BrowserWindow, display: Display): void {
   if (win.isDestroyed()) return;
   if (win.isFullScreen() && sameBounds(win.getBounds(), display.bounds)) return;
@@ -144,90 +161,56 @@ function placeFullScreen(win: BrowserWindow, display: Display): void {
   win.show();
 }
 
-/**
- * Speaker views that have painted their page. Until then they are not placed or shown
- * (setFullScreen() would show them too), so no blank window flashes; the layout runs again on
- * 'ready-to-show'.
- */
-const readyWindows = new WeakSet<BrowserWindow>();
-
 function placeSpeaker(win: BrowserWindow, display: Display): void {
-  if (win.isDestroyed() || !readyWindows.has(win)) return;
-  placeFullScreen(win, display);
-  // It may still be hidden from when only one display was left.
-  win.show();
+  if (!win.isDestroyed() && readyWindows.has(win)) placeFullScreen(win, display);
 }
 
-/** Makes `wanted` exactly the set of displays with an audience window, reusing windows where possible. */
-function reconcileAudiences(p: Presentation, wanted: Display[]): void {
+/**
+ * Makes `wanted` exactly the set of displays with a window in `byDisplay`, reusing windows where
+ * possible (a reused speaker view keeps its rendered pages).
+ */
+function reconcile(
+  p: Presentation,
+  byDisplay: Map<number, BrowserWindow>,
+  wanted: Display[],
+  kind: 'audience' | 'presenter',
+): void {
+  const place = kind === 'audience' ? placeFullScreen : placeSpeaker;
   const wantedIds = new Set(wanted.map((d) => d.id));
   const spare: BrowserWindow[] = [];
-  for (const [id, win] of p.audiences) {
+  for (const [id, win] of byDisplay) {
     if (wantedIds.has(id)) continue;
-    p.audiences.delete(id);
+    byDisplay.delete(id);
     spare.push(win);
   }
   for (const display of wanted) {
-    const existing = p.audiences.get(display.id);
+    const existing = byDisplay.get(display.id);
     if (existing) {
-      placeFullScreen(existing, display);
+      place(existing, display);
       continue;
     }
     const reused = spare.pop();
-    if (reused) placeFullScreen(reused, display);
-    p.audiences.set(display.id, reused ?? createAudienceWindow(p, display));
+    if (reused) place(reused, display);
+    byDisplay.set(display.id, reused ?? createPresentationWindow(p, kind, display));
   }
   for (const win of spare) closeQuietly(p, win);
 }
 
-/**
- * Which display holds the speaker view and which one the audience, given the connected displays:
- * this presentation's choice, else the saved one (settings or the last swap), else the defaults.
- */
-function resolveRoles(p: Presentation, displays: Display[]): { speaker: Display; audience: Display } {
-  const speaker =
-    displays.find((d) => d.id === p.speakerId) ?? savedSpeakerDisplay() ?? displays[0]!;
-  const savedAudience = savedAudienceDisplay();
-  const audience =
-    displays.find((d) => d.id === p.audienceId && d.id !== speaker.id) ??
-    (savedAudience && savedAudience.id !== speaker.id ? savedAudience : undefined) ??
-    displays.find((d) => d.id !== speaker.id) ??
-    speaker;
-  return { speaker, audience };
-}
-
-function layoutSpeakerMode(p: Presentation, displays: Display[]): void {
-  const presenter = p.presenter;
-  if (!presenter) return;
-  if (displays.length >= 2) {
-    p.dualSeen = true;
-    const { speaker, audience } = resolveRoles(p, displays);
-    placeSpeaker(presenter, speaker);
-    reconcileAudiences(p, [audience]);
-    presenter.focus();
-  } else if (p.dualSeen) {
-    // A display was lost: keep going at the same slide, full screen on the one left.
-    presenter.hide();
-    reconcileAudiences(p, displays);
-    p.audiences.values().next().value?.focus();
-  } else {
-    // Started with a single display: only the speaker view, full screen.
-    reconcileAudiences(p, []);
-    placeSpeaker(presenter, displays[0]!);
-  }
-}
-
-function layoutMirrorMode(p: Presentation, displays: Display[]): void {
-  reconcileAudiences(p, displays);
-}
-
-/** Puts every window where it belongs for the displays connected right now. */
+/** Puts every window where it belongs for the displays connected right now and their roles. */
 function applyLayout(p: Presentation): void {
   const displays = sortedDisplays();
+  const roles = displayRoles(displays);
   p.state = { ...p.state, displayCount: displays.length };
-  if (p.mode === 'mirror') layoutMirrorMode(p, displays);
-  else layoutSpeakerMode(p, displays);
+  reconcile(p, p.speakers, displays.filter((_d, i) => roles[i] === 'speaker'), 'presenter');
+  reconcile(p, p.audiences, displays.filter((_d, i) => roles[i] === 'audience'), 'audience');
   broadcast(p);
+  // Keys must reach the presentation: focus a speaker view, else an audience window, unless one
+  // of them already has the focus.
+  const visible = windows(p).filter((w) => w.isVisible());
+  if (!visible.some((w) => w.isFocused())) {
+    const speaker = [...p.speakers.values()].find((w) => !w.isDestroyed() && w.isVisible());
+    (speaker ?? visible[0])?.focus();
+  }
 }
 
 /** Call when displays are added, removed or changed; waits a moment because Windows fires several events. */
@@ -238,26 +221,9 @@ export function onDisplaysChanged(): void {
   }, 300);
 }
 
-function swapScreens(p: Presentation): void {
-  const displays = sortedDisplays();
-  if (p.mode !== 'presenter' || displays.length < 2) return;
-  const { speaker, audience } = resolveRoles(p, displays);
-  if (displays.length === 2) {
-    p.speakerId = audience.id;
-    p.audienceId = speaker.id;
-  } else {
-    // 3+ displays: the audience moves on to the next display that is not the speaker's.
-    const others = displays.filter((d) => d.id !== speaker.id);
-    const at = others.findIndex((d) => d.id === audience.id);
-    p.speakerId = speaker.id;
-    p.audienceId = others[(at + 1) % others.length]!.id;
-  }
-  const byId = (id: number | null): Display | undefined => displays.find((d) => d.id === id);
-  const newSpeaker = byId(p.speakerId);
-  const newAudience = byId(p.audienceId);
-  // The next presentation starts the same way.
-  if (newSpeaker && newAudience) rememberRoles(newSpeaker, newAudience);
-  applyLayout(p);
+/** Call when the display roles change: the windows move right away. */
+export function onRolesChanged(): void {
+  if (current) applyLayout(current);
 }
 
 // ---- Public API ----
@@ -267,50 +233,27 @@ export function startPresentation(
   pdf: PdfFile,
   total: number,
   page: number,
-  mode: PresentationMode,
   password: string | undefined,
 ): void {
   if (current) {
-    (current.presenter ?? current.audiences.values().next().value)?.focus();
+    windows(current)[0]?.focus();
     return;
   }
-  const displays = sortedDisplays();
   const presentation: Presentation = {
     pdf,
     password,
-    state: { page: clamp(page, total), total, blank: false, displayCount: displays.length },
+    state: {
+      page: clamp(page, total),
+      total,
+      blank: false,
+      displayCount: sortedDisplays().length,
+      timer: startTimer(),
+    },
     launcher,
-    mode,
-    presenter: null,
+    speakers: new Map(),
     audiences: new Map(),
-    speakerId: null,
-    audienceId: null,
-    dualSeen: false,
     quiet: new Set(),
   };
-  if (mode === 'presenter') {
-    const presenter = createWindow('presenter', {
-      width: 1100,
-      height: 700,
-      frame: false,
-      show: false,
-      title: t('presenter.windowTitle'),
-    });
-    presenter.on('closed', () => {
-      if (!presentation.quiet.has(presenter)) endPresentation();
-    });
-    hideLauncherWhenShown(presentation, presenter);
-    presenter.once('ready-to-show', () => {
-      readyWindows.add(presenter);
-      if (current === presentation) applyLayout(presentation);
-    });
-    presentation.presenter = presenter;
-    const { speaker, audience } = displays.length >= 2
-      ? resolveRoles(presentation, displays)
-      : { speaker: displays[0]!, audience: displays[0]! };
-    presentation.speakerId = speaker.id;
-    presentation.audienceId = displays.length >= 2 ? audience.id : null;
-  }
   current = presentation;
   applyLayout(presentation);
 }
@@ -329,10 +272,6 @@ export function handleAction(action: PresentAction): void {
   if (!current) return;
   if (action.type === 'exit') {
     endPresentation();
-    return;
-  }
-  if (action.type === 'swapScreens') {
-    swapScreens(current);
     return;
   }
   current.state = reduce(current.state, action);

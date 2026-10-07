@@ -11,6 +11,7 @@ export const IPC = {
   state: 'state',
   presentationEnded: 'presentation-ended',
   getDisplays: 'get-displays',
+  setDisplayRoles: 'set-display-roles',
   displaysChanged: 'displays-changed',
   getSettings: 'get-settings',
   setSettings: 'set-settings',
@@ -31,18 +32,23 @@ export interface PdfFile {
 }
 
 /**
- * presenter: audience on a secondary display and speaker view on the main one.
- * mirror: the same slide full screen on every display, no speaker view.
+ * The timer shared by every speaker view. Shown time = elapsedMs, plus the time since `since`
+ * (a Date.now() value) while running.
  */
-export type PresentationMode = 'presenter' | 'mirror';
+export interface TimerState {
+  running: boolean;
+  elapsedMs: number;
+  since: number;
+}
 
 export interface PresentationState {
   page: number;
   total: number;
   /** Audience screen blacked out. */
   blank: boolean;
-  /** Connected displays; the speaker view hides its "swap screens" button with fewer than 2. */
+  /** Connected displays; the speaker view hides "Configure displays" with fewer than 2. */
   displayCount: number;
+  timer: TimerState;
 }
 
 export interface PresentationSession {
@@ -54,16 +60,35 @@ export interface PresentationSession {
 }
 
 export type PresentAction =
-  | { type: 'next' | 'prev' | 'first' | 'last' | 'toggleBlack' | 'swapScreens' | 'exit' }
+  | {
+      type: 'next' | 'prev' | 'first' | 'last' | 'toggleBlack' | 'toggleTimer' | 'resetTimer' | 'exit';
+    }
   | { type: 'goto'; page: number };
+
+/** What a display shows while presenting. */
+export type DisplayRole = 'speaker' | 'audience';
 
 export interface DisplayInfo {
   id: number;
-  /** 1-based position in the list (main display first). */
+  /** 1-based position in the list (main display first, then left to right). */
   index: number;
+  /** Resolution in physical pixels, as Windows shows it. */
   width: number;
   height: number;
+  /** Windows scale, in percent. */
+  scale: number;
   primary: boolean;
+  /** The built-in screen of a laptop. */
+  internal: boolean;
+  /** Name given by the system; may be empty. */
+  label: string;
+  /** Role it gets when presenting: the saved one, or the default. */
+  role: DisplayRole;
+}
+
+export interface DisplayRoleChoice {
+  id: number;
+  role: DisplayRole;
 }
 
 export type ThemeSetting = 'system' | 'light' | 'dark';
@@ -72,15 +97,13 @@ export type ThemeSetting = 'system' | 'light' | 'dark';
 export type LanguageSetting = 'system' | Language;
 
 export interface Settings {
-  /** Display for the speaker view; null means automatic (the main display). */
-  speakerMonitorId: number | null;
   theme: ThemeSetting;
   language: LanguageSetting;
   /** The language the UI uses right now (the setting resolved). Read only. */
   uiLanguage: Language;
 }
 
-export type SettingsPatch = Partial<Pick<Settings, 'speakerMonitorId' | 'theme' | 'language'>>;
+export type SettingsPatch = Partial<Pick<Settings, 'theme' | 'language'>>;
 
 export interface AppInfo {
   version: string;
@@ -95,20 +118,20 @@ export interface PresenterApi {
   pdfOpened(id: number): void;
   /** Real path of a file dropped on the window. */
   pathForFile(file: File): string;
-  /** Starts presenting the PDF reported by `pdfOpened`, from page `page`. */
-  startPresentation(
-    total: number,
-    page: number,
-    mode: PresentationMode,
-    password?: string,
-  ): Promise<void>;
+  /** Starts presenting the PDF reported by `pdfOpened`, from page `page`, with the display roles. */
+  startPresentation(total: number, page: number, password?: string): Promise<void>;
   getSession(): Promise<PresentationSession>;
   sendAction(action: PresentAction): void;
   onState(callback: (state: PresentationState) => void): void;
   /** Called with the last page shown when the presentation ends. */
   onPresentationEnded(callback: (page: number) => void): void;
   getDisplays(): Promise<DisplayInfo[]>;
-  /** Called whenever a display is plugged in, unplugged or changes. */
+  /**
+   * Saves the role of each connected display and applies it to a running presentation.
+   * Rejected unless at least one display is the audience.
+   */
+  setDisplayRoles(roles: DisplayRoleChoice[]): Promise<void>;
+  /** Called whenever a display is plugged in, unplugged or changes, and when the roles change. */
   onDisplaysChanged(callback: (displays: DisplayInfo[]) => void): void;
   getSettings(): Promise<Settings>;
   /** Saves and applies the given settings; resolves to the resulting settings. */

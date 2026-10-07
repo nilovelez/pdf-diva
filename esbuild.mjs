@@ -37,7 +37,9 @@ cpSync(
 for (const dir of ['wasm', 'cmaps', 'standard_fonts', 'iccs']) {
   cpSync(`node_modules/pdfjs-dist/${dir}`, `dist/renderer/shared/pdfjs/${dir}`, { recursive: true });
 }
-cpSync('src/renderer/shared/theme.css', 'dist/renderer/shared/theme.css');
+for (const css of ['theme.css', 'dialog.css']) {
+  cpSync(`src/renderer/shared/${css}`, `dist/renderer/shared/${css}`);
+}
 
 for (const r of renderers) {
   cpSync(`src/renderer/${r}`, `dist/renderer/${r}`, {

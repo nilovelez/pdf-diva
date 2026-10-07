@@ -1,0 +1,172 @@
+/*
+ * Dialogs, shared by the reader and the speaker view. Sizes are multiplied by --k, which the
+ * speaker view sets so its dialog grows with the screen like the rest of it; elsewhere it is 1.
+ */
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  display: grid;
+  place-items: center;
+  background: rgb(8 10 14 / 0.5);
+}
+
+.dialog {
+  box-sizing: border-box;
+  width: calc(480px * var(--k, 1));
+  max-width: calc(100vw - 32px);
+  max-height: calc(100vh - 32px);
+  overflow-y: auto;
+  display: grid;
+  gap: calc(18px * var(--k, 1));
+  padding: calc(22px * var(--k, 1)) calc(24px * var(--k, 1)) calc(20px * var(--k, 1));
+  border: 1px solid var(--line);
+  border-radius: calc(12px * var(--k, 1));
+  background: var(--bg);
+  color: var(--text);
+  box-shadow: 0 18px 50px rgb(0 0 0 / 0.35);
+  font-size: calc(14px * var(--k, 1));
+}
+
+.dialog h2 {
+  margin: 0;
+  flex: 1;
+  font-family: var(--ui-display);
+  font-size: calc(20px * var(--k, 1));
+  font-weight: 600;
+}
+
+.dialog header {
+  display: flex;
+  align-items: center;
+  gap: calc(10px * var(--k, 1));
+}
+
+.dialog .close {
+  display: grid;
+  place-items: center;
+  width: calc(32px * var(--k, 1));
+  height: calc(32px * var(--k, 1));
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+}
+
+.dialog .close:hover {
+  background: var(--hover);
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: calc(8px * var(--k, 1));
+}
+
+/* "Configure displays": one tile per display in a row, with what it shows chosen below. */
+.dialog.displays-dialog {
+  width: calc(760px * var(--k, 1));
+}
+
+.display-tiles {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: calc(10px * var(--k, 1));
+  padding: calc(14px * var(--k, 1));
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+}
+
+.display-tile {
+  box-sizing: border-box;
+  flex: 1 1 calc(170px * var(--k, 1));
+  max-width: calc(210px * var(--k, 1));
+  display: grid;
+  align-content: start;
+  gap: calc(6px * var(--k, 1));
+  padding: calc(10px * var(--k, 1));
+  border: 2px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--bg);
+}
+
+.display-tile.changed {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.display-screen {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border-radius: calc(4px * var(--k, 1));
+  background: #000000;
+  color: #ffffff;
+}
+
+.display-screen .art svg {
+  width: calc(80px * var(--k, 1));
+  height: calc(60px * var(--k, 1));
+}
+
+.display-screen .number {
+  position: absolute;
+  top: calc(5px * var(--k, 1));
+  left: calc(7px * var(--k, 1));
+  font-size: calc(15px * var(--k, 1));
+  font-weight: 700;
+  line-height: 1;
+}
+
+.display-screen .main {
+  position: absolute;
+  top: calc(4px * var(--k, 1));
+  right: calc(5px * var(--k, 1));
+  padding: calc(3px * var(--k, 1)) calc(6px * var(--k, 1));
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--on-accent);
+  font-size: calc(11px * var(--k, 1));
+  font-weight: 600;
+  line-height: 1;
+}
+
+.display-screen .resolution {
+  position: absolute;
+  bottom: calc(6px * var(--k, 1));
+  inset-inline: 0;
+  text-align: center;
+  font-size: calc(12px * var(--k, 1));
+  white-space: nowrap;
+  opacity: 0.85;
+}
+
+.display-tile .name {
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.display-tile select {
+  width: 100%;
+  padding: calc(6px * var(--k, 1)) calc(8px * var(--k, 1));
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+}
+
+.display-tile select:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 0;
+  border-color: var(--accent);
+}
+
+.displays-warning {
+  margin: 0;
+  color: var(--warn);
+  font-weight: 600;
+}

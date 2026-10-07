@@ -8,6 +8,7 @@
     />
     <title>PDF Diva</title>
     <link rel="stylesheet" href="../shared/theme.css" />
+    <link rel="stylesheet" href="../shared/dialog.css" />
     <link rel="stylesheet" href="launcher.css" />
   </head>
   <!-- Text comes from locales/*.json through the data-i18n attributes (see shared/i18n.ts). -->
@@ -34,16 +35,11 @@
         <button id="open" class="btn" type="button">
           <span class="icon" data-icon="folder-open"></span><span data-i18n="reader.open"></span>
         </button>
-        <button id="present" class="btn single-only" type="button">
+        <button id="configure-displays" class="btn multi-only" type="button">
+          <span class="icon" data-icon="monitor"></span><span data-i18n="reader.configureDisplays"></span>
+        </button>
+        <button id="present" class="btn primary" type="button">
           <span class="icon" data-icon="presentation-chart"></span><span data-i18n="reader.present"></span>
-        </button>
-        <span class="divider multi-only" aria-hidden="true"></span>
-        <span class="group-label multi-only" data-i18n="reader.present"></span>
-        <button id="present-presenter" class="btn multi-only" type="button">
-          <span class="icon" data-icon="presentation-chart"></span><span data-i18n="reader.presentWithSpeakerView"></span>
-        </button>
-        <button id="present-mirror" class="btn multi-only" type="button">
-          <span class="icon" data-icon="copy"></span><span data-i18n="reader.presentMirror"></span>
         </button>
         <span class="spacer"></span>
         <span id="pager">
@@ -89,11 +85,6 @@
             <span class="icon" data-icon="x"></span>
           </button>
         </header>
-        <label class="field" for="speaker-monitor">
-          <span data-i18n="settings.speakerMonitor"></span>
-          <select id="speaker-monitor"></select>
-          <small data-i18n="settings.speakerMonitor.hint"></small>
-        </label>
         <div class="field">
           <span data-i18n="settings.theme"></span>
           <div class="segmented" role="group" data-i18n-label="settings.theme">
