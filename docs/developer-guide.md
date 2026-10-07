@@ -14,29 +14,31 @@ src/
     main.ts          App lifecycle, IPC handlers, "last PDF that opened fine", offline guard
     presentation.ts  The single source of truth of a presentation + window layout engine
     windows.ts       createWindow(): shared preload, navigation locked down
-    displays.ts      Display ordering (main first, then left to right) and DisplayInfo
-    settings.ts      settings.json in userData (speaker monitor, theme), nativeTheme
+    displays.ts      Display ordering (main first, then left to right), roles, DisplayInfo
+    settings.ts      settings.json in userData (display roles, theme, language), nativeTheme
   preload/         contextBridge API (typed by src/types/ipc.ts)
   renderer/
     launcher/        Start screen + reader (thumbnails, dialogs for settings and password)
     presenter/       Speaker view (timer, current + next slide, controls)
     audience/        Full-screen slide on black
     shared/          pdf.ts (PDF.js), pageview.ts (render queue + cache), session.ts, keys.ts,
-                     icons.ts (SVG inlined at build time), theme.css (design tokens)
+                     icons.ts (SVG inlined at build time), theme.css (design tokens),
+                     displays-dialog.ts + dialog.css ("Configure displays", reader and speaker view)
   types/           ipc.ts: every IPC channel and message type lives here
   i18n/            i18n.ts: language list, system language matching, translate()
 locales/           UI text, one JSON file per language (en.json is the reference)
 resources/icons/     Phosphor UI icons (MIT) ; resources/icons/app/ = app icon set (icon.ico, appx/ tiles)
+resources/displays/  Our own drawings for the "Configure displays" tiles (laptop/monitor, speaker/audience)
 electron-builder.yml Packaging (NSIS + MSIX)
 site/                The website (see website.md); scripts/build-privacy.mjs builds its privacy page
 ```
 
 ### Presentation model
 
-- The main process owns the state: `{ page, total, blank, displayCount }` plus the PDF bytes and password (memory only). Windows send actions (`next`, `prev`, `first`, `last`, `goto`, `toggleBlack`, `swapScreens`, `exit`) and receive the new state. Only presentation windows may read or control it (sender is checked).
+- The main process owns the state: `{ page, total, blank, displayCount, timer }` plus the PDF bytes and password (memory only). Windows send actions (`next`, `prev`, `first`, `last`, `goto`, `toggleBlack`, `toggleTimer`, `resetTimer`, `exit`) and receive the new state. Only presentation windows may read or control it (sender is checked). The timer is `{ running, elapsedMs, since }` (`since` is a `Date.now()`), so every speaker view shows the same time.
 - Every window loads the PDF itself with PDF.js (the bytes come through IPC once). Rendering lives in the renderers, never in main.
-- Two modes: `presenter` (speaker view on the chosen/main display + audience on another) and `mirror` (an audience window on every display, no speaker view).
-- `applyLayout()` in `presentation.ts` places windows for the displays connected right now. It runs at start and on `display-added/removed/metrics-changed` (debounced). Behaviour: with one display left the speaker window is **hidden, not closed** (so the timer survives) and the audience takes the remaining display; when a display returns, the speaker view comes back with the same slide and timer. "Swap screens" swaps roles (2 displays) or rotates the audience (3+), and saves the result (`rememberRoles()` in `settings.ts`: speaker display + audience display) so the next presentation, even after a restart, starts that way. Roles are resolved in `resolveRoles()`: this presentation's choice, then the saved displays, then the defaults (main display for the speaker, any other for the audience). Started with one display: speaker view only, in a normal window.
+- **Display roles**: each display shows the speaker view or the audience view (`displayRoles()` in `displays.ts`). With one display: audience only. Otherwise a display keeps the role saved in "Configure displays" and the others get the default (audience on the last display, speaker view on the rest; displays ordered main first, then left to right). There is always an audience: if none is left (its display was unplugged), the last display without a saved role becomes it, else the defaults apply. All displays as audience = mirroring.
+- `applyLayout()` in `presentation.ts` gives each display its window (`reconcile()` reuses windows where it can). It runs at start, on `display-added/removed/metrics-changed` (debounced) and when the roles change (`setDisplayRoles`, applied at once). Every presentation window is frameless and full screen; speaker views are placed only after they have painted (`readyWindows`). A presentation that loses its last speaker view keeps the timer in main, so a returning speaker view shows the right time.
 - The reader (launcher) window is **hidden** during a presentation, not closed (closing it ends the presentation and quits): `hideLauncherWhenShown()` hides it once the first presentation window is shown, and `endPresentation()` shows it again with its PDF and page.
 - **PDFs from the system** (`main.ts`): one instance only (`requestSingleInstanceLock`). A PDF on the command line (first start) or in a second launch's `argv` (`second-instance`) ends any presentation, brings the launcher forward and is sent to it (`systemOpen`), which opens it like a dropped file. `file://` URIs are accepted for Linux file managers. Mac will need `app.on('open-file')` (milestone 10).
 - The "last PDF that opened fine" is tracked in main with an id: the launcher calls `pdfOpened(id)` only after PDF.js loaded it, so a corrupt or cancelled-password file can never be what gets presented.
@@ -51,7 +53,7 @@ The app must make **no network connections** (PRIVACY.md depends on it): CSP `de
 
 ### Settings
 
-`app.getPath('userData')/settings.json`: `speakerMonitor` (id + label/size/position as a fallback match), `audienceMonitor` (same format; set only by "Swap screens", cleared when the speaker display is chosen in the settings), `theme` (`system|light|dark`, applied with `nativeTheme.themeSource`) and `language` (`system` or a language code). The folder is named after `productName` (`%APPDATA%\PDF Diva`; MSIX virtualizes it into the package's `LocalCache`). Renaming the product resets users' settings.
+`app.getPath('userData')/settings.json`: `displayRoles` (a list of `{ monitor, role }`, where `monitor` is the display id plus label/size/position for a fallback match by label and size; roles of displays not connected are kept, up to 32; up to 1.2.0 the file had `speakerMonitor`/`audienceMonitor`, read as roles), `theme` (`system|light|dark`, applied with `nativeTheme.themeSource`) and `language` (`system` or a language code). The folder is named after `productName` (`%APPDATA%\PDF Diva`; MSIX virtualizes it into the package's `LocalCache`). Renaming the product resets users' settings.
 
 ### UI text and translation
 
@@ -118,5 +120,7 @@ Agreed design for the displays (mockup: `docs/design/mockup-displays.html`, open
 - **Speaker view:** "Swap screens" is replaced by "Configure displays" (only with two or more displays). It opens the same dialog over the speaker view; Apply moves the windows without stopping the presentation. The timer is shared by every speaker view (today each window has its own); black screen is already shared state.
 - **Hot plug:** a presentation started on one display switches to the saved configuration when a second display is connected (as today it switches to the speaker view).
 - Displays are recognised between runs as today (id, then name and size).
+
+Remember the last folder (user's request, 2026-10-07): the Open dialog starts in the folder of the last PDF opened, so choosing another file from the same pendrive doesn't mean navigating there again. Saved in settings.json, not shown in Settings. If that folder no longer exists, the dialog opens in the default folder.
 
 Milestone 10: Mac and Linux builds (Linux: Debian and Ubuntu only).
