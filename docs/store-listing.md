@@ -50,8 +50,8 @@ Vista del orador con la página actual, la siguiente, "X de Y" y cronómetro
 Diapositiva a pantalla completa en el monitor del público, centrada sobre negro
 Compatible con mandos de diapositivas: avanzar, retroceder, pantalla en negro, salir
 F5 para empezar desde el principio y Mayús+F5 desde la página actual
-Elige el monitor de proyección o alterna las pantallas sin parar la presentación
-Duplicar pantalla: la diapositiva en todos los monitores a la vez
+Elige qué muestra cada monitor, vista del orador o del público, también durante la presentación
+Con tres monitores, dos vistas del orador (técnico y ponente) y el público; o la diapositiva en todos
 Sigue funcionando si se conecta o desconecta un monitor durante la presentación
 Páginas nítidas en pantallas 4K y cambio de diapositiva instantáneo
 Abre PDFs protegidos con contraseña, escaneados y con texto en chino, japonés o coreano
@@ -94,6 +94,10 @@ v1.2.0 alone (if 1.1.0 had been published):
 
 > PDF Diva aparece en «Abrir con» al hacer clic derecho en un PDF, y puedes elegirla como visor predeterminado con «Siempre». Instalarla no cambia tu visor actual.
 
+v1.3.0:
+
+> Nuevo «Configurar monitores»: elige qué muestra cada monitor, la vista del orador o la del público, también durante la presentación. Con tres monitores, dos vistas del orador y el público. La vista del orador ocupa toda la pantalla y se lee bien en monitores grandes. Con un solo monitor, «Presentar» muestra solo la diapositiva. El diálogo de abrir empieza en la carpeta del último PDF.
+
 ## Listing: English (en-US)
 
 **Short description**
@@ -123,8 +127,8 @@ Presenter view with the current page, the next one, "X of Y" and a timer
 Full-screen slide on the audience monitor, centered on black
 Works with presentation remotes: next, previous, black screen, exit
 F5 starts from the beginning, Shift+F5 from the current page
-Choose the projection monitor, or swap screens without stopping the show
-Mirror screens: the slide on every monitor at once
+Choose what each monitor shows, speaker or audience view, even mid-show
+With three monitors, two speaker views (technician and speaker) plus the audience; or the slide on all
 Keeps going when a monitor is connected or disconnected mid-show
 Sharp pages on 4K screens and instant slide changes
 Opens password-protected, scanned and Chinese, Japanese or Korean PDFs
@@ -166,6 +170,10 @@ v1.2.0 as published in the Store (submission 2; covers 1.1.0 too):
 v1.2.0 alone (if 1.1.0 had been published):
 
 > PDF Diva shows up in Open with when you right-click a PDF, and you can make it your default PDF viewer with Always. Installing it doesn't change your current viewer.
+
+v1.3.0:
+
+> New Configure displays: choose what each monitor shows, the speaker view or the audience view, even during the presentation. With three monitors, two speaker views plus the audience. The speaker view fills the screen and stays readable on large monitors. With a single monitor, Present shows just the slide. The Open dialog starts in the folder of the last PDF.
 
 ## Images still needed
 
