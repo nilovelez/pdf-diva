@@ -7,6 +7,18 @@ Until version 1.0.0 the interface was in Spanish only; entries up to that versio
 
 ## [Unreleased]
 
+## [1.3.0] - 2026-10-07
+
+### Added
+- **Configure displays.** Choose what each monitor shows when you present: the speaker view or the slide for the audience. With three monitors you get two speaker views (for example, one for the technician and one for the speaker) and the audience; set every monitor to the audience to mirror the slide. It's in the reader toolbar and in the speaker view, and changes apply without stopping the presentation.
+- The Open dialog starts in the folder of the last PDF you opened.
+
+### Changed
+- The speaker view is full screen, without a title bar, and its text and buttons grow with the screen, so the timer and the page count stay readable on large monitors.
+- With a single monitor, **Present** shows the slide full screen, without the speaker view. Move through the slides with the keyboard or your remote.
+- The timer is the same in every speaker view. Its buttons show only an icon.
+- **Present** replaces **With speaker view** and **Mirror screens**, and **Configure displays** replaces **Swap screens** and **Settings > Speaker display**. The speaker monitor chosen in earlier versions is kept.
+
 ## [1.2.0] - 2026-10-06
 
 ### Added

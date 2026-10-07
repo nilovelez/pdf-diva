@@ -10,7 +10,7 @@ It doesn't need Acrobat or any other installed program: PDFs are rendered with a
 
 ## Status
 
-**Version 1.2.0.** You can present with a speaker view (current slide, next slide and timer) or mirror the slide on every screen, choose which monitor is yours, swap screens on the fly and keep going if a cable comes loose. Password-protected PDFs open too. See the [changelog](CHANGELOG.md) for what each version includes.
+**Version 1.3.0.** You present with a speaker view (current slide, next slide and timer), choose what each monitor shows (several speaker views, or the slide mirrored on every screen), change it on the fly and keep going if a cable comes loose. Password-protected PDFs open too. See the [changelog](CHANGELOG.md) for what each version includes.
 
 The interface is in **English and Spanish**. It uses the Windows language when PDF Diva has it, and English otherwise; you can change it in the settings. Want PDF Diva in your language? See [Translating PDF Diva](docs/translating.md).
 
@@ -66,11 +66,11 @@ To update to a new version: `git pull`, `npm install` and `npm run dev`.
 
 ### Opening a PDF
 
-When the app starts you'll see an area with a dashed border. Click it or **Open file...**, or drag a PDF from File Explorer. If the PDF is password-protected, the app asks for the password.
+When the app starts you'll see an area with a dashed border. Click it or **Open file...**, or drag a PDF from File Explorer. If the PDF is password-protected, the app asks for the password. The Open dialog starts in the folder of the last PDF you opened.
 
 With a PDF open you have:
 
-- at the top, the **Open** button for another PDF, the presentation buttons and, on the right, the page arrows, "Page X of Y" and the settings button (gear);
+- at the top, the **Open** button for another PDF, **Configure displays** (with two or more monitors), **Present** and, on the right, the page arrows, "Page X of Y" and the settings button (gear);
 - on the side, page thumbnails: click one to go to it;
 - in the center, the current page.
 
@@ -84,21 +84,20 @@ PDF Diva opens one window only: a PDF opened from File Explorer while the app is
 
 ### Presenting
 
-Connect the projector or external screen and set Windows to **Extend** mode (`Windows + P`). Press `F5` to start from the first page, or `Shift+F5` to start from the page you're on, with the speaker view. The toolbar also offers two ways to present:
+Connect the projector or external screen and set Windows to **Extend** mode (`Windows + P`). Click **Present**, or press `F5` to start from the first page or `Shift+F5` to start from the page you're on.
 
-- **With speaker view**: the audience sees the slide full screen on the external screen, and you see the speaker view on your main monitor.
-- **Mirror screens**: the slide full screen on every screen, without the speaker view.
+Every monitor shows either the **speaker view** or the slide for the **audience**, full screen. By default the audience is on the last monitor and the speaker view on the others: with a laptop and a projector, you see the speaker view on the laptop; with three monitors, there are two speaker views (for example, the technician's and the speaker's) and the audience. With only one monitor, **Present** shows the slide full screen, without the speaker view.
+
+To change it, click **Configure displays** in the reader or in the speaker view. Each monitor shows its number, name and resolution, and a list to choose **Speaker View** or **Audience View**. Click **Apply** to save it; during a presentation the windows move without stopping it. At least one monitor must show the audience. Set every monitor to **Audience View** to mirror the slide on all of them. PDF Diva remembers each monitor's choice for next time.
 
 Move through the slides with the keyboard or your presentation remote, and press `Esc` to finish. While you present, the reader window is hidden; it comes back when the presentation ends, on the last slide shown.
 
-With only one screen, the toolbar shows a single **Present** button, which opens the speaker view in a normal window. The toolbar updates by itself when you connect or disconnect a screen.
-
-If the slides end up on the wrong screen, press **Swap screens** in the speaker view. PDF Diva remembers it: the next presentations start with the screens the same way round, even after closing the app. If a screen is disconnected during the presentation, it goes on full screen on the remaining one; when the screen is back, the speaker view returns.
+If a monitor is disconnected during the presentation, it goes on with the ones left; when the monitor is back, it shows what it showed before.
 
 ### Speaker view
 
-- **At the top left**, the timer. It starts when the presentation starts. **Pause** stops it and changes to **Resume**; **Reset** sets it back to zero.
-- **At the top right**, **Swap screens** (with two or more monitors), **Black screen** (stays orange while active) and **Exit**.
+- **At the top left**, the timer. It starts when the presentation starts and is the same in every speaker view. The pause button stops it (press it again to resume) and the reset button sets it back to zero.
+- **At the top right**, **Configure displays** (with two or more monitors), **Black screen** (stays orange while active) and **Exit**.
 - **In the center**, the current slide and, on the right, the next one. Click the next slide to advance.
 - **Below the current slide**, the **Previous** and **Next** buttons with "1 of 40" between them.
 
@@ -123,13 +122,12 @@ Presentation remotes send these same keys, so they work without any setup. On re
 
 The gear button on the right of the reader toolbar opens **Settings**. Changes are saved automatically.
 
-- **Speaker display**: **Automatic** uses the Windows main monitor for the speaker view, or pick a specific monitor. The slides go to another monitor. Using **Swap screens** during a presentation changes this setting too; choose **Automatic** to go back to the default.
 - **Theme**: **System** follows Windows (*Settings > Personalization > Colors*); you can also force **Light** or **Dark**. The audience screen is always black and PDF pages keep their original colors.
 - **Language**: **System** uses the Windows language if PDF Diva has it, and English otherwise; you can also pick a language. Each language is listed by its own name (English, Español). The change applies straight away; a presentation that is running keeps its language until it ends.
 
 ## Troubleshooting
 
-**The slides appear on the wrong screen.** Press **Swap screens** in the speaker view to swap them. PDF Diva remembers it for next time; you can also choose your monitor in **Settings > Speaker display**.
+**The slides appear on the wrong screen.** Click **Configure displays** in the speaker view, choose what each monitor shows and click **Apply**. PDF Diva remembers it for next time.
 
 **Windows warns that the installer is unsafe.** The GitHub installer isn't digitally signed, so Windows SmartScreen shows a warning the first time. Click **More info** and then **Run anyway**. The Microsoft Store version doesn't show this warning.
 
