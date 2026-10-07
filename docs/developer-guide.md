@@ -113,7 +113,7 @@ Agreed design for the displays (mockup: `docs/design/mockup-displays.html`, open
 - Settings lists every detected display as a tile: number (top left), "Primary" badge (top right), a mini-mockup icon (laptop for the built-in display, monitor for the others; speaker or audience content), resolution and scale at the bottom, name below, and a selector "Speaker View" / "Audience View".
 - Changes are not applied live. **Apply** is enabled only when something changed; it saves and applies. Apply is disabled, with a message ("At least one display must be the Audience."), when no display is left as audience.
 - Defaults are today's behaviour: primary = speaker view, the rest = audience.
-- With one display the only option is the audience view (selector disabled, hint "Connect a second monitor to enable speaker view."). This replaces the current single-monitor behaviour (speaker view in a window) and CLAUDE.md's "Un solo monitor" requirement: update both when implementing.
+- With one display the only option is the audience view (selector disabled, hint "Connect a second monitor to enable speaker view."). Pressing "Present" shows the presentation full screen, with no buttons; the speaker moves with the keyboard shortcuts or a slide clicker (the existing keys, including Esc and B). This replaces the current single-monitor behaviour (speaker view in a window) and CLAUDE.md's "Un solo monitor" requirement: update both when implementing.
 - In the speaker view, the "Swap screens" button becomes a Settings button like the reader's.
 - Open questions for the user: do two speaker views share the timer and black screen; how a display is identified between runs (name, connector or position); with two displays, can both be speaker or both audience.
 
