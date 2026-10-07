@@ -2,7 +2,7 @@
 
 Everything a new developer (or agent) needs that is not obvious from the code. Project rules and conventions are in [`CLAUDE.md`](../CLAUDE.md); user-facing text is in the README and CHANGELOG; the website is covered in [`website.md`](website.md).
 
-State at the time of writing: **v1.0.0 is published** (GitHub release + Microsoft Store listing). Milestone 7 (multi-language: English and Spanish) is v1.1.0, milestone 8 (opening PDFs from the system, "Open with…") is v1.2.0; next is milestone 9 (Mac and Linux; Linux means Debian and Ubuntu only).
+State at the time of writing: **v1.0.0 is published** (GitHub release + Microsoft Store listing). Milestone 7 (multi-language: English and Spanish) is v1.1.0, milestone 8 (opening PDFs from the system, "Open with…") is v1.2.0; next is milestone 9 (multi-monitor and UI improvements), then milestone 10 (Mac and Linux; Linux means Debian and Ubuntu only).
 
 ## Architecture
 
@@ -38,7 +38,7 @@ site/                The website (see website.md); scripts/build-privacy.mjs bui
 - Two modes: `presenter` (speaker view on the chosen/main display + audience on another) and `mirror` (an audience window on every display, no speaker view).
 - `applyLayout()` in `presentation.ts` places windows for the displays connected right now. It runs at start and on `display-added/removed/metrics-changed` (debounced). Behaviour: with one display left the speaker window is **hidden, not closed** (so the timer survives) and the audience takes the remaining display; when a display returns, the speaker view comes back with the same slide and timer. "Swap screens" swaps roles (2 displays) or rotates the audience (3+), and saves the result (`rememberRoles()` in `settings.ts`: speaker display + audience display) so the next presentation, even after a restart, starts that way. Roles are resolved in `resolveRoles()`: this presentation's choice, then the saved displays, then the defaults (main display for the speaker, any other for the audience). Started with one display: speaker view only, in a normal window.
 - The reader (launcher) window is **hidden** during a presentation, not closed (closing it ends the presentation and quits): `hideLauncherWhenShown()` hides it once the first presentation window is shown, and `endPresentation()` shows it again with its PDF and page.
-- **PDFs from the system** (`main.ts`): one instance only (`requestSingleInstanceLock`). A PDF on the command line (first start) or in a second launch's `argv` (`second-instance`) ends any presentation, brings the launcher forward and is sent to it (`systemOpen`), which opens it like a dropped file. `file://` URIs are accepted for Linux file managers. Mac will need `app.on('open-file')` (milestone 9).
+- **PDFs from the system** (`main.ts`): one instance only (`requestSingleInstanceLock`). A PDF on the command line (first start) or in a second launch's `argv` (`second-instance`) ends any presentation, brings the launcher forward and is sent to it (`systemOpen`), which opens it like a dropped file. `file://` URIs are accepted for Linux file managers. Mac will need `app.on('open-file')` (milestone 10).
 - The "last PDF that opened fine" is tracked in main with an id: the launcher calls `pdfOpened(id)` only after PDF.js loaded it, so a corrupt or cancelled-password file can never be what gets presented.
 
 ### Rendering (`shared/pageview.ts`)
@@ -84,7 +84,7 @@ There are no automated tests. Behaviour is checked by running the real app and d
 - **"Open with…" for PDFs, never the default** (milestone 8): PDF Diva registers as one more app that can open PDFs; the user makes it the default if they want ("Open with > Always"). The installer must never claim the default. That is why electron-builder's `fileAssociations` is **not** used: its NSIS macro also sets the `.pdf` key's default value. Instead:
   - NSIS: `resources/installer.nsh` (`nsis.include`), per user (HKCU): ProgID `PDFDiva.pdf` (open command `"PDF Diva.exe" "%1"`) plus a value in `.pdf\OpenWithProgids`. Uninstalling deletes exactly those. Verified on Windows 11: the user's default (`UserChoice`) and the machine's `.pdf` default are unchanged, `SHAssocEnumHandlers` lists PDF Diva, and the registry is back to its previous state after uninstalling.
   - MSIX: `resources/appx-extensions.xml` (`appx.customExtensionsPath`), a `uap:FileTypeAssociation` for `.pdf`. Packaged apps cannot make themselves the default.
-  - Mac and Linux (milestone 9): `mac.fileAssociations` with `rank: Alternate`, and `linux.mimeTypes: [application/pdf]` in the `.deb` (Debian/Ubuntu only).
+  - Mac and Linux (milestone 10): `mac.fileAssociations` with `rank: Alternate`, and `linux.mimeTypes: [application/pdf]` in the `.deb` (Debian/Ubuntu only).
 - MSIX (`appx` target): `runFullTrust` (Electron needs it). Identity values come from Partner Center and are in `electron-builder.yml` (`4095RedViral.PDFDiva`, publisher `CN=140CA302-E9F8-47D7-BC52-9FEFCB98772E`, display name "Nilo Vélez"); the version in the manifest is `<version>.0`. The Store requires a first version number of 1 or more.
 - Building the MSIX needs `makeappx.exe` and, because the tiles come in several scales, `makepri.exe`, from the Windows SDK. electron-builder bundles old copies that **do not start on current Windows 11**; the fix is to put working ones where electron-builder looks (its cache, `winCodeSign-*/…/windows-10/x64`). The details for the build machine are in the project memory (`marcianito-machine`).
 - Do **not** try to sideload the unsigned MSIX: Windows refuses unsigned packages that run an `.exe`. A package signed with a self-signed test certificate (subject = the manifest Publisher) did not install on the user's test machine either ("the publisher's certificate can't be verified", even with the certificate imported and developer mode on). Registering the unpacked folder with `Add-AppxPackage -Register AppxManifest.xml` in developer mode (publisher without the unsigned-namespace OID) is what worked for testing MSIX behaviour (settings virtualization, offline, drag and drop, displays). Test installer behaviour with the NSIS build.
@@ -101,8 +101,11 @@ There are no automated tests. Behaviour is checked by running the real app and d
 
 Launch the app with `electron . --remote-debugging-port=9333` (or a packaged `.exe` with the same flag), connect to `http://127.0.0.1:9333/json`, and use the DevTools protocol over WebSocket: `Runtime.evaluate` to read/click, `Input.dispatchKeyEvent` for keys, `Input.dispatchDragEvent` with `files: [path]` for real drag and drop. Settings can be isolated with `app.setPath('userData', …)` from a small launcher script. A password-protected PDF can be generated with a few lines of Node (RC4 40-bit, standard security handler). Multi-monitor behaviour is tested by toggling a display (`DisplaySwitch.exe /internal` and `/extend`) while a presentation runs.
 
-## Backlog (user feedback, not scheduled)
+## Backlog (not scheduled)
+
+Milestone 9 (multi-monitor and UI improvements, from user feedback). First, adapt the UI to different resolutions and pixel densities; then change the behaviour with three monitors:
 
 - Speaker view that adapts better to large resolutions (at 1280×720 CSS it leaves empty space around the slides).
 - More than two monitors: two speaker views (technician + speaker) and one audience output.
-- Milestone 9: Mac and Linux builds (Linux: Debian and Ubuntu only).
+
+Milestone 10: Mac and Linux builds (Linux: Debian and Ubuntu only).

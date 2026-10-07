@@ -7,7 +7,7 @@ Aplicación de escritorio para presentar PDFs, con un funcionamiento parecido al
 - **v1.0.0 publicada** (2026-10-05): release de GitHub con el instalador NSIS y paquete MSIX publicado en la Microsoft Store (https://apps.microsoft.com/detail/9nh5x0qbmhq1). Hitos 1 a 6 hechos.
 - **v1.1.0** (hito 7): interfaz en inglés y español, según el idioma de Windows o el elegido en Ajustes.
 - **v1.2.0** (hito 8): PDF Diva aparece en «Abrir con…» para PDFs (sin hacerse predeterminada) y abre los PDF que le pasa el sistema.
-- **Siguiente: hito 9** (builds de Mac y Linux). No se empieza sin el visto bueno del usuario.
+- **Siguiente: hito 9** (multimonitor y mejora de interfaz); después el hito 10 (builds de Mac y Linux). No se empieza sin el visto bueno del usuario.
 - Guía técnica (arquitectura, comandos, empaquetado, flujo de publicación, pruebas): [`docs/developer-guide.md`](docs/developer-guide.md). La web se explica en [`docs/website.md`](docs/website.md). Las particularidades del equipo dedicado, Marcianito (compilar MSIX, pruebas con monitores), y el estado del trabajo en curso están en la memoria del proyecto.
 
 ## Producto y público (decidido)
@@ -156,7 +156,7 @@ No hay tests automáticos: se prueba la app real controlándola por el protocolo
 
 ## Plan por hitos
 
-Hitos 1 a 8 hechos (v0.1.0 a v1.2.0). El siguiente es el 9 (Mac y Linux; antes era el 8, cambiado el 2026-10-06). Pendientes sin hito (opiniones reales de usuarios): vista del orador que se adapte mejor a resoluciones grandes; más de dos monitores (dos vistas del orador y una salida al público).
+Hitos 1 a 8 hechos (v0.1.0 a v1.2.0). El siguiente es el 9 (multimonitor y mejora de interfaz, desde el 2026-10-07); Mac y Linux pasan al hito 10 (antes 9, y antes 8).
 
 1. **Esqueleto**: proyecto Electron + TypeScript que abre una ventana.
 2. **Visor básico**: abrir un PDF y renderizar una página con PDF.js; navegar con teclado.
@@ -165,8 +165,9 @@ Hitos 1 a 8 hechos (v0.1.0 a v1.2.0). El siguiente es el 9 (Mac y Linux; antes e
 5. **Robustez**: un solo monitor, cambios de monitores, selector de monitor, errores de PDF.
 6. **Empaquetado y distribución (Windows)**, dos canales con electron-builder: (1) Microsoft Store con paquete MSIX (target `appx`), que la Store firma gratis y sin aviso de SmartScreen; (2) instalador NSIS sin firmar en GitHub Releases, para equipos con la Store bloqueada (SmartScreen avisará; se explica en el README). Firma: nada de certificados de pago anuales (el instalador de GitHub queda sin firmar); Azure Artifact Signing no está disponible para particulares en España. `appId` com.nilovelez.pdfdiva; la identidad del paquete de la Store (Identity Name, Publisher, nombre reservado) sale de Partner Center. La política de privacidad es `PRIVACY.md`.
 7. **Multiidioma**: interfaz traducible, con el español y el inglés como primeros idiomas (el inglés va antes que Mac y Linux).
-8. **Abrir PDFs desde el sistema**: que PDF Diva aparezca en «Abrir con…» y el usuario pueda elegirla como aplicación predeterminada para PDFs (Windows: NSIS y MSIX; Mac y Linux preparados para el hito 9).
-9. **Extra (baja prioridad)**: builds de Mac y Linux. En Linux solo se da soporte a **Debian y Ubuntu**.
+8. **Abrir PDFs desde el sistema**: que PDF Diva aparezca en «Abrir con…» y el usuario pueda elegirla como aplicación predeterminada para PDFs (Windows: NSIS y MSIX; Mac y Linux preparados para el hito 10).
+9. **Multimonitor y mejora de interfaz** (opiniones reales de usuarios): primero, que la interfaz se adapte mejor a distintas resoluciones y densidades de pantalla (empezando por la vista del orador en resoluciones grandes); después, cambiar el comportamiento con tres monitores (dos vistas del orador, técnico y ponente, y una salida al público). Se prueba con los dos adaptadores DisplayPort (3 pantallas reales en Marcianito).
+10. **Extra (baja prioridad)**: builds de Mac y Linux. En Linux solo se da soporte a **Debian y Ubuntu**.
 
 ## Fuera de alcance (por ahora)
 
