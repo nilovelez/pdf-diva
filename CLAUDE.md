@@ -92,7 +92,7 @@ Si la ventana del público tiene el foco (por ejemplo, tras hacer clic en ella),
 
 ## Requisitos de comportamiento
 
-- **Un solo monitor**: la presentación debe seguir siendo usable (por ejemplo, la vista del orador en ventana normal, o pantalla completa simple).
+- **Un solo monitor**: al pulsar «Presentar» se muestra la presentación a pantalla completa, sin botones (solo la vista del público). El ponente se mueve con los atajos de teclado o el pasador de diapositivas. (Cambio del hito 9, 2026-10-07: antes se abría la vista del orador en una ventana.)
 - **Cambios de monitores en caliente**: escuchar `display-added` y `display-removed` y recolocar las ventanas sin cerrar la presentación.
 - **Elegir monitor de proyección**: ofrecer un selector, porque el sistema puede identificar mal cuál es el secundario.
 - **Renderizado nítido**: tener en cuenta `devicePixelRatio` y el tamaño real de la pantalla (4K).
