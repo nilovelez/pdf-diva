@@ -7,7 +7,7 @@ Aplicación de escritorio para presentar PDFs, con un funcionamiento parecido al
 - **v1.0.0 publicada** (2026-10-05): release de GitHub con el instalador NSIS y paquete MSIX publicado en la Microsoft Store (https://apps.microsoft.com/detail/9nh5x0qbmhq1). Hitos 1 a 6 hechos.
 - **v1.1.0** (hito 7): interfaz en inglés y español, según el idioma de Windows o el elegido en Ajustes.
 - **v1.2.0** (hito 8): PDF Diva aparece en «Abrir con…» para PDFs (sin hacerse predeterminada) y abre los PDF que le pasa el sistema.
-- **Siguiente: hito 9** (multimonitor y mejora de interfaz); después el hito 10 (builds de Mac y Linux). No se empieza sin el visto bueno del usuario.
+- **En curso: hito 9** (multimonitor y mejora de interfaz, desde el 2026-10-07); después el hito 10 (builds de Mac y Linux), que no se empieza sin el visto bueno del usuario.
 - Guía técnica (arquitectura, comandos, empaquetado, flujo de publicación, pruebas): [`docs/developer-guide.md`](docs/developer-guide.md). La web se explica en [`docs/website.md`](docs/website.md). Las particularidades del equipo dedicado, Marcianito (compilar MSIX, pruebas con monitores), y el estado del trabajo en curso están en la memoria del proyecto.
 
 ## Producto y público (decidido)
@@ -28,8 +28,10 @@ Aplicación de escritorio para presentar PDFs, con un funcionamiento parecido al
 
 Al abrir un PDF, la app ofrece la opción de **presentarlo**:
 
-- **Ventana del público**: pantalla completa, sin controles ni marco, en el monitor secundario. Solo muestra la página actual.
-- **Ventana del orador**: en el monitor principal. Muestra la página actual (grande), la página siguiente (pequeña), el número de página ("Página 3 de 30") y controles básicos (anterior, siguiente, salir).
+- **Ventana del público**: pantalla completa, sin controles ni marco. Solo muestra la página actual.
+- **Ventana del orador**: pantalla completa, sin marco. Muestra la página actual (grande), la página siguiente (pequeña), el número de página ("3 de 30"), el cronómetro y controles básicos (anterior, siguiente, pantalla en negro, configurar monitores, salir).
+- **Cada monitor muestra una de las dos** («Configurar monitores»). Por defecto, el público en el último monitor y la vista del orador en los demás (con tres: técnico, ponente y público). Con un solo monitor, solo la vista del público.
+- **Cuando estás presentando, es presentando**: nada de opciones innecesarias que puedan llevar a error. En la vista del orador, «Configurar monitores» y «Salir» son necesarias; salir de pantalla completa o minimizar, no.
 - El paso de diapositivas debe funcionar con las teclas de avanzar/retroceder página, para que sea compatible con cualquier presenter estándar.
 
 ## Principios (importan más que cualquier otra cosa)
@@ -51,28 +53,31 @@ Al abrir un PDF, la app ofrece la opción de **presentarlo**:
 
 ```
 Proceso principal (main)
- ├─ Estado: página, total, pantalla en negro, nº de monitores; PDF y contraseña solo en memoria
- ├─ Gestión de ventanas y monitores (módulo `screen`): colocación al empezar y al cambiar los monitores
- ├─ Ajustes (settings.json en userData: monitor del orador y tema) y bloqueo de red
+ ├─ Estado: página, total, pantalla en negro, nº de monitores, cronómetro; PDF y contraseña solo en memoria
+ ├─ Gestión de ventanas y monitores (módulo `screen`): qué muestra cada monitor y colocación al empezar,
+ │  al cambiar los monitores y al aplicar «Configurar monitores»
+ ├─ Ajustes (settings.json en userData: qué muestra cada monitor, tema, idioma, última carpeta) y bloqueo de red
  └─ IPC: recibe acciones y emite el estado a las ventanas
 
 Ventana principal (launcher)
- └─ Inicio (abrir PDF por diálogo o arrastrando) y lector con miniaturas; ajustes; diálogo de contraseña;
-    botones para presentar (con vista del orador, o duplicar pantalla)
+ └─ Inicio (abrir PDF por diálogo o arrastrando) y lector con miniaturas; ajustes (tema e idioma);
+    diálogo de contraseña; «Configurar monitores» (con dos o más) y «Presentar»
 
-Ventana del público (audience)
+Ventana del público (audience): una por cada monitor con la vista del público
  └─ Sin marco, pantalla completa. Canvas con la página actual ajustada a la pantalla (negro si se pide).
 
-Ventana del orador (presenter)
- └─ Página actual, siguiente, "N de M", controles, cronómetro, alternar pantallas, pantalla en negro, salir.
+Ventana del orador (presenter): una por cada monitor con la vista del orador
+ └─ Sin marco, pantalla completa, escala con el tamaño de la pantalla. Página actual, siguiente, "N de M",
+    anterior/siguiente, cronómetro compartido (botones solo con icono), configurar monitores,
+    pantalla en negro, salir.
 ```
 
-Modos de presentación: `presenter` (vista del orador + público en otro monitor) y `mirror` (una ventana de público en cada monitor).
+Todos los monitores con la vista del público equivale a duplicar pantalla.
 
 ### Sincronización
 
 - El **proceso principal es la única fuente de verdad** del estado (página actual).
-- Las ventanas envían acciones por IPC (`next`, `prev`, `first`, `last`, `goto`, `toggleBlack`, `swapScreens`, `exit`) y reciben el estado actualizado; cada una renderiza lo que le toca. Solo las ventanas de la presentación pueden consultar o controlarla.
+- Las ventanas envían acciones por IPC (`next`, `prev`, `first`, `last`, `goto`, `toggleBlack`, `toggleTimer`, `resetTimer`, `exit`) y reciben el estado actualizado; cada una renderiza lo que le toca. Solo las ventanas de la presentación pueden consultar o controlarla.
 - Usar `contextIsolation: true`, `nodeIntegration: false` y un `preload` con `contextBridge` para exponer solo la API IPC necesaria.
 - **Sin red**: la app no hace ninguna conexión (PRIVACY.md lo promete). No añadir nada que la necesite.
 
@@ -94,7 +99,8 @@ Si la ventana del público tiene el foco (por ejemplo, tras hacer clic en ella),
 
 - **Un solo monitor**: al pulsar «Presentar» se muestra la presentación a pantalla completa, sin botones (solo la vista del público). El ponente se mueve con los atajos de teclado o el pasador de diapositivas.
 - **Cambios de monitores en caliente**: escuchar `display-added` y `display-removed` y recolocar las ventanas sin cerrar la presentación.
-- **Elegir monitor de proyección**: ofrecer un selector, porque el sistema puede identificar mal cuál es el secundario.
+- **Configurar monitores**: el usuario elige qué muestra cada monitor (vista del orador o del público), porque el sistema puede identificar mal cuál es cuál. Los cambios se aplican con «Aplicar» y siempre tiene que haber al menos un monitor con la vista del público. Se puede hacer también durante la presentación, sin pararla.
+- **Recordar la última carpeta**: el diálogo de abrir empieza en la carpeta del último PDF abierto (guardada en los ajustes, sin mostrarla); si ya no existe, en la carpeta por defecto.
 - **Renderizado nítido**: tener en cuenta `devicePixelRatio` y el tamaño real de la pantalla (4K).
 - **Pre-renderizar la página siguiente** para que el cambio de diapositiva sea instantáneo.
 - **PDFs grandes**: cargar páginas bajo demanda; no renderizar todo el documento al abrir.
@@ -156,7 +162,7 @@ No hay tests automáticos: se prueba la app real controlándola por el protocolo
 
 ## Plan por hitos
 
-Hitos 1 a 8 hechos (v0.1.0 a v1.2.0). El siguiente es el 9 (multimonitor y mejora de interfaz, desde el 2026-10-07); Mac y Linux pasan al hito 10 (antes 9, y antes 8).
+Hitos 1 a 8 hechos (v0.1.0 a v1.2.0). En curso: el 9 (multimonitor y mejora de interfaz, desde el 2026-10-07); Mac y Linux pasan al hito 10 (antes 9, y antes 8).
 
 1. **Esqueleto**: proyecto Electron + TypeScript que abre una ventana.
 2. **Visor básico**: abrir un PDF y renderizar una página con PDF.js; navegar con teclado.

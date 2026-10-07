@@ -53,7 +53,7 @@ The app must make **no network connections** (PRIVACY.md depends on it): CSP `de
 
 ### Settings
 
-`app.getPath('userData')/settings.json`: `displayRoles` (a list of `{ monitor, role }`, where `monitor` is the display id plus label/size/position for a fallback match by label and size; roles of displays not connected are kept, up to 32; up to 1.2.0 the file had `speakerMonitor`/`audienceMonitor`, read as roles), `theme` (`system|light|dark`, applied with `nativeTheme.themeSource`) and `language` (`system` or a language code). The folder is named after `productName` (`%APPDATA%\PDF Diva`; MSIX virtualizes it into the package's `LocalCache`). Renaming the product resets users' settings.
+`app.getPath('userData')/settings.json`: `displayRoles` (a list of `{ monitor, role }`, where `monitor` is the display id plus label/size/position for a fallback match by label and size; roles of displays not connected are kept, up to 32; up to 1.2.0 the file had `speakerMonitor`/`audienceMonitor`, read as roles), `lastFolder` (folder of the last PDF that opened fine, however it was opened; the Open dialog starts there if it still exists; not shown in Settings, mentioned in PRIVACY.md), `theme` (`system|light|dark`, applied with `nativeTheme.themeSource`) and `language` (`system` or a language code). The folder is named after `productName` (`%APPDATA%\PDF Diva`; MSIX virtualizes it into the package's `LocalCache`). Renaming the product resets users' settings.
 
 ### UI text and translation
 
@@ -105,22 +105,6 @@ Launch the app with `electron . --remote-debugging-port=9333` (or a packaged `.e
 
 ## Backlog (not scheduled)
 
-Milestone 9 (multi-monitor and UI improvements, from user feedback). First, adapt the UI to different resolutions and pixel densities; then change the behaviour with three monitors:
-
-- Speaker view that adapts better to large resolutions (at 1280×720 CSS it leaves empty space around the slides).
-- More than two monitors: two speaker views (technician + speaker) and one audience output.
-
-Agreed design for the displays (mockup: `docs/design/mockup-displays.html`, open it in a browser):
-
-- **One display:** the reader shows only **Present**. It opens the audience view full screen, with no buttons and no speaker view, like any PDF viewer in full screen; the speaker uses the keyboard shortcuts or a slide clicker (Esc and B included). This replaces today's behaviour (speaker view in a normal window); CLAUDE.md already describes the new one.
-- **Two or more displays:** the reader shows **Configure displays** and **Present**. Present is the main action (accent colour). The "With speaker view" and "Mirror screens" buttons go away: mirroring is every display set to Audience View. F5 and Shift+F5 do the same as Present.
-- **Configure displays** is its own dialog: the displays in a row (main display first, then left to right; not the Windows arrangement), each one a tile with its number, "Main" badge, a mini-mockup (laptop or monitor, showing speaker or audience content), resolution and scale, the name below and a selector "Speaker View" / "Audience View" under it. The built-in display of a laptop (`display.internal`) is called "Built-in display", translated; check what name Windows gives each display. Changes apply only with **Apply** (enabled when something changed), with **Cancel** next to it. Apply is disabled with the message "At least one display must be the Audience View." when no display is left as audience. If a display is connected or disconnected while the dialog is open, it closes without applying.
-- **Settings** (gear) keeps only theme and language, applied instantly as today.
-- **Defaults:** the audience on the last display and a speaker view on every other one (displays ordered main first, then left to right). So 2 displays = main display speaker view, the other audience; 3 displays = two speaker views (technician and speaker) and the audience. 4 or more is rare and follows the same rule.
-- **Speaker view:** "Swap screens" is replaced by "Configure displays" (only with two or more displays). It opens the same dialog over the speaker view; Apply moves the windows without stopping the presentation. The timer is shared by every speaker view (today each window has its own); black screen is already shared state.
-- **Hot plug:** a presentation started on one display switches to the saved configuration when a second display is connected (as today it switches to the speaker view).
-- Displays are recognised between runs as today (id, then name and size).
-
-Remember the last folder (user's request, 2026-10-07): the Open dialog starts in the folder of the last PDF opened, so choosing another file from the same pendrive doesn't mean navigating there again. Saved in settings.json, not shown in Settings. If that folder no longer exists, the dialog opens in the default folder.
+Milestone 9 (multi-monitor and UI improvements, from user feedback) is implemented: the speaker view scales with its screen and is frameless full screen, every display shows the speaker or the audience view ("Configure displays", design record in `docs/design/mockup-displays.html`), the timer is shared and its buttons are icon-only, and the Open dialog starts in the last folder.
 
 Milestone 10: Mac and Linux builds (Linux: Debian and Ubuntu only).
