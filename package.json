@@ -12,9 +12,10 @@
     "build": "node esbuild.mjs",
     "typecheck": "tsc --noEmit",
     "lint": "eslint src",
-    "dist": "npm run build && electron-builder --win nsis",
-    "dist:store": "npm run build && electron-builder --win appx",
-    "pack": "npm run build && electron-builder --win --dir"
+    "dist": "npm run build && electron-builder --win nsis -c.electronDist=node_modules/electron/dist",
+    "dist:store": "npm run build && electron-builder --win appx -c.electronDist=node_modules/electron/dist",
+    "pack": "npm run build && electron-builder --win --dir -c.electronDist=node_modules/electron/dist",
+    "dist:mac": "npm run build && electron-builder --mac"
   },
   "devDependencies": {
     "electron": "^44.5.1",

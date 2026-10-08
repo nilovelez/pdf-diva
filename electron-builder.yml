@@ -2,6 +2,8 @@
 #   npm run dist        -> NSIS installer (unsigned) for GitHub Releases
 #   npm run dist:store  -> MSIX package (appx target) for the Microsoft Store
 #   npm run pack        -> unpacked folder, to try the packaged app quickly
+# and one on macOS, built by GitHub Actions (.github/workflows/build-mac.yml):
+#   npm run dist:mac    -> universal .dmg (Apple silicon and Intel), ad-hoc signed
 appId: com.nilovelez.pdfdiva
 productName: PDF Diva
 copyright: Copyright © 2026 Nilo Vélez
@@ -19,9 +21,6 @@ files:
   - package.json
   - "!**/*.map"
 
-# Reuse the Electron binary installed by npm instead of downloading it again.
-electronDist: node_modules/electron/dist
-
 # License texts that must travel with every build (see CLAUDE.md). Electron itself already
 # adds LICENSE.electron.txt and LICENSES.chromium.html next to the executable.
 extraResources:
@@ -33,13 +32,37 @@ extraResources:
     to: licenses/LICENSE-pdfjs.txt
   - from: resources/icons/LICENSE-phosphor.txt
     to: licenses/LICENSE-phosphor.txt
-  # Icon for PDFs opened with PDF Diva (installer.nsh). The MSIX uses PNGs in appx/ instead.
-  - from: resources/icons/app/document_icon.ico
-    to: document_icon.ico
+
+mac:
+  target:
+    - target: dmg
+      arch: universal
+  category: public.app-category.productivity
+  icon: resources/icons/app/icon-512.png
+  darkModeSupport: true
+  # Ad-hoc signature: free, no Apple account. Apple silicon refuses to run unsigned apps; with
+  # this one macOS only warns that the developer cannot be verified (README explains "Open
+  # Anyway"). Hardened runtime would reject Electron's own frameworks under an ad-hoc signature,
+  # and it is only needed for notarization, which needs a paid Apple account.
+  identity: "-"
+  hardenedRuntime: false
+  # Lists PDF Diva in "Open With" for PDFs; "Alternate" never makes it the default viewer.
+  fileAssociations:
+    - ext: pdf
+      name: PDF Document
+      role: Viewer
+      rank: Alternate
+
+dmg:
+  artifactName: PDF-Diva-${version}.${ext}
 
 win:
   target:
     - nsis
+  extraResources:
+    # Icon for PDFs opened with PDF Diva (installer.nsh). The MSIX uses PNGs in appx/ instead.
+    - from: resources/icons/app/document_icon.ico
+      to: document_icon.ico
 
 nsis:
   artifactName: PDF-Diva-Setup-${version}.${ext}
