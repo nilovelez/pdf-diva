@@ -11,4 +11,5 @@ La v1.3.0 (hito 9) está publicada en GitHub y enviada a la Microsoft Store, en 
 
 ## Diario
 
+- 2026-10-08: backlog movido de docs/developer-guide.md a guppy/BACKLOG.md y puesto al día.
 - 2026-10-08: guppy/STATUS.md creado.
