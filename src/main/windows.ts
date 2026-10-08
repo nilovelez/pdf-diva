@@ -3,6 +3,22 @@ import path from 'node:path';
 import { LANGUAGE_SWITCH } from '../types/ipc';
 import { uiLanguage } from './settings';
 
+export const isMac = process.platform === 'darwin';
+
+/**
+ * Full screen for the presentation windows. On macOS the native kind moves each window to a Space
+ * of its own, with an animation and asynchronously; the simple kind covers the display in place
+ * and at once, as on Windows.
+ */
+export function setFullScreen(win: BrowserWindow, on: boolean): void {
+  if (isMac) win.setSimpleFullScreen(on);
+  else win.setFullScreen(on);
+}
+
+export function isFullScreen(win: BrowserWindow): boolean {
+  return isMac ? win.isSimpleFullScreen() : win.isFullScreen();
+}
+
 /** Creates a window showing the page in `src/renderer/<name>` with the shared preload. */
 export function createWindow(
   name: 'launcher' | 'audience' | 'presenter',

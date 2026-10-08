@@ -9,7 +9,7 @@ import {
 } from '../types/ipc';
 import { displayRoles, sortedDisplays } from './displays';
 import { t } from './settings';
-import { createWindow } from './windows';
+import { createWindow, isFullScreen, isMac, setFullScreen } from './windows';
 
 interface Presentation {
   pdf: PdfFile;
@@ -135,10 +135,11 @@ function createPresentationWindow(
     frame: false,
     show: false,
     title: t(kind === 'audience' ? 'audience.windowTitle' : 'presenter.windowTitle'),
-    ...(kind === 'audience' ? { fullscreen: true, backgroundColor: '#000000' } : {}),
+    // On macOS the window is created normal and goes full screen when shown (see setFullScreen).
+    ...(kind === 'audience' ? { fullscreen: !isMac, backgroundColor: '#000000' } : {}),
   });
   if (kind === 'audience') {
-    win.once('ready-to-show', () => win.show());
+    win.once('ready-to-show', () => (isMac ? placeFullScreen(win, display) : win.show()));
   } else {
     win.once('ready-to-show', () => {
       readyWindows.add(win);
@@ -154,10 +155,10 @@ function createPresentationWindow(
 
 function placeFullScreen(win: BrowserWindow, display: Display): void {
   if (win.isDestroyed()) return;
-  if (win.isFullScreen() && sameBounds(win.getBounds(), display.bounds)) return;
-  if (win.isFullScreen()) win.setFullScreen(false);
+  if (isFullScreen(win) && sameBounds(win.getBounds(), display.bounds)) return;
+  if (isFullScreen(win)) setFullScreen(win, false);
   win.setBounds(display.bounds);
-  win.setFullScreen(true);
+  setFullScreen(win, true);
   win.show();
 }
 
