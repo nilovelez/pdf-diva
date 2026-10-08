@@ -39,10 +39,10 @@
   "settings.theme.system": "System",
   "settings.theme.light": "Light",
   "settings.theme.dark": "Dark",
-  "settings.theme.hint": "“System” follows the Windows theme. The audience screen is always black.",
+  "settings.theme.hint": "“System” follows the theme of the operating system. The audience screen is always black.",
   "settings.language": "Language",
   "settings.language.system": "System",
-  "settings.language.hint": "“System” uses the Windows language if PDF Diva has it, and English otherwise.",
+  "settings.language.hint": "“System” uses the language of the operating system if PDF Diva has it, and English otherwise.",
 
   "password.title": "Password-protected PDF",
   "password.prompt": "Enter the password to open “{name}”.",

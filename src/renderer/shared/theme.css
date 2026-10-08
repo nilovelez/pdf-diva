@@ -1,5 +1,5 @@
 /* Design variables shared by every window (palette: docs/design/palette.html).
-   They follow the Windows theme: Electron exposes it as prefers-color-scheme. */
+   They follow the system theme: Electron exposes it as prefers-color-scheme. */
 :root {
   color-scheme: light dark;
 
