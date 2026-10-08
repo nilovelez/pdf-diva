@@ -13,8 +13,3 @@ Pendientes de PDF Diva, del más próximo al menos urgente. Lo que ya está publ
 ## Distribución
 
 - [ ] **Web**: volver a poner el botón de la Microsoft Store (y el del instalador como secundario) cuando la Store apruebe la 1.3.0. Esperando a Microsoft.
-- [ ] **MSIX**: probar una instalación real del paquete. Hace falta activar el modo de desarrollador en Marcianito, con el permiso de Nilo.
-
-## Ideas (sin decidir)
-
-- [ ] Enlace en Ajustes que abra «Aplicaciones predeterminadas» de Windows para elegir PDF Diva como visor de PDF (`ms-settings:defaultapps`, sin red). Solo si Nilo lo quiere.
