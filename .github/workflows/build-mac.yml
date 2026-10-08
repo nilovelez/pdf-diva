@@ -42,6 +42,7 @@ jobs:
         run: |
           set -o pipefail
           node scripts/smoke-test.mjs "release/mac-universal/PDF Diva.app/Contents/MacOS/PDF Diva" 2>&1 | tee smoke.log
+          echo "::notice title=Smoke test::$(grep -E '^(OK|FAIL|ALL|SMOKE)' smoke.log | awk '{printf "%s%%0A", $0}')"
       - uses: actions/upload-artifact@v4
         with:
           name: PDF-Diva-mac

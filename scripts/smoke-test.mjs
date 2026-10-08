@@ -112,7 +112,8 @@ makePdf(second, 5);
 const app = spawn(exe, [`--remote-debugging-port=${PORT}`, first], { stdio: 'inherit' });
 let failed = false;
 try {
-  const launcher = await connect(await waitFor('the reader window', () => findTarget('launcher')));
+  // The first start of a freshly built app can be slow (macOS checks it).
+  const launcher = await connect(await waitFor('the reader window', () => findTarget('launcher'), 90000));
   const label = await waitFor('the PDF from the command line', async () => {
     const text = await launcher.evaluate(pageLabel);
     return pageIs(1, 3)(text) && text;
