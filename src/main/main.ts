@@ -1,9 +1,10 @@
-import { app, BrowserWindow, dialog, ipcMain, Menu, screen, session, shell } from 'electron';
+import { app, BrowserWindow, dialog, ipcMain, screen, session, shell } from 'electron';
 import { readFile, stat } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { IPC, type DisplayRoleChoice, type PdfFile, type SettingsPatch } from '../types/ipc';
 import { displayInfos, sortedDisplays } from './displays';
+import { setAppMenu } from './menu';
 import {
   endPresentation,
   getSession,
@@ -36,6 +37,9 @@ let openedPdf: PdfFile | null = null;
 let pendingPdf: PdfFile | null = null;
 let lastReadId = 0;
 let launcherWindow: BrowserWindow | null = null;
+/** Until the reader has loaded, a PDF from the system waits here (macOS sends it before that). */
+let launcherLoaded = false;
+let startupPdf: string | null = null;
 
 async function readPdf(file: string): Promise<PdfFile> {
   if (!/\.pdf$/i.test(file)) throw new Error('Not a PDF file');
@@ -121,8 +125,12 @@ function createLauncherWindow(): void {
   const win = createWindow('launcher', { width: 1000, height: 680, title: 'PDF Diva' });
   win.on('closed', endPresentation);
   launcherWindow = win;
-  const startupPdf = pdfFromArgs(process.argv, process.cwd());
-  if (startupPdf) win.webContents.once('did-finish-load', () => void openFromSystem(startupPdf));
+  startupPdf ??= pdfFromArgs(process.argv, process.cwd());
+  win.webContents.once('did-finish-load', () => {
+    launcherLoaded = true;
+    if (startupPdf) void openFromSystem(startupPdf);
+    startupPdf = null;
+  });
 }
 
 /** Every window shows the displays (the reader's toolbar, "Configure displays" anywhere). */
@@ -193,7 +201,9 @@ ipcMain.handle(IPC.setDisplayRoles, (_event, roles: unknown) => setDisplayRoles(
 ipcMain.handle(IPC.getSettings, () => getSettings());
 ipcMain.handle(IPC.setSettings, (_event, patch: unknown) => {
   if (!isSettingsPatch(patch)) throw new Error('Invalid settings');
-  return updateSettings(patch);
+  const settings = updateSettings(patch);
+  setAppMenu();
+  return settings;
 });
 ipcMain.handle(IPC.getAppInfo, () => ({ version: app.getVersion() }));
 // Only the project page can be opened, never a URL the renderer supplies.
@@ -227,10 +237,18 @@ if (!app.requestSingleInstanceLock()) {
     else bringLauncherToFront();
   });
 
+  // macOS hands PDFs over with this event instead of the command line (Finder, "Open With", the
+  // Dock), also the one that launches the app.
+  app.on('open-file', (event, file) => {
+    event.preventDefault();
+    if (launcherLoaded) void openFromSystem(file);
+    else startupPdf = file;
+  });
+
   app.whenReady().then(() => {
     keepOffline();
-    Menu.setApplicationMenu(null);
     loadSettings();
+    setAppMenu();
     applyTheme();
     screen.on('display-added', displaysChanged);
     screen.on('display-removed', displaysChanged);

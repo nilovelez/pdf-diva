@@ -68,5 +68,17 @@
 
   "audience.windowTitle": "PDF Diva - Audience",
 
-  "presentation.loadError": "The presentation could not be loaded."
+  "presentation.loadError": "The presentation could not be loaded.",
+
+  "menu.hide": "Hide PDF Diva",
+  "menu.hideOthers": "Hide Others",
+  "menu.showAll": "Show All",
+  "menu.quit": "Quit PDF Diva",
+  "menu.edit": "Edit",
+  "menu.undo": "Undo",
+  "menu.redo": "Redo",
+  "menu.cut": "Cut",
+  "menu.copy": "Copy",
+  "menu.paste": "Paste",
+  "menu.selectAll": "Select All"
 }

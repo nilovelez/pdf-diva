@@ -68,5 +68,17 @@
 
   "audience.windowTitle": "PDF Diva - Público",
 
-  "presentation.loadError": "No se ha podido cargar la presentación."
+  "presentation.loadError": "No se ha podido cargar la presentación.",
+
+  "menu.hide": "Ocultar PDF Diva",
+  "menu.hideOthers": "Ocultar otros",
+  "menu.showAll": "Mostrar todo",
+  "menu.quit": "Salir de PDF Diva",
+  "menu.edit": "Edición",
+  "menu.undo": "Deshacer",
+  "menu.redo": "Rehacer",
+  "menu.cut": "Cortar",
+  "menu.copy": "Copiar",
+  "menu.paste": "Pegar",
+  "menu.selectAll": "Seleccionar todo"
 }
