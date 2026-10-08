@@ -2,7 +2,7 @@
 
 Everything a new developer (or agent) needs that is not obvious from the code. Project rules and conventions are in [`CLAUDE.md`](../CLAUDE.md); user-facing text is in the README and CHANGELOG; the website is covered in [`website.md`](website.md).
 
-State at the time of writing: **v1.0.0 is published** (GitHub release + Microsoft Store listing). Milestone 7 (multi-language: English and Spanish) is v1.1.0, milestone 8 (opening PDFs from the system, "Open with…") is v1.2.0; next is milestone 9 (multi-monitor and UI improvements), then milestone 10 (Mac and Linux; Linux means Debian and Ubuntu only).
+State at the time of writing: **v1.3.0 is published**. Milestone 7 (multi-language: English and Spanish) is v1.1.0, milestone 8 (opening PDFs from the system, "Open with…") is v1.2.0, milestone 9 (multi-monitor and UI improvements) is v1.3.0; milestone 10 (Mac and Linux; Linux means Debian and Ubuntu only) is in progress, Mac first.
 
 ## Architecture
 
@@ -13,7 +13,8 @@ src/
   main/            Main process. Kept thin: windows, displays, IPC, state.
     main.ts          App lifecycle, IPC handlers, "last PDF that opened fine", offline guard
     presentation.ts  The single source of truth of a presentation + window layout engine
-    windows.ts       createWindow(): shared preload, navigation locked down
+    windows.ts       createWindow(): shared preload, navigation locked down; full screen per platform
+    menu.ts          Application menu: none on Windows/Linux, a minimal one on macOS
     displays.ts      Display ordering (main first, then left to right), roles, DisplayInfo
     settings.ts      settings.json in userData (display roles, theme, language), nativeTheme
   preload/         contextBridge API (typed by src/types/ipc.ts)
@@ -29,7 +30,7 @@ src/
 locales/           UI text, one JSON file per language (en.json is the reference)
 resources/icons/     Phosphor UI icons (MIT) ; resources/icons/app/ = app icon set (icon.ico, appx/ tiles)
 resources/displays/  Our own drawings for the "Configure displays" tiles (laptop/monitor, speaker/audience)
-electron-builder.yml Packaging (NSIS + MSIX)
+electron-builder.yml Packaging (NSIS + MSIX on Windows, dmg on macOS)
 site/                The website (see website.md); scripts/build-privacy.mjs builds its privacy page
 ```
 
@@ -40,7 +41,7 @@ site/                The website (see website.md); scripts/build-privacy.mjs bui
 - **Display roles**: each display shows the speaker view or the audience view (`displayRoles()` in `displays.ts`). With one display: audience only. Otherwise a display keeps the role saved in "Configure displays" and the others get the default (audience on the last display, speaker view on the rest; displays ordered main first, then left to right). There is always an audience: if none is left (its display was unplugged), the last display without a saved role becomes it, else the defaults apply. All displays as audience = mirroring.
 - `applyLayout()` in `presentation.ts` gives each display its window (`reconcile()` reuses windows where it can). It runs at start, on `display-added/removed/metrics-changed` (debounced) and when the roles change (`setDisplayRoles`, applied at once). Every presentation window is frameless and full screen; speaker views are placed only after they have painted (`readyWindows`). A presentation that loses its last speaker view keeps the timer in main, so a returning speaker view shows the right time.
 - The reader (launcher) window is **hidden** during a presentation, not closed (closing it ends the presentation and quits): `hideLauncherWhenShown()` hides it once the first presentation window is shown, and `endPresentation()` shows it again with its PDF and page.
-- **PDFs from the system** (`main.ts`): one instance only (`requestSingleInstanceLock`). A PDF on the command line (first start) or in a second launch's `argv` (`second-instance`) ends any presentation, brings the launcher forward and is sent to it (`systemOpen`), which opens it like a dropped file. `file://` URIs are accepted for Linux file managers. Mac will need `app.on('open-file')` (milestone 10).
+- **PDFs from the system** (`main.ts`): one instance only (`requestSingleInstanceLock`). A PDF on the command line (first start) or in a second launch's `argv` (`second-instance`) ends any presentation, brings the launcher forward and is sent to it (`systemOpen`), which opens it like a dropped file. `file://` URIs are accepted for Linux file managers. macOS sends files with `app.on('open-file')` instead, also the one that launches the app, before the reader has loaded: it waits in `startupPdf` until `did-finish-load`.
 - The "last PDF that opened fine" is tracked in main with an id: the launcher calls `pdfOpened(id)` only after PDF.js loaded it, so a corrupt or cancelled-password file can never be what gets presented.
 
 ### Rendering (`shared/pageview.ts`)
@@ -76,6 +77,7 @@ All UI text is in `locales/<code>.json`: flat keys grouped by screen (`reader.pa
 | `npm run pack` | Unpacked packaged app in `release/win-unpacked/` (quick check) |
 | `npm run dist` | NSIS installer: `release/PDF-Diva-Setup-<version>.exe` |
 | `npm run dist:store` | MSIX package: `release/PDF-Diva-<version>.appx` (unsigned: the Store signs it) |
+| `npm run dist:mac` | macOS only: universal dmg, `release/PDF-Diva-<version>.dmg` (normally built by GitHub Actions) |
 
 There are no automated tests. Behaviour is checked by running the real app and driving it through the Chromium DevTools protocol (see "Testing" below).
 
@@ -87,6 +89,8 @@ There are no automated tests. Behaviour is checked by running the real app and d
   - NSIS: `resources/installer.nsh` (`nsis.include`), per user (HKCU): ProgID `PDFDiva.pdf` (open command `"PDF Diva.exe" "%1"`) plus a value in `.pdf\OpenWithProgids`. Uninstalling deletes exactly those. Verified on Windows 11: the user's default (`UserChoice`) and the machine's `.pdf` default are unchanged, `SHAssocEnumHandlers` lists PDF Diva, and the registry is back to its previous state after uninstalling.
   - MSIX: `resources/appx-extensions.xml` (`appx.customExtensionsPath`), a `uap:FileTypeAssociation` for `.pdf`. Packaged apps cannot make themselves the default.
   - Mac and Linux (milestone 10): `mac.fileAssociations` with `rank: Alternate`, and `linux.mimeTypes: [application/pdf]` in the `.deb` (Debian/Ubuntu only).
+- **macOS** (milestone 10): built by GitHub Actions (`.github/workflows/build-mac.yml`, on a `macos-latest` runner) for every `v*` tag and on demand; the dmg is a run artifact, and the user adds it to the GitHub release. One universal dmg (Apple silicon + Intel). **Ad-hoc signed** (`identity: "-"`): no Apple account and no notarization (no paid certificates, as on Windows), so Gatekeeper asks once and the user clicks "Open Anyway" (README). Apple silicon refuses to run an app with no signature at all ("damaged"). `hardenedRuntime: false`, because hardened runtime rejects Electron's frameworks under an ad-hoc signature. The workflow checks the architectures (`lipo`), the signature (`codesign --verify`) and the PDF document type. `electronDist` is only passed to the Windows scripts: on the Mac, electron-builder downloads Electron for both architectures. Electron 44 needs macOS 13 or later.
+- **macOS behaviour**: presentation windows use **simple full screen** (`setSimpleFullScreen`, see `windows.ts`): native full screen moves each window to its own Space, animated and asynchronous, which breaks `placeFullScreen()` (exit, move, enter). The app menu exists only on macOS, for Cmd+Q/Cmd+H and copy/paste in the password field; its labels are translated (`menu.*`) and it is rebuilt when the language changes. Closing the last window quits the app, as on Windows.
 - MSIX (`appx` target): `runFullTrust` (Electron needs it). Identity values come from Partner Center and are in `electron-builder.yml` (`4095RedViral.PDFDiva`, publisher `CN=140CA302-E9F8-47D7-BC52-9FEFCB98772E`, display name "Nilo Vélez"); the version in the manifest is `<version>.0`. The Store requires a first version number of 1 or more.
 - Building the MSIX needs `makeappx.exe` and, because the tiles come in several scales, `makepri.exe`, from the Windows SDK. electron-builder bundles old copies that **do not start on current Windows 11**; the fix is to put working ones where electron-builder looks (its cache, `winCodeSign-*/…/windows-10/x64`). The details for the build machine are in the project memory (`marcianito-machine`).
 - Do **not** try to sideload the unsigned MSIX: Windows refuses unsigned packages that run an `.exe`. A package signed with a self-signed test certificate (subject = the manifest Publisher) did not install on the user's test machine either ("the publisher's certificate can't be verified", even with the certificate imported and developer mode on). Registering the unpacked folder with `Add-AppxPackage -Register AppxManifest.xml` in developer mode (publisher without the unsigned-namespace OID) is what worked for testing MSIX behaviour (settings virtualization, offline, drag and drop, displays). Test installer behaviour with the NSIS build.
@@ -107,4 +111,4 @@ Launch the app with `electron . --remote-debugging-port=9333` (or a packaged `.e
 
 Milestone 9 (multi-monitor and UI improvements, from user feedback) is implemented: the speaker view scales with its screen and is frameless full screen, every display shows the speaker or the audience view ("Configure displays", design record in `docs/design/mockup-displays.html`), the timer is shared and its buttons are icon-only, and the Open dialog starts in the last folder.
 
-Milestone 10: Mac and Linux builds (Linux: Debian and Ubuntu only).
+Milestone 10: Mac and Linux builds (Linux: Debian and Ubuntu only). The Mac build is in progress; there is no Mac to test on, so it is checked by GitHub Actions and by people testing the dmg.
