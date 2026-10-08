@@ -4,12 +4,23 @@ Aplicación de escritorio para presentar PDFs, con un funcionamiento parecido al
 
 ## Estado actual
 
-- **v1.0.0 publicada** (2026-10-05): release de GitHub con el instalador NSIS y paquete MSIX publicado en la Microsoft Store (https://apps.microsoft.com/detail/9nh5x0qbmhq1). Hitos 1 a 6 hechos.
-- **v1.1.0** (hito 7): interfaz en inglés y español, según el idioma de Windows o el elegido en Ajustes.
-- **v1.2.0** (hito 8): PDF Diva aparece en «Abrir con…» para PDFs (sin hacerse predeterminada) y abre los PDF que le pasa el sistema.
-- **v1.3.0** (hito 9, publicada en GitHub el 2026-10-07): la vista del orador escala con la pantalla, «Configurar monitores» (qué muestra cada monitor), cronómetro compartido y el diálogo de abrir recuerda la última carpeta. Microsoft Store: la 1.2.0 aprobada el 2026-10-07; la 1.3.0 enviada el 2026-10-08, en certificación (mientras tanto, el botón de la Store está comentado en la web).
-- **En curso: hito 10** (desde el 2026-10-08), primero el Mac: rama `feat/mac`, `.dmg` universal con firma ad hoc compilado por GitHub Actions (no hay Mac para probar; lo prueba el usuario en un Mac real). Parado hasta que el usuario tenga ese resultado. Linux (Debian y Ubuntu) después.
-- Guía técnica (arquitectura, comandos, empaquetado, flujo de publicación, pruebas): [`docs/developer-guide.md`](docs/developer-guide.md). La web se explica en [`docs/website.md`](docs/website.md). Las particularidades del equipo dedicado, Marcianito (compilar MSIX, pruebas con monitores), y el estado del trabajo en curso están en la memoria del proyecto.
+El estado del proyecto está en [`guppy/STATUS.md`](guppy/STATUS.md).
+
+## Estado del proyecto (Guppy)
+
+Todo lo relacionado con Guppy, el gestor de proyectos de Nilo, vive en el directorio `guppy/` de la raíz del repo, separado de los archivos del proyecto. No guardes datos de Guppy fuera de ese directorio ni datos del proyecto dentro de él.
+
+El estado del proyecto está en `guppy/STATUS.md`. Al terminar cualquier sesión que cambie el estado del proyecto:
+1. Actualiza la cabecera de `guppy/STATUS.md` (estado, siguiente_paso, bloqueo, actualizado).
+2. Añade una entrada breve al principio de su Diario.
+3. Incluye el cambio en el commit.
+
+Estados: activo, bloqueado, en-pausa, pendiente, terminado. Si está bloqueado, di qué se espera y de quién.
+No uses CHANGELOG.md para esto: es para usuarios.
+
+## Documentación
+
+- Guía técnica (arquitectura, comandos, empaquetado, flujo de publicación, pruebas): [`docs/developer-guide.md`](docs/developer-guide.md). La web se explica en [`docs/website.md`](docs/website.md). Las particularidades del equipo dedicado, Marcianito (compilar MSIX, pruebas con monitores), y los detalles del trabajo en curso están en la memoria del proyecto.
 
 ## Producto y público (decidido)
 
