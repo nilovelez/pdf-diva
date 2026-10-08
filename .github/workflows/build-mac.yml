@@ -24,15 +24,33 @@ jobs:
       - run: npm ci
       - run: npm run typecheck
       - run: npm run lint
-      - run: npm run dist:mac
+      - name: Build the dmg
+        run: |
+          set -o pipefail
+          npm run dist:mac 2>&1 | tee -a ci.log
       - name: Check the app
         run: |
+          set -o pipefail
           app="release/mac-universal/PDF Diva.app"
-          lipo -archs "$app/Contents/MacOS/PDF Diva"
-          codesign --verify --deep --strict --verbose=2 "$app"
-          plutil -p "$app/Contents/Info.plist" | grep -A12 CFBundleDocumentTypes
+          {
+            lipo -archs "$app/Contents/MacOS/PDF Diva"
+            codesign --verify --deep --strict --verbose=2 "$app"
+            plutil -p "$app/Contents/Info.plist" | grep -A12 CFBundleDocumentTypes
+          } 2>&1 | tee -a ci.log
+      # Runs the packaged app on the runner's display: there is no Mac to try it on by hand.
+      - name: Smoke test
+        run: |
+          set -o pipefail
+          node scripts/smoke-test.mjs "release/mac-universal/PDF Diva.app/Contents/MacOS/PDF Diva" 2>&1 | tee -a ci.log
       - uses: actions/upload-artifact@v4
         with:
           name: PDF-Diva-mac
           path: release/*.dmg
           if-no-files-found: error
+      # Annotations can be read without signing in to GitHub, unlike the log: the end of the log
+      # of a failed run goes there.
+      - name: Report a failure
+        if: failure()
+        run: |
+          tail -n 60 ci.log | sed 's/%/%25/g' | awk '{printf "%s%%0A", $0}' > tail.txt
+          echo "::error title=End of the log::$(cat tail.txt)"
