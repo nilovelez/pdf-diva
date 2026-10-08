@@ -7,7 +7,8 @@ Aplicación de escritorio para presentar PDFs, con un funcionamiento parecido al
 - **v1.0.0 publicada** (2026-10-05): release de GitHub con el instalador NSIS y paquete MSIX publicado en la Microsoft Store (https://apps.microsoft.com/detail/9nh5x0qbmhq1). Hitos 1 a 6 hechos.
 - **v1.1.0** (hito 7): interfaz en inglés y español, según el idioma de Windows o el elegido en Ajustes.
 - **v1.2.0** (hito 8): PDF Diva aparece en «Abrir con…» para PDFs (sin hacerse predeterminada) y abre los PDF que le pasa el sistema.
-- **En curso: hito 9** (multimonitor y mejora de interfaz, desde el 2026-10-07); después el hito 10 (builds de Mac y Linux), que no se empieza sin el visto bueno del usuario.
+- **v1.3.0** (hito 9, publicada en GitHub el 2026-10-07): la vista del orador escala con la pantalla, «Configurar monitores» (qué muestra cada monitor), cronómetro compartido y el diálogo de abrir recuerda la última carpeta. Microsoft Store: la 1.2.0 aprobada el 2026-10-07; la 1.3.0 enviada el 2026-10-08, en certificación (mientras tanto, el botón de la Store está comentado en la web).
+- **En curso: hito 10** (desde el 2026-10-08), primero el Mac: rama `feat/mac`, `.dmg` universal con firma ad hoc compilado por GitHub Actions (no hay Mac para probar; lo prueba el usuario en un Mac real). Parado hasta que el usuario tenga ese resultado. Linux (Debian y Ubuntu) después.
 - Guía técnica (arquitectura, comandos, empaquetado, flujo de publicación, pruebas): [`docs/developer-guide.md`](docs/developer-guide.md). La web se explica en [`docs/website.md`](docs/website.md). Las particularidades del equipo dedicado, Marcianito (compilar MSIX, pruebas con monitores), y el estado del trabajo en curso están en la memoria del proyecto.
 
 ## Producto y público (decidido)
@@ -130,7 +131,7 @@ pdf-diva/
 ├─ resources/icons/    # iconos de la interfaz (Phosphor); app/ = iconos de la aplicación (.ico, baldosas MSIX)
 ├─ docs/               # developer-guide.md, translating.md, website.md, store-listing.md, maquetas de diseño
 ├─ site/               # la web (GitHub Pages); scripts/ genera su página de privacidad
-└─ .github/workflows/  # despliegue de la web
+└─ .github/workflows/  # despliegue de la web; build del Mac (en `feat/mac`)
 ```
 
 ## Convenciones de código
@@ -158,11 +159,11 @@ npm run dist:store   # paquete MSIX sin firmar: release/PDF-Diva-<versión>.appx
 
 En Windows no existe `python3`: para scripts de Python usar `python` o `py`.
 
-No hay tests automáticos: se prueba la app real controlándola por el protocolo de DevTools (ver `docs/developer-guide.md`). Para compilar el MSIX hacen falta ajustes (herramientas del SDK y `ELECTRON_BUILDER_CACHE`): están en la memoria del proyecto.
+No hay tests automáticos, salvo una prueba de humo de la app empaquetada (`scripts/smoke-test.mjs`, en `feat/mac`) que ejecuta el build del Mac en GitHub Actions: se prueba la app real controlándola por el protocolo de DevTools (ver `docs/developer-guide.md`). Para compilar el MSIX hacen falta ajustes (herramientas del SDK y `ELECTRON_BUILDER_CACHE`): están en la memoria del proyecto.
 
 ## Plan por hitos
 
-Hitos 1 a 8 hechos (v0.1.0 a v1.2.0). En curso: el 9 (multimonitor y mejora de interfaz, desde el 2026-10-07); Mac y Linux pasan al hito 10 (antes 9, y antes 8).
+Hitos 1 a 9 hechos (v0.1.0 a v1.3.0). En curso: el 10 (Mac y Linux, desde el 2026-10-08; antes era el 9, y antes el 8).
 
 1. **Esqueleto**: proyecto Electron + TypeScript que abre una ventana.
 2. **Visor básico**: abrir un PDF y renderizar una página con PDF.js; navegar con teclado.
