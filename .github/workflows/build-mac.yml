@@ -1,0 +1,38 @@
+name: Build for macOS
+
+# The Mac build: a universal .dmg (Apple silicon and Intel), ad-hoc signed. It runs for every
+# version tag and on demand; the .dmg is attached to the run (Actions > this run > Artifacts) and
+# added to the GitHub release by hand, like the Windows installer.
+on:
+  push:
+    tags: ["v*"]
+    branches: [feat/mac]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  dmg:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm run dist:mac
+      - name: Check the app
+        run: |
+          app="release/mac-universal/PDF Diva.app"
+          lipo -archs "$app/Contents/MacOS/PDF Diva"
+          codesign --verify --deep --strict --verbose=2 "$app"
+          plutil -p "$app/Contents/Info.plist" | grep -A12 CFBundleDocumentTypes
+      - uses: actions/upload-artifact@v4
+        with:
+          name: PDF-Diva-mac
+          path: release/*.dmg
+          if-no-files-found: error
