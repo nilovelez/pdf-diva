@@ -107,8 +107,6 @@ There are no automated tests apart from `scripts/smoke-test.mjs` (`node scripts/
 
 Launch the app with `electron . --remote-debugging-port=9333` (or a packaged `.exe` with the same flag), connect to `http://127.0.0.1:9333/json`, and use the DevTools protocol over WebSocket: `Runtime.evaluate` to read/click, `Input.dispatchKeyEvent` for keys, `Input.dispatchDragEvent` with `files: [path]` for real drag and drop. Settings can be isolated with `app.setPath('userData', …)` from a small launcher script. A password-protected PDF can be generated with a few lines of Node (RC4 40-bit, standard security handler). Multi-monitor behaviour is tested by toggling a display (`DisplaySwitch.exe /internal` and `/extend`) while a presentation runs.
 
-## Backlog (not scheduled)
+## Backlog
 
-Milestone 9 (multi-monitor and UI improvements, from user feedback) is implemented: the speaker view scales with its screen and is frameless full screen, every display shows the speaker or the audience view ("Configure displays", design record in `docs/design/mockup-displays.html`), the timer is shared and its buttons are icon-only, and the Open dialog starts in the last folder.
-
-Milestone 10: Mac and Linux builds (Linux: Debian and Ubuntu only). The Mac build is in progress; there is no Mac to test on, so it is checked by GitHub Actions and by people testing the dmg.
+The backlog lives in [`guppy/BACKLOG.md`](../guppy/BACKLOG.md), next to the project status.

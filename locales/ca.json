@@ -1,0 +1,72 @@
+{
+  "_language": "Català",
+
+  "welcome.drop": "Feu clic o arrossegueu un fitxer PDF per obrir-lo",
+  "welcome.open": "Obre un fitxer...",
+  "welcome.license": "Llicència GPL 3.0 o posterior",
+
+  "reader.open": "Obre",
+  "reader.present": "Presenta",
+  "reader.configureDisplays": "Configura les pantalles",
+  "reader.prevPage": "Pàgina anterior",
+  "reader.nextPage": "Pàgina següent",
+  "reader.pageOf": "Pàgina {page} de {total}",
+  "reader.settings": "Configuració",
+  "reader.drawError": "No s'ha pogut mostrar la pàgina.",
+
+  "open.dialogTitle": "Obre un PDF",
+  "open.onlyPdf": "Només es poden obrir fitxers PDF.",
+  "open.readError": "No s'ha pogut llegir el fitxer.",
+  "open.damaged": "El fitxer està malmès o no és un PDF vàlid.",
+  "open.pdfError": "No s'ha pogut llegir el PDF.",
+
+  "dialog.close": "Tanca",
+  "dialog.cancel": "Cancel·la",
+  "dialog.apply": "Aplica",
+
+  "displays.title": "Configura les pantalles",
+  "displays.speaker": "Vista del presentador",
+  "displays.audience": "Vista del públic",
+  "displays.main": "Principal",
+  "displays.builtIn": "Pantalla integrada",
+  "displays.unnamed": "Pantalla {index}",
+  "displays.resolution": "{width} × {height} · {scale} %",
+  "displays.role": "Què mostra la pantalla {index}",
+  "displays.needAudience": "Com a mínim una pantalla ha de mostrar la vista del públic.",
+
+  "settings.title": "Configuració",
+  "settings.theme": "Tema",
+  "settings.theme.system": "Sistema",
+  "settings.theme.light": "Clar",
+  "settings.theme.dark": "Fosc",
+  "settings.theme.hint": "«Sistema» segueix el tema del Windows. La pantalla del públic sempre és negra.",
+  "settings.language": "Llengua",
+  "settings.language.system": "Sistema",
+  "settings.language.hint": "«Sistema» fa servir la llengua del Windows si PDF Diva la té i, si no, l'anglès.",
+
+  "password.title": "PDF protegit amb contrasenya",
+  "password.prompt": "Escriviu la contrasenya per obrir «{name}».",
+  "password.label": "Contrasenya",
+  "password.wrong": "La contrasenya no és correcta. Torneu-ho a provar.",
+  "password.open": "Obre",
+
+  "presenter.windowTitle": "PDF Diva - Presentador",
+  "presenter.pause": "Pausa",
+  "presenter.resume": "Reprèn",
+  "presenter.reset": "Reinicia",
+  "presenter.paused": "En pausa",
+  "presenter.configureDisplays": "Configura les pantalles",
+  "presenter.black": "Pantalla en negre",
+  "presenter.exit": "Surt",
+  "presenter.blackBadge": "Pantalla del públic en negre",
+  "presenter.prev": "Anterior",
+  "presenter.next": "Següent",
+  "presenter.pageOf": "**{page}** de {total}",
+  "presenter.goNext": "Vés a la següent",
+  "presenter.end": "Final de la presentació",
+  "presenter.nextHeading": "Següent",
+
+  "audience.windowTitle": "PDF Diva - Públic",
+
+  "presentation.loadError": "No s'ha pogut carregar la presentació."
+}

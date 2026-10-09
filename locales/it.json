@@ -1,0 +1,72 @@
+{
+  "_language": "Italiano",
+
+  "welcome.drop": "Fai clic o trascina qui un file PDF per aprirlo",
+  "welcome.open": "Apri file...",
+  "welcome.license": "Licenza GPL 3.0 o successiva",
+
+  "reader.open": "Apri",
+  "reader.present": "Presenta",
+  "reader.configureDisplays": "Configura schermi",
+  "reader.prevPage": "Pagina precedente",
+  "reader.nextPage": "Pagina successiva",
+  "reader.pageOf": "Pagina {page} di {total}",
+  "reader.settings": "Impostazioni",
+  "reader.drawError": "Impossibile visualizzare la pagina.",
+
+  "open.dialogTitle": "Apri PDF",
+  "open.onlyPdf": "Si possono aprire solo file PDF.",
+  "open.readError": "Impossibile leggere il file.",
+  "open.damaged": "Il file è danneggiato o non è un PDF valido.",
+  "open.pdfError": "Impossibile leggere il PDF.",
+
+  "dialog.close": "Chiudi",
+  "dialog.cancel": "Annulla",
+  "dialog.apply": "Applica",
+
+  "displays.title": "Configura schermi",
+  "displays.speaker": "Vista relatore",
+  "displays.audience": "Vista pubblico",
+  "displays.main": "Principale",
+  "displays.builtIn": "Schermo integrato",
+  "displays.unnamed": "Schermo {index}",
+  "displays.resolution": "{width} × {height} · {scale}%",
+  "displays.role": "Cosa mostra lo schermo {index}",
+  "displays.needAudience": "Almeno uno schermo deve mostrare la vista pubblico.",
+
+  "settings.title": "Impostazioni",
+  "settings.theme": "Tema",
+  "settings.theme.system": "Sistema",
+  "settings.theme.light": "Chiaro",
+  "settings.theme.dark": "Scuro",
+  "settings.theme.hint": "«Sistema» segue il tema di Windows. Lo schermo del pubblico è sempre nero.",
+  "settings.language": "Lingua",
+  "settings.language.system": "Sistema",
+  "settings.language.hint": "«Sistema» usa la lingua di Windows se PDF Diva la include, altrimenti l'inglese.",
+
+  "password.title": "PDF protetto da password",
+  "password.prompt": "Inserisci la password per aprire «{name}».",
+  "password.label": "Password",
+  "password.wrong": "La password non è corretta. Riprova.",
+  "password.open": "Apri",
+
+  "presenter.windowTitle": "PDF Diva - Relatore",
+  "presenter.pause": "Pausa",
+  "presenter.resume": "Riprendi",
+  "presenter.reset": "Azzera",
+  "presenter.paused": "In pausa",
+  "presenter.configureDisplays": "Configura schermi",
+  "presenter.black": "Schermo nero",
+  "presenter.exit": "Esci",
+  "presenter.blackBadge": "Schermo del pubblico nero",
+  "presenter.prev": "Precedente",
+  "presenter.next": "Successiva",
+  "presenter.pageOf": "**{page}** di {total}",
+  "presenter.goNext": "Vai alla successiva",
+  "presenter.end": "Fine della presentazione",
+  "presenter.nextHeading": "Successiva",
+
+  "audience.windowTitle": "PDF Diva - Pubblico",
+
+  "presentation.loadError": "Impossibile caricare la presentazione."
+}

@@ -1,0 +1,72 @@
+{
+  "_language": "Français",
+
+  "welcome.drop": "Cliquez ou déposez un fichier PDF pour l'ouvrir",
+  "welcome.open": "Ouvrir un fichier...",
+  "welcome.license": "Licence GPL 3.0 ou ultérieure",
+
+  "reader.open": "Ouvrir",
+  "reader.present": "Présenter",
+  "reader.configureDisplays": "Configurer les écrans",
+  "reader.prevPage": "Page précédente",
+  "reader.nextPage": "Page suivante",
+  "reader.pageOf": "Page {page} sur {total}",
+  "reader.settings": "Paramètres",
+  "reader.drawError": "Impossible d'afficher la page.",
+
+  "open.dialogTitle": "Ouvrir un PDF",
+  "open.onlyPdf": "Seuls les fichiers PDF peuvent être ouverts.",
+  "open.readError": "Impossible de lire le fichier.",
+  "open.damaged": "Le fichier est endommagé ou n'est pas un PDF valide.",
+  "open.pdfError": "Impossible de lire le PDF.",
+
+  "dialog.close": "Fermer",
+  "dialog.cancel": "Annuler",
+  "dialog.apply": "Appliquer",
+
+  "displays.title": "Configurer les écrans",
+  "displays.speaker": "Vue du présentateur",
+  "displays.audience": "Vue du public",
+  "displays.main": "Principal",
+  "displays.builtIn": "Écran intégré",
+  "displays.unnamed": "Écran {index}",
+  "displays.resolution": "{width} × {height} · {scale} %",
+  "displays.role": "Ce qu'affiche l'écran {index}",
+  "displays.needAudience": "Au moins un écran doit afficher la vue du public.",
+
+  "settings.title": "Paramètres",
+  "settings.theme": "Thème",
+  "settings.theme.system": "Système",
+  "settings.theme.light": "Clair",
+  "settings.theme.dark": "Sombre",
+  "settings.theme.hint": "« Système » suit le thème de Windows. L'écran du public est toujours noir.",
+  "settings.language": "Langue",
+  "settings.language.system": "Système",
+  "settings.language.hint": "« Système » utilise la langue de Windows si PDF Diva la propose, sinon l'anglais.",
+
+  "password.title": "PDF protégé par mot de passe",
+  "password.prompt": "Saisissez le mot de passe pour ouvrir « {name} ».",
+  "password.label": "Mot de passe",
+  "password.wrong": "Le mot de passe est incorrect. Réessayez.",
+  "password.open": "Ouvrir",
+
+  "presenter.windowTitle": "PDF Diva - Présentateur",
+  "presenter.pause": "Pause",
+  "presenter.resume": "Reprendre",
+  "presenter.reset": "Réinitialiser",
+  "presenter.paused": "En pause",
+  "presenter.configureDisplays": "Configurer les écrans",
+  "presenter.black": "Écran noir",
+  "presenter.exit": "Quitter",
+  "presenter.blackBadge": "L'écran du public est noir",
+  "presenter.prev": "Précédente",
+  "presenter.next": "Suivante",
+  "presenter.pageOf": "**{page}** sur {total}",
+  "presenter.goNext": "Aller à la suivante",
+  "presenter.end": "Fin de la présentation",
+  "presenter.nextHeading": "Suivante",
+
+  "audience.windowTitle": "PDF Diva - Public",
+
+  "presentation.loadError": "Impossible de charger la présentation."
+}

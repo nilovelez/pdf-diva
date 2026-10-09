@@ -1,0 +1,72 @@
+{
+  "_language": "Andalûh",
+
+  "welcome.drop": "Âh clîh o arrâttra un fixero pdf pa abrîl-lo",
+  "welcome.open": "Abrîh arxibo...",
+  "welcome.license": "Liçençia GPL 3.0 o pôtteriôh",
+
+  "reader.open": "Abrîh",
+  "reader.present": "Preçentâh",
+  "reader.configureDisplays": "Configurâh monitorê",
+  "reader.prevPage": "Páhina anteriôh",
+  "reader.nextPage": "Páhina çigiente",
+  "reader.pageOf": "Páhina {page} de {total}",
+  "reader.settings": "Ahûttê",
+  "reader.drawError": "No çe a podío dibuhâh la páhina.",
+
+  "open.dialogTitle": "Abrîh PDF",
+  "open.onlyPdf": "Çolo çe pueden abrîh arxibô PDF.",
+  "open.readError": "No çe a podío leêh el arxibo.",
+  "open.damaged": "El arxibo êttá dañao o no êh un PDF bálido.",
+  "open.pdfError": "No çe a podío leêh el PDF.",
+
+  "dialog.close": "Çerrâh",
+  "dialog.cancel": "Cançelâh",
+  "dialog.apply": "Aplicâh",
+
+  "displays.title": "Configurâh monitorê",
+  "displays.speaker": "Bîtta del oradôh",
+  "displays.audience": "Bîtta der público",
+  "displays.main": "Prinçipâh",
+  "displays.builtIn": "Pantaya integrá",
+  "displays.unnamed": "Monitôh {index}",
+  "displays.resolution": "{width} × {height} · {scale} %",
+  "displays.role": "Qué muêttra er monitôh {index}",
+  "displays.needAudience": "Ar menô un monitôh tiene que môttrâh la bîtta der público.",
+
+  "settings.title": "Ahûttê",
+  "settings.theme": "Tema",
+  "settings.theme.system": "Çîttema",
+  "settings.theme.light": "Claro",
+  "settings.theme.dark": "Ôccuro",
+  "settings.theme.hint": "«Çîttema» çige er tema de Windows. La pantaya der público êh çiempre negra.",
+  "settings.language": "Idioma",
+  "settings.language.system": "Çîttema",
+  "settings.language.hint": "«Çîttema» uça el idioma de Windows çi PDF Diva lo tiene y, çi no, el inglêh.",
+
+  "password.title": "PDF protehío con contraçeña",
+  "password.prompt": "Êccribe la contraçeña pa abrîh «{name}».",
+  "password.label": "Contraçeña",
+  "password.wrong": "La contraçeña no êh corrêtta. Inténtalo de nuebo.",
+  "password.open": "Abrîh",
+
+  "presenter.windowTitle": "PDF Diva - Oradôh",
+  "presenter.pause": "Pauçâh",
+  "presenter.resume": "Reanudâh",
+  "presenter.reset": "Reiniçiâh",
+  "presenter.paused": "En pauça",
+  "presenter.configureDisplays": "Configurâh monitorê",
+  "presenter.black": "Pantaya en negro",
+  "presenter.exit": "Çalîh",
+  "presenter.blackBadge": "Pantaya der público en negro",
+  "presenter.prev": "Anteriôh",
+  "presenter.next": "Çigiente",
+  "presenter.pageOf": "**{page}** de {total}",
+  "presenter.goNext": "Îh a la çigiente",
+  "presenter.end": "Fin de la preçentaçión",
+  "presenter.nextHeading": "Çigiente",
+
+  "audience.windowTitle": "PDF Diva - Público",
+
+  "presentation.loadError": "No çe a podío cargâh la preçentaçión."
+}
