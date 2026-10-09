@@ -1,0 +1,64 @@
+name: Build for Linux
+
+# The Linux build: a .deb for Debian and Ubuntu (x64). It runs for every version tag and on
+# demand; the .deb is attached to the run (Actions > this run > Artifacts) and added to the
+# GitHub release by hand, like the Windows installer.
+on:
+  push:
+    tags: ["v*"]
+    branches: [feat/linux]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  deb:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run lint
+      - name: Build the deb
+        run: |
+          set -o pipefail
+          npm run dist:linux 2>&1 | tee build.log
+      # Installs the package the way a user would, then checks what it put on the system.
+      - name: Install and check the deb
+        run: |
+          set -o pipefail
+          {
+            dpkg-deb --info release/*.deb
+            sudo apt-get install -y ./release/*.deb
+            cat /usr/share/applications/pdf-diva.desktop
+            ls -l "/opt/PDF Diva/chrome-sandbox"
+          } 2>&1 | tee check.log
+      # Runs the installed app on a virtual display.
+      - name: Smoke test
+        run: |
+          set -o pipefail
+          xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24" \
+            node scripts/smoke-test.mjs "/opt/PDF Diva/pdf-diva" 2>&1 | tee smoke.log
+          echo "::notice title=Smoke test::$(grep -E '^(OK|FAIL|ALL|SMOKE)' smoke.log | awk '{printf "%s%%0A", $0}')"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: PDF-Diva-linux
+          path: release/*.deb
+          if-no-files-found: error
+      # Annotations can be read without signing in to GitHub, unlike the log: the end of the log
+      # of the step that failed goes there (an annotation holds about 4 KB).
+      - name: Report a failure
+        if: failure()
+        run: |
+          for log in smoke.log check.log build.log; do
+            if [ -f "$log" ]; then
+              tail -n 25 "$log" | cut -c1-150 | sed 's/%/%25/g' | awk '{printf "%s%%0A", $0}' > tail.txt
+              echo "::error title=End of $log::$(cat tail.txt)"
+              break
+            fi
+          done

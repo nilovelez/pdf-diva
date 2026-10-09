@@ -4,6 +4,8 @@
 #   npm run pack        -> unpacked folder, to try the packaged app quickly
 # and one on macOS, built by GitHub Actions (.github/workflows/build-mac.yml):
 #   npm run dist:mac    -> universal .dmg (Apple silicon and Intel), ad-hoc signed
+# and one on Linux, also built by GitHub Actions (.github/workflows/build-linux.yml):
+#   npm run dist:linux  -> .deb for Debian and Ubuntu (x64)
 appId: com.nilovelez.pdfdiva
 productName: PDF Diva
 copyright: Copyright © 2026 Nilo Vélez
@@ -55,6 +57,22 @@ mac:
 
 dmg:
   artifactName: PDF-Diva-${version}.${ext}
+
+linux:
+  target:
+    - target: deb
+      arch: x64
+  icon: resources/icons/app/icon-512.png
+  category: Office
+  synopsis: A presenter view for any PDF
+  # The author has no e-mail in package.json, which the .deb would take as its maintainer.
+  maintainer: Nilo Vélez
+  # Lists PDF Diva in "Open with" for PDFs. It only becomes the default viewer if there is none.
+  mimeTypes:
+    - application/pdf
+
+deb:
+  artifactName: PDF-Diva-${version}-amd64.${ext}
 
 win:
   target:
