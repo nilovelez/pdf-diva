@@ -1,7 +1,7 @@
 ---
 estado: bloqueado
-siguiente_paso: Probar el .dmg del Mac en un Mac real y el .deb de Linux en Linux Mint y Ubuntu 22.04, y corregir lo que salga.
-bloqueo: "Nilo: resultado de las pruebas del .dmg (Mac real) y del .deb (Linux Mint y Ubuntu 22.04)."
+siguiente_paso: Probar el .dmg del Mac en un Mac real y el .deb de Linux en Linux Mint y Ubuntu 24.04 (Mint ya probado y bien), y corregir lo que salga.
+bloqueo: "Nilo: resultado de las pruebas del .dmg (Mac real) y del .deb (Ubuntu 24.04 en VirtualBox; Mint ya está probado y bien)."
 actualizado: 2026-10-09
 ---
 
@@ -13,6 +13,7 @@ Aparte, hay siete idiomas nuevos preparados en `locales/` (francés, alemán, it
 
 ## Diario
 
+- 2026-10-09: el .deb pasa todas las pruebas en Linux Mint 22.3 MATE (portátil real); en Ubuntu 24.04 (VirtualBox, Wayland) no abre la ventana, en estudio.
 - 2026-10-09: primer .deb de Linux (rama `feat/linux`), compilado y con la prueba de humo en verde; en manos de Nilo para probarlo.
 - 2026-10-09: el andaluz pasa a `es-x-andaluh.json` (etiqueta BCP 47 válida; nunca automático, se elige a mano).
 - 2026-10-09: andaluz (Andalûh, EPA) en `locales/es-an.json`, sin registrar; backlog al día.
