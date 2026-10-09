@@ -13,6 +13,7 @@ Aparte, hay siete idiomas nuevos preparados en `locales/` (francés, alemán, it
 
 ## Diario
 
+- 2026-10-09: el .deb funciona en Ubuntu 24.04 desde USB en un portátil real (sesión X11); Nilo da por terminadas las pruebas de Linux.
 - 2026-10-09: el .deb pasa todas las pruebas en Linux Mint 22.3 MATE (portátil real); en Ubuntu 24.04 (VirtualBox, Wayland) no abre la ventana, en estudio.
 - 2026-10-09: primer .deb de Linux (rama `feat/linux`), compilado y con la prueba de humo en verde; en manos de Nilo para probarlo.
 - 2026-10-09: el andaluz pasa a `es-x-andaluh.json` (etiqueta BCP 47 válida; nunca automático, se elige a mano).
