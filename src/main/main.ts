@@ -227,6 +227,10 @@ function keepOffline(): void {
   );
 }
 
+// On Linux, run through X11 (XWayland on a Wayland desktop): Wayland does not let an app place its
+// windows, and each presentation window has to go to a given display.
+if (process.platform === 'linux') app.commandLine.appendSwitch('ozone-platform', 'x11');
+
 // One instance only: opening a PDF from Windows while PDF Diva runs hands it to the running app.
 if (!app.requestSingleInstanceLock()) {
   app.quit();
