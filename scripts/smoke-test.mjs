@@ -82,7 +82,7 @@ async function connect(target) {
     });
   return {
     async evaluate(expression) {
-      const { result } = await send('Runtime.evaluate', { expression, returnByValue: true });
+      const { result } = await send('Runtime.evaluate', { expression, returnByValue: true, awaitPromise: true });
       return result?.result?.value;
     },
     async key(key, code, keyCode) {
@@ -136,13 +136,21 @@ try {
   const speaker = await findTarget('presenter');
   ok(speaker ? 'speaker view open too (two or more displays)' : 'one display: audience only, no speaker view');
 
+  const sessionPage = 'window.presenter.getSession().then((s) => s && s.state.page)';
+  const before = await audience.evaluate(sessionPage);
   await audience.key('ArrowRight', 'ArrowRight', 39);
-  await sleep(500);
+  await waitFor(`ArrowRight to turn the page (was ${before})`, async () => (await audience.evaluate(sessionPage)) === before + 1);
+  ok(`ArrowRight turns the page (${before} -> ${before + 1})`);
   await audience.key('Escape', 'Escape', 27);
   audience.close();
   await waitFor('the presentation to end', async () => !(await findTarget('audience')));
-  await waitFor('the reader back on page 2', async () => pageIs(2, 3)(await launcher.evaluate(pageLabel)));
-  ok('ArrowRight and Esc: presentation ended, reader back on page 2');
+  let readerLabel = '';
+  try {
+    await waitFor('the reader back on page 2', async () => pageIs(2, 3)((readerLabel = await launcher.evaluate(pageLabel))));
+  } catch (error) {
+    throw new Error(`${error instanceof Error ? error.message : String(error)} (the reader shows "${readerLabel}")`);
+  }
+  ok('Esc: presentation ended, reader back on page 2');
 
   // A second PDF from the system while the app runs: Finder's way on macOS, a second launch elsewhere.
   if (isMac) {
