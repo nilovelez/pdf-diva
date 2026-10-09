@@ -39,10 +39,10 @@
   "settings.theme.system": "Sistema",
   "settings.theme.light": "Clar",
   "settings.theme.dark": "Fosc",
-  "settings.theme.hint": "«Sistema» segueix el tema del Windows. La pantalla del públic sempre és negra.",
+  "settings.theme.hint": "«Sistema» segueix el tema del sistema operatiu. La pantalla del públic sempre és negra.",
   "settings.language": "Llengua",
   "settings.language.system": "Sistema",
-  "settings.language.hint": "«Sistema» fa servir la llengua del Windows si PDF Diva la té i, si no, l'anglès.",
+  "settings.language.hint": "«Sistema» fa servir la llengua del sistema operatiu si PDF Diva la té i, si no, l'anglès.",
 
   "password.title": "PDF protegit amb contrasenya",
   "password.prompt": "Escriviu la contrasenya per obrir «{name}».",
@@ -68,5 +68,17 @@
 
   "audience.windowTitle": "PDF Diva - Públic",
 
-  "presentation.loadError": "No s'ha pogut carregar la presentació."
+  "presentation.loadError": "No s'ha pogut carregar la presentació.",
+
+  "menu.hide": "Amagar el PDF Diva",
+  "menu.hideOthers": "Amagar els altres",
+  "menu.showAll": "Mostrar-ho tot",
+  "menu.quit": "Sortir del PDF Diva",
+  "menu.edit": "Edició",
+  "menu.undo": "Desfer",
+  "menu.redo": "Refer",
+  "menu.cut": "Retallar",
+  "menu.copy": "Copiar",
+  "menu.paste": "Enganxar",
+  "menu.selectAll": "Seleccionar-ho tot"
 }

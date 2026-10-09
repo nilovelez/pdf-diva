@@ -39,10 +39,10 @@
   "settings.theme.system": "System",
   "settings.theme.light": "Hell",
   "settings.theme.dark": "Dunkel",
-  "settings.theme.hint": "„System“ folgt dem Windows-Design. Der Publikumsbildschirm ist immer schwarz.",
+  "settings.theme.hint": "„System“ folgt dem Design des Betriebssystems. Der Publikumsbildschirm ist immer schwarz.",
   "settings.language": "Sprache",
   "settings.language.system": "System",
-  "settings.language.hint": "„System“ verwendet die Windows-Sprache, sofern PDF Diva sie anbietet, sonst Englisch.",
+  "settings.language.hint": "„System“ verwendet die Sprache des Betriebssystems, sofern PDF Diva sie anbietet, sonst Englisch.",
 
   "password.title": "Kennwortgeschützte PDF-Datei",
   "password.prompt": "Geben Sie das Kennwort ein, um „{name}“ zu öffnen.",
@@ -68,5 +68,17 @@
 
   "audience.windowTitle": "PDF Diva - Publikum",
 
-  "presentation.loadError": "Die Präsentation konnte nicht geladen werden."
+  "presentation.loadError": "Die Präsentation konnte nicht geladen werden.",
+
+  "menu.hide": "PDF Diva ausblenden",
+  "menu.hideOthers": "Andere ausblenden",
+  "menu.showAll": "Alle einblenden",
+  "menu.quit": "PDF Diva beenden",
+  "menu.edit": "Bearbeiten",
+  "menu.undo": "Widerrufen",
+  "menu.redo": "Wiederholen",
+  "menu.cut": "Ausschneiden",
+  "menu.copy": "Kopieren",
+  "menu.paste": "Einsetzen",
+  "menu.selectAll": "Alles auswählen"
 }

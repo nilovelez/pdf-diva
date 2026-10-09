@@ -39,10 +39,10 @@
   "settings.theme.system": "Systeem",
   "settings.theme.light": "Licht",
   "settings.theme.dark": "Donker",
-  "settings.theme.hint": "“Systeem” volgt het Windows-thema. Het publieksscherm is altijd zwart.",
+  "settings.theme.hint": "“Systeem” volgt het thema van het besturingssysteem. Het publieksscherm is altijd zwart.",
   "settings.language": "Taal",
   "settings.language.system": "Systeem",
-  "settings.language.hint": "“Systeem” gebruikt de taal van Windows als PDF Diva die heeft, en anders Engels.",
+  "settings.language.hint": "“Systeem” gebruikt de taal van het besturingssysteem als PDF Diva die heeft, en anders Engels.",
 
   "password.title": "Met wachtwoord beveiligde pdf",
   "password.prompt": "Voer het wachtwoord in om “{name}” te openen.",
@@ -68,5 +68,17 @@
 
   "audience.windowTitle": "PDF Diva - Publiek",
 
-  "presentation.loadError": "De presentatie kan niet worden geladen."
+  "presentation.loadError": "De presentatie kan niet worden geladen.",
+
+  "menu.hide": "Verberg PDF Diva",
+  "menu.hideOthers": "Verberg andere",
+  "menu.showAll": "Toon alles",
+  "menu.quit": "Stop PDF Diva",
+  "menu.edit": "Wijzig",
+  "menu.undo": "Herstel",
+  "menu.redo": "Opnieuw",
+  "menu.cut": "Knip",
+  "menu.copy": "Kopieer",
+  "menu.paste": "Plak",
+  "menu.selectAll": "Selecteer alles"
 }

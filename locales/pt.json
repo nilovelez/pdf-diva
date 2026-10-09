@@ -39,10 +39,10 @@
   "settings.theme.system": "Sistema",
   "settings.theme.light": "Claro",
   "settings.theme.dark": "Escuro",
-  "settings.theme.hint": "«Sistema» segue o tema do Windows. O ecrã do público é sempre preto.",
+  "settings.theme.hint": "«Sistema» segue o tema do sistema operativo. O ecrã do público é sempre preto.",
   "settings.language": "Idioma",
   "settings.language.system": "Sistema",
-  "settings.language.hint": "«Sistema» usa o idioma do Windows se o PDF Diva o tiver; caso contrário, usa o inglês.",
+  "settings.language.hint": "«Sistema» usa o idioma do sistema operativo se o PDF Diva o tiver; caso contrário, usa o inglês.",
 
   "password.title": "PDF protegido por palavra-passe",
   "password.prompt": "Introduza a palavra-passe para abrir «{name}».",
@@ -68,5 +68,17 @@
 
   "audience.windowTitle": "PDF Diva - Público",
 
-  "presentation.loadError": "Não foi possível carregar a apresentação."
+  "presentation.loadError": "Não foi possível carregar a apresentação.",
+
+  "menu.hide": "Ocultar PDF Diva",
+  "menu.hideOthers": "Ocultar outras",
+  "menu.showAll": "Mostrar tudo",
+  "menu.quit": "Encerrar PDF Diva",
+  "menu.edit": "Edição",
+  "menu.undo": "Desfazer",
+  "menu.redo": "Refazer",
+  "menu.cut": "Cortar",
+  "menu.copy": "Copiar",
+  "menu.paste": "Colar",
+  "menu.selectAll": "Selecionar tudo"
 }

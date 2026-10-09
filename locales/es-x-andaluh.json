@@ -39,10 +39,10 @@
   "settings.theme.system": "Çîttema",
   "settings.theme.light": "Claro",
   "settings.theme.dark": "Ôccuro",
-  "settings.theme.hint": "«Çîttema» çige er tema de Windows. La pantaya der público êh çiempre negra.",
+  "settings.theme.hint": "«Çîttema» çige er tema der çîttema operatibo. La pantaya der público êh çiempre negra.",
   "settings.language": "Idioma",
   "settings.language.system": "Çîttema",
-  "settings.language.hint": "«Çîttema» uça el idioma de Windows çi PDF Diva lo tiene y, çi no, el inglêh.",
+  "settings.language.hint": "«Çîttema» uça el idioma der çîttema operatibo çi PDF Diva lo tiene y, çi no, el inglêh.",
 
   "password.title": "PDF protehío con contraçeña",
   "password.prompt": "Êccribe la contraçeña pa abrîh «{name}».",
@@ -68,5 +68,17 @@
 
   "audience.windowTitle": "PDF Diva - Público",
 
-  "presentation.loadError": "No çe a podío cargâh la preçentaçión."
+  "presentation.loadError": "No çe a podío cargâh la preçentaçión.",
+
+  "menu.hide": "Ocurtâh PDF Diva",
+  "menu.hideOthers": "Ocurtâh otrô",
+  "menu.showAll": "Môttrâh tó",
+  "menu.quit": "Çalîh de PDF Diva",
+  "menu.edit": "Ediçión",
+  "menu.undo": "Deçaçêh",
+  "menu.redo": "Reaçêh",
+  "menu.cut": "Cortâh",
+  "menu.copy": "Copiâh",
+  "menu.paste": "Pegâh",
+  "menu.selectAll": "Çelêççionâh tó"
 }
