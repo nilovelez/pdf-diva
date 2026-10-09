@@ -10,6 +10,6 @@ Pendientes de PDF Diva, del más próximo al menos urgente. Lo que ya está publ
 - [ ] **Acciones de GitHub**: pasar `actions/checkout`, `actions/setup-node` y `actions/upload-artifact` (v4) a las versiones con Node 24. Ahora solo dan un aviso de obsolescencia.
 - [ ] **Linux** (solo Debian y Ubuntu): paquete `.deb`, aparecer en «Abrir con…» para PDFs. Sin empezar.
 
-## Distribución
+## Idiomas
 
-- [ ] **Web**: volver a poner el botón de la Microsoft Store (y el del instalador como secundario) cuando la Store apruebe la 1.3.0. Esperando a Microsoft.
+- [ ] **Registrar los idiomas nuevos** en `src/i18n/i18n.ts`: fr, de, it, nl, pt, ca y es-an (Andalûh), ya preparados en `locales/`. `es-an` no es un código de dos letras: `resolveLanguage` lo tiene que saber manejar (que el sistema no lo elija solo, salvo que Windows lo pida) y hay que actualizar `docs/translating.md`. Revisar que los textos largos caben en la vista del orador.
