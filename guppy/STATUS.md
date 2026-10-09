@@ -1,18 +1,19 @@
 ---
 estado: bloqueado
-siguiente_paso: Probar el .dmg del Mac en un Mac real y corregir lo que salga; después, Linux (Debian y Ubuntu).
-bloqueo: "Nilo: resultado de la prueba del .dmg en un Mac real."
+siguiente_paso: Probar el .dmg del Mac en un Mac real y el .deb de Linux en Linux Mint y Ubuntu 22.04, y corregir lo que salga.
+bloqueo: "Nilo: resultado de las pruebas del .dmg (Mac real) y del .deb (Linux Mint y Ubuntu 22.04)."
 actualizado: 2026-10-09
 ---
 
 # Estado
 
-La v1.3.0 (hito 9) está publicada en GitHub y en la Microsoft Store (aprobada el 2026-10-09). El hito 10 (builds de Mac y Linux) está en curso en la rama `feat/mac`: GitHub Actions compila un `.dmg` universal con firma ad hoc que pasa la prueba de humo. Falta probarlo en un Mac real; Linux aún no ha empezado.
+La v1.3.0 (hito 9) está publicada en GitHub y en la Microsoft Store (aprobada el 2026-10-09). El hito 10 (builds de Mac y Linux) está en curso en la rama `feat/mac`: GitHub Actions compila un `.dmg` universal con firma ad hoc que pasa la prueba de humo. Falta probarlo en un Mac real. Linux está en la rama `feat/linux` (sacada de `feat/mac`, con `main` fusionada): GitHub Actions compila un `.deb` (x64), lo instala y le pasa la prueba de humo; falta probarlo en Linux Mint y Ubuntu 22.04.
 
-Aparte, hay seis idiomas nuevos preparados en `locales/` (francés, alemán, italiano, neerlandés, portugués, catalán y andaluz EPA), pero aún no están registrados en la app (`src/i18n/i18n.ts`).
+Aparte, hay siete idiomas nuevos preparados en `locales/` (francés, alemán, italiano, neerlandés, portugués, catalán y andaluz EPA), pero aún no están registrados en la app (`src/i18n/i18n.ts`).
 
 ## Diario
 
+- 2026-10-09: primer .deb de Linux (rama `feat/linux`), compilado y con la prueba de humo en verde; en manos de Nilo para probarlo.
 - 2026-10-09: el andaluz pasa a `es-x-andaluh.json` (etiqueta BCP 47 válida; nunca automático, se elige a mano).
 - 2026-10-09: andaluz (Andalûh, EPA) en `locales/es-an.json`, sin registrar; backlog al día.
 - 2026-10-09: traducciones fr, de, it, nl, pt (de Portugal) y ca en `locales/`, sin registrar todavía en la app.
