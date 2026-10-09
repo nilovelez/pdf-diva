@@ -25,7 +25,7 @@
   "dialog.apply": "Aplicar",
 
   "displays.title": "Configurar ecrãs",
-  "displays.speaker": "Vista do apresentador",
+  "displays.speaker": "Vista do orador",
   "displays.audience": "Vista do público",
   "displays.main": "Principal",
   "displays.builtIn": "Ecrã integrado",
@@ -50,7 +50,7 @@
   "password.wrong": "A palavra-passe não está correta. Tente novamente.",
   "password.open": "Abrir",
 
-  "presenter.windowTitle": "PDF Diva - Apresentador",
+  "presenter.windowTitle": "PDF Diva - Orador",
   "presenter.pause": "Pausar",
   "presenter.resume": "Retomar",
   "presenter.reset": "Repor",
