@@ -13,6 +13,7 @@ Aparte, hay seis idiomas nuevos preparados en `locales/` (francés, alemán, ita
 
 ## Diario
 
+- 2026-10-09: el andaluz pasa a `es-x-andaluh.json` (etiqueta BCP 47 válida; nunca automático, se elige a mano).
 - 2026-10-09: andaluz (Andalûh, EPA) en `locales/es-an.json`, sin registrar; backlog al día.
 - 2026-10-09: traducciones fr, de, it, nl, pt (de Portugal) y ca en `locales/`, sin registrar todavía en la app.
 - 2026-10-09: la Store aprueba la 1.3.0; vuelve el botón de la Store a la web.

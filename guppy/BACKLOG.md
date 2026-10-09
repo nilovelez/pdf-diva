@@ -12,4 +12,4 @@ Pendientes de PDF Diva, del más próximo al menos urgente. Lo que ya está publ
 
 ## Idiomas
 
-- [ ] **Registrar los idiomas nuevos** en `src/i18n/i18n.ts`: fr, de, it, nl, pt, ca y es-an (Andalûh), ya preparados en `locales/`. `es-an` no es un código de dos letras: `resolveLanguage` lo tiene que saber manejar (que el sistema no lo elija solo, salvo que Windows lo pida) y hay que actualizar `docs/translating.md`. Revisar que los textos largos caben en la vista del orador.
+- [ ] **Registrar los idiomas nuevos** en `src/i18n/i18n.ts`: fr, de, it, nl, pt, ca y es-x-andaluh (Andalûh), ya preparados en `locales/`. El andaluz nunca se elige automáticamente (ningún sistema tiene ese locale y `es-*` acaba en `es`), pero se puede escoger en Ajustes; su etiqueta es de uso privado (`es-x-andaluh`, válida en BCP 47), así que la clave en `CATALOGS` va entre comillas y `docs/translating.md` debe explicar la excepción a la regla de las dos letras. Revisar que los textos largos caben en la vista del orador.
