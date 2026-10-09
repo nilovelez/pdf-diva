@@ -8,7 +8,7 @@ Pendientes de PDF Diva, del más próximo al menos urgente. Lo que ya está publ
   - Sin probar todavía: pantalla completa simple con varios monitores y que la barra de menús vuelva al terminar de presentar.
 - [ ] **Antes de fusionar `feat/mac`**: quitar de `.github/workflows/build-mac.yml` el disparador de push a `feat/mac` (que quede solo el de las etiquetas `v*`).
 - [ ] **Linux** (solo Debian y Ubuntu): probar el `.deb` (rama `feat/linux`) en Linux Mint y Ubuntu 22.04 y corregir lo que salga.
-  - **Linux Mint 22.3 MATE (X11), portátil real con Celeron N2820 y 8 GB: todas las pruebas bien** (Nilo, 2026-10-09).
+  - **Linux Mint 22.3 MATE (X11), portátil real con Celeron N2820 y 8 GB: todas las pruebas bien, con dos pantallas (interna + dummy HDMI a 1080p)** (Nilo, 2026-10-09).
   - **Ubuntu 24.04 en VirtualBox (Wayland): la app arranca pero no abre la ventana** (`x11_software_bitmap_presenter … XGetWindowAttributes failed`, también con `--disable-gpu`). Pendiente: probar en «Ubuntu on Xorg» y con `--ozone-platform=wayland` (el build desde 93ea13f lo permite).
   - Fallo intermitente visto una vez en la prueba de humo (run 37924875024): tras flecha derecha + Esc, el lector no volvió en la página 2. La prueba ahora distingue si se pierde la pulsación o la vuelta al lector; si se repite, investigar (un pasador no puede perder pulsaciones).
   - Sin probar todavía: varios monitores, Wayland (la app fuerza X11/XWayland), que no se haga visor predeterminado de PDF.
