@@ -1,0 +1,72 @@
+{
+  "_language": "Nederlands",
+
+  "welcome.drop": "Klik of sleep een pdf-bestand hierheen om het te openen",
+  "welcome.open": "Bestand openen...",
+  "welcome.license": "Licentie: GPL 3.0 of later",
+
+  "reader.open": "Openen",
+  "reader.present": "Presenteren",
+  "reader.configureDisplays": "Beeldschermen instellen",
+  "reader.prevPage": "Vorige pagina",
+  "reader.nextPage": "Volgende pagina",
+  "reader.pageOf": "Pagina {page} van {total}",
+  "reader.settings": "Instellingen",
+  "reader.drawError": "De pagina kan niet worden weergegeven.",
+
+  "open.dialogTitle": "Pdf openen",
+  "open.onlyPdf": "Alleen pdf-bestanden kunnen worden geopend.",
+  "open.readError": "Het bestand kan niet worden gelezen.",
+  "open.damaged": "Het bestand is beschadigd of is geen geldige pdf.",
+  "open.pdfError": "De pdf kan niet worden gelezen.",
+
+  "dialog.close": "Sluiten",
+  "dialog.cancel": "Annuleren",
+  "dialog.apply": "Toepassen",
+
+  "displays.title": "Beeldschermen instellen",
+  "displays.speaker": "Presentatorweergave",
+  "displays.audience": "Publieksweergave",
+  "displays.main": "Hoofdscherm",
+  "displays.builtIn": "Ingebouwd scherm",
+  "displays.unnamed": "Beeldscherm {index}",
+  "displays.resolution": "{width} × {height} · {scale}%",
+  "displays.role": "Wat beeldscherm {index} toont",
+  "displays.needAudience": "Minstens één beeldscherm moet de publieksweergave tonen.",
+
+  "settings.title": "Instellingen",
+  "settings.theme": "Thema",
+  "settings.theme.system": "Systeem",
+  "settings.theme.light": "Licht",
+  "settings.theme.dark": "Donker",
+  "settings.theme.hint": "“Systeem” volgt het Windows-thema. Het publieksscherm is altijd zwart.",
+  "settings.language": "Taal",
+  "settings.language.system": "Systeem",
+  "settings.language.hint": "“Systeem” gebruikt de taal van Windows als PDF Diva die heeft, en anders Engels.",
+
+  "password.title": "Met wachtwoord beveiligde pdf",
+  "password.prompt": "Voer het wachtwoord in om “{name}” te openen.",
+  "password.label": "Wachtwoord",
+  "password.wrong": "Het wachtwoord is onjuist. Probeer het opnieuw.",
+  "password.open": "Openen",
+
+  "presenter.windowTitle": "PDF Diva - Presentator",
+  "presenter.pause": "Pauzeren",
+  "presenter.resume": "Hervatten",
+  "presenter.reset": "Resetten",
+  "presenter.paused": "Gepauzeerd",
+  "presenter.configureDisplays": "Beeldschermen instellen",
+  "presenter.black": "Zwart scherm",
+  "presenter.exit": "Afsluiten",
+  "presenter.blackBadge": "Publieksscherm is zwart",
+  "presenter.prev": "Vorige",
+  "presenter.next": "Volgende",
+  "presenter.pageOf": "**{page}** van {total}",
+  "presenter.goNext": "Naar de volgende dia",
+  "presenter.end": "Einde van de presentatie",
+  "presenter.nextHeading": "Volgende",
+
+  "audience.windowTitle": "PDF Diva - Publiek",
+
+  "presentation.loadError": "De presentatie kan niet worden geladen."
+}

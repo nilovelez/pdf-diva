@@ -1,0 +1,72 @@
+{
+  "_language": "Português",
+
+  "welcome.drop": "Clique ou arraste um ficheiro PDF para o abrir",
+  "welcome.open": "Abrir ficheiro...",
+  "welcome.license": "Licença GPL 3.0 ou posterior",
+
+  "reader.open": "Abrir",
+  "reader.present": "Apresentar",
+  "reader.configureDisplays": "Configurar ecrãs",
+  "reader.prevPage": "Página anterior",
+  "reader.nextPage": "Página seguinte",
+  "reader.pageOf": "Página {page} de {total}",
+  "reader.settings": "Definições",
+  "reader.drawError": "Não foi possível mostrar a página.",
+
+  "open.dialogTitle": "Abrir PDF",
+  "open.onlyPdf": "Só é possível abrir ficheiros PDF.",
+  "open.readError": "Não foi possível ler o ficheiro.",
+  "open.damaged": "O ficheiro está danificado ou não é um PDF válido.",
+  "open.pdfError": "Não foi possível ler o PDF.",
+
+  "dialog.close": "Fechar",
+  "dialog.cancel": "Cancelar",
+  "dialog.apply": "Aplicar",
+
+  "displays.title": "Configurar ecrãs",
+  "displays.speaker": "Vista do apresentador",
+  "displays.audience": "Vista do público",
+  "displays.main": "Principal",
+  "displays.builtIn": "Ecrã integrado",
+  "displays.unnamed": "Ecrã {index}",
+  "displays.resolution": "{width} × {height} · {scale}%",
+  "displays.role": "O que mostra o ecrã {index}",
+  "displays.needAudience": "Pelo menos um ecrã tem de mostrar a vista do público.",
+
+  "settings.title": "Definições",
+  "settings.theme": "Tema",
+  "settings.theme.system": "Sistema",
+  "settings.theme.light": "Claro",
+  "settings.theme.dark": "Escuro",
+  "settings.theme.hint": "«Sistema» segue o tema do Windows. O ecrã do público é sempre preto.",
+  "settings.language": "Idioma",
+  "settings.language.system": "Sistema",
+  "settings.language.hint": "«Sistema» usa o idioma do Windows se o PDF Diva o tiver; caso contrário, usa o inglês.",
+
+  "password.title": "PDF protegido por palavra-passe",
+  "password.prompt": "Introduza a palavra-passe para abrir «{name}».",
+  "password.label": "Palavra-passe",
+  "password.wrong": "A palavra-passe não está correta. Tente novamente.",
+  "password.open": "Abrir",
+
+  "presenter.windowTitle": "PDF Diva - Apresentador",
+  "presenter.pause": "Pausar",
+  "presenter.resume": "Retomar",
+  "presenter.reset": "Repor",
+  "presenter.paused": "Em pausa",
+  "presenter.configureDisplays": "Configurar ecrãs",
+  "presenter.black": "Ecrã preto",
+  "presenter.exit": "Sair",
+  "presenter.blackBadge": "Ecrã do público a preto",
+  "presenter.prev": "Anterior",
+  "presenter.next": "Seguinte",
+  "presenter.pageOf": "**{page}** de {total}",
+  "presenter.goNext": "Ir para a seguinte",
+  "presenter.end": "Fim da apresentação",
+  "presenter.nextHeading": "Seguinte",
+
+  "audience.windowTitle": "PDF Diva - Público",
+
+  "presentation.loadError": "Não foi possível carregar a apresentação."
+}
