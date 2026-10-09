@@ -138,6 +138,9 @@ try {
 
   const sessionPage = 'window.presenter.getSession().then((s) => s && s.state.page)';
   const before = await audience.evaluate(sessionPage);
+  // A person never presses within milliseconds of the slide appearing. On Linux (Xvfb), a key
+  // sent that soon was lost twice in a row with the window still settling into full screen.
+  await sleep(1000);
   await audience.key('ArrowRight', 'ArrowRight', 39);
   await waitFor(`ArrowRight to turn the page (was ${before})`, async () => (await audience.evaluate(sessionPage)) === before + 1);
   ok(`ArrowRight turns the page (${before} -> ${before + 1})`);
