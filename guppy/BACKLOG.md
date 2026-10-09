@@ -7,8 +7,11 @@ Pendientes de PDF Diva, del más próximo al menos urgente. Lo que ya está publ
 - [ ] **Mac**: probar el `.dmg` (rama `feat/mac`) en un Mac real y corregir lo que salga. Esperando a Nilo.
   - Sin probar todavía: pantalla completa simple con varios monitores y que la barra de menús vuelva al terminar de presentar.
 - [ ] **Antes de fusionar `feat/mac`**: quitar de `.github/workflows/build-mac.yml` el disparador de push a `feat/mac` (que quede solo el de las etiquetas `v*`).
-- [ ] **Acciones de GitHub**: pasar `actions/checkout`, `actions/setup-node` y `actions/upload-artifact` (v4) a las versiones con Node 24. Ahora solo dan un aviso de obsolescencia.
-- [ ] **Linux** (solo Debian y Ubuntu): paquete `.deb`, aparecer en «Abrir con…» para PDFs. Sin empezar.
+- [ ] **Linux** (solo Debian y Ubuntu): probar el `.deb` (rama `feat/linux`) en Linux Mint y Ubuntu 22.04 y corregir lo que salga. Esperando a Nilo.
+  - Sin probar todavía: varios monitores, Wayland (la app fuerza X11/XWayland), que no se haga visor predeterminado de PDF.
+  - Pendiente: README, guía técnica y web para Linux; `PRIVACY.md` dice que desinstalar borra los ajustes, y `apt remove` no toca `~/.config/PDF Diva`.
+- [ ] **Antes de fusionar `feat/linux`**: fusionar antes `feat/mac` y quitar de `.github/workflows/build-linux.yml` el disparador de push a `feat/linux`.
+- [ ] **Runner de Linux**: `ubuntu-latest` pasa a Ubuntu 26 desde el 19 de octubre de 2026; comprobar que el build sigue bien o fijar `ubuntu-24.04`.
 
 ## Idiomas
 
