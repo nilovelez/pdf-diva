@@ -228,9 +228,10 @@ function keepOffline(): void {
 }
 
 // On Linux, run through X11 (XWayland on a Wayland desktop): Wayland does not let an app place its
-// windows, and each presentation window has to go to a given display. --ozone-platform on the
-// command line still wins.
-if (process.platform === 'linux' && !app.commandLine.hasSwitch('ozone-platform')) {
+// windows, and each presentation window has to go to a given display. An --ozone-platform typed by
+// the user still wins; app.commandLine cannot tell, because Electron adds its own on Wayland.
+const userOzone = process.argv.some((arg) => arg.startsWith('--ozone-platform='));
+if (process.platform === 'linux' && !userOzone) {
   app.commandLine.appendSwitch('ozone-platform', 'x11');
 }
 
