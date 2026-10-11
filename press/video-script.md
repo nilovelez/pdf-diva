@@ -24,18 +24,11 @@ Two possible locations:
 
 In both cases the laptop's external output must be **a cable plugged into the laptop** that can be pulled out for shot 7. If the signal goes through a switcher or converter, pull the cable at the laptop end: some converters keep reporting a display to Windows when their other side is unplugged, and then nothing would happen.
 
-Camera: on a tripod, fixed, horizontal. A mobile phone is fine (1080p or 4K). Settings for filming screens:
-
-- Manual exposure, exposed for the screens (the room can go dark; that's the real look).
-- Shutter at 1/50 (in Europe; 1/60 with 60 Hz lighting) to avoid flicker and rolling bands on screens and projections.
-- Locked focus and white balance. If a screen shows moiré (wavy patterns), change the angle slightly or move back and zoom in.
-
 Before recording:
 
 - [ ] PDF Diva 1.4.0, interface in **English**, dark theme.
 - [ ] Windows: projection mode **Extend** (Win+P), Do Not Disturb on, desktop without icons, clean taskbar.
 - [ ] A demo PDF of your own (see below), named something believable, e.g. `night-skies-talk.pdf`, on a USB stick and copied to the desktop.
-- [ ] Laptop screen brightness high, so it reads on camera next to the projection.
 - [ ] Rehearse shot 7 (cable) twice: check how long Windows takes to bring the display back and that the presentation recovers as expected.
 
 **Demo PDF**: 6–8 slides, 16:9, readable from a distance, no third-party logos, photos or brands. A neutral, believable talk (for example, "Night skies: a beginner's guide"). Slide 1 is the title, so the "next slide" in the speaker view already shows content.

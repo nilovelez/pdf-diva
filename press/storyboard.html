@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PDF Diva storyboard</title>
+<style>
+  :root {
+    --paper: #FBFAF8; --ink: #2B2926; --muted: #6F6A63; --line: #D9D4CD;
+    --accent: #C2185B; --gold: #E8BA30;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--paper); color: var(--ink);
+    font-family: "Segoe UI", system-ui, -apple-system, sans-serif; font-size: 14px; line-height: 1.45; }
+  header { max-width: 1180px; margin: 0 auto; padding: 32px 16px 8px; }
+  h1 { margin: 0 0 4px; font-size: 26px; }
+  header p { margin: 0; color: var(--muted); }
+  .board { max-width: 1180px; margin: 0 auto; padding: 16px; display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 28px 24px; }
+  .frame { display: flex; flex-direction: column; gap: 8px; break-inside: avoid; }
+  .frame svg { width: 100%; height: auto; display: block; border: 2px solid var(--ink); border-radius: 4px; background: #fff; }
+  .head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+  .num { font-weight: 700; font-size: 16px; }
+  .time { color: var(--muted); font-variant-numeric: tabular-nums; }
+  .shot { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+  .action { margin: 0; }
+  .cap { margin: 0; font-style: italic; }
+  .cap::before { content: "Caption: "; font-style: normal; color: var(--muted); }
+  footer { max-width: 1180px; margin: 0 auto; padding: 8px 16px 40px; color: var(--muted); }
+  @media print {
+    @page { size: A4 landscape; margin: 12mm; }
+    body { font-size: 11px; }
+    header { padding-top: 0; }
+    .board { grid-template-columns: repeat(2, 1fr); gap: 14px 18px; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>PDF Diva: demo video storyboard</h1>
+  <p>40 seconds, no voice. Shot list and notes in <code>video-script.md</code>. “Audience screen” = the hall projection (booth) or the monitor (simulated booth).</p>
+</header>
+
+<!-- Shared drawings -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <!-- Demo slide: night sky with a planet -->
+    <symbol id="slide" viewBox="0 0 160 90">
+      <rect width="160" height="90" fill="#1F2B47"/>
+      <rect x="12" y="16" width="62" height="7" rx="2" fill="#F4F1EA"/>
+      <rect x="12" y="29" width="44" height="4" rx="2" fill="#AEB7CC"/>
+      <rect x="12" y="37" width="50" height="4" rx="2" fill="#AEB7CC"/>
+      <circle cx="116" cy="48" r="20" fill="#E8BA30"/>
+      <ellipse cx="116" cy="48" rx="31" ry="7" fill="none" stroke="#F4F1EA" stroke-width="2"/>
+      <circle cx="84" cy="14" r="1.4" fill="#fff"/><circle cx="146" cy="18" r="1.2" fill="#fff"/>
+      <circle cx="30" cy="70" r="1.2" fill="#fff"/><circle cx="70" cy="76" r="1.4" fill="#fff"/><circle cx="142" cy="78" r="1.2" fill="#fff"/>
+    </symbol>
+    <!-- Next slide: crescent moon -->
+    <symbol id="slide2" viewBox="0 0 160 90">
+      <rect width="160" height="90" fill="#1F2B47"/>
+      <circle cx="80" cy="45" r="24" fill="#F4F1EA"/>
+      <circle cx="92" cy="38" r="22" fill="#1F2B47"/>
+      <rect x="12" y="74" width="56" height="5" rx="2" fill="#AEB7CC"/>
+      <circle cx="130" cy="20" r="1.4" fill="#fff"/><circle cx="24" cy="18" r="1.2" fill="#fff"/>
+    </symbol>
+    <!-- Speaker view -->
+    <symbol id="speaker" viewBox="0 0 160 100">
+      <rect width="160" height="100" fill="#1D1C1B"/>
+      <use href="#slide" x="6" y="12" width="100" height="56"/>
+      <use href="#slide2" x="112" y="12" width="42" height="24"/>
+      <text x="112" y="48" font-size="6.5" fill="#ECE9E5" font-family="Segoe UI, sans-serif">Page 2 of 8</text>
+      <text x="112" y="64" font-size="13" font-weight="700" fill="#ECE9E5" font-family="Segoe UI, sans-serif">00:42</text>
+      <g fill="#3C3A37"><circle cx="16" cy="86" r="5"/><circle cx="30" cy="86" r="5"/><circle cx="44" cy="86" r="5"/><circle cx="58" cy="86" r="5"/></g>
+      <rect x="128" y="81" width="26" height="10" rx="3" fill="#3C3A37"/>
+    </symbol>
+    <!-- Hand (simple mitten), pointing right -->
+    <symbol id="hand" viewBox="0 0 80 50">
+      <path d="M2 30 C2 18 14 12 28 12 L56 12 C62 12 64 20 58 21 L40 22 L66 22 C73 22 73 31 66 31 L44 31 L62 31 C68 31 68 39 62 39 L28 39 C14 39 2 40 2 30 Z" fill="#E9D7C4" stroke="#2B2926" stroke-width="2" stroke-linejoin="round"/>
+    </symbol>
+  </defs>
+</svg>
+
+<main class="board">
+
+  <!-- 1 -->
+  <section class="frame">
+    <svg viewBox="0 0 320 180" role="img" aria-label="Frame 1: a hand puts a USB stick on the booth desk, next to the laptop">
+      <rect width="320" height="180" fill="#3A3836"/>
+      <rect y="112" width="320" height="68" fill="#5A5550"/>
+      <line x1="0" y1="112" x2="320" y2="112" stroke="#2B2926" stroke-width="2"/>
+      <!-- laptop, right -->
+      <path d="M206 34 L300 34 L300 104 L206 104 Z" fill="#1D1C1B" stroke="#2B2926" stroke-width="2"/>
+      <use href="#slide" x="212" y="40" width="82" height="58" opacity=".35"/>
+      <path d="M196 106 L310 106 L318 122 L188 122 Z" fill="#8C8781" stroke="#2B2926" stroke-width="2"/>
+      <!-- USB stick + hand -->
+      <rect x="128" y="124" width="34" height="12" rx="3" fill="#C2185B" stroke="#2B2926" stroke-width="2"/>
+      <rect x="162" y="126" width="10" height="8" fill="#C9C5BF" stroke="#2B2926" stroke-width="2"/>
+      <use href="#hand" x="62" y="104" width="92" height="58"/>
+      <rect x="0" y="152" width="320" height="28" fill="rgba(0,0,0,.55)"/>
+      <text x="160" y="171" text-anchor="middle" font-size="12" font-weight="600" fill="#fff" font-family="Segoe UI, sans-serif">Sooner or later, a speaker hands you a PDF.</text>
+    </svg>
+    <div class="head"><span class="num">1</span><span class="time">0:00–0:04</span></div>
+    <div class="shot">Close-up</div>
+    <p class="action">A hand puts a USB stick on the booth desk, next to the laptop.</p>
+    <p class="cap">Sooner or later, a speaker hands you a PDF.</p>
+  </section>
+
+  <!-- 2 -->
+  <section class="frame">
+    <svg viewBox="0 0 320 180" role="img" aria-label="Frame 2: over the shoulder, Open with, PDF Diva, in the context menu of the PDF">
+      <rect width="320" height="180" fill="#3A3836"/>
+      <rect x="56" y="14" width="236" height="148" rx="4" fill="#1D1C1B" stroke="#2B2926" stroke-width="2"/>
+      <rect x="62" y="20" width="224" height="136" fill="#F4F2EF"/>
+      <rect x="62" y="20" width="224" height="14" fill="#E3DFD9"/>
+      <g fill="#C9C5BF"><rect x="72" y="44" width="80" height="6" rx="2"/><rect x="72" y="60" width="96" height="6" rx="2"/><rect x="72" y="92" width="70" height="6" rx="2"/></g>
+      <rect x="66" y="72" width="140" height="14" fill="#D7E3F4"/>
+      <text x="72" y="82.5" font-size="8" fill="#2B2926" font-family="Segoe UI, sans-serif">night-skies-talk.pdf</text>
+      <!-- context menu -->
+      <rect x="150" y="80" width="78" height="52" fill="#fff" stroke="#9C968F"/>
+      <g font-size="7.5" fill="#2B2926" font-family="Segoe UI, sans-serif">
+        <text x="158" y="94">Open</text>
+        <rect x="151" y="99" width="76" height="12" fill="#ECE9E5"/>
+        <text x="158" y="108">Open with  ›</text>
+        <text x="158" y="124">Copy</text>
+      </g>
+      <rect x="228" y="98" width="62" height="30" fill="#fff" stroke="#9C968F"/>
+      <rect x="229" y="100" width="60" height="12" fill="#C2185B"/>
+      <text x="234" y="109" font-size="7.5" font-weight="600" fill="#fff" font-family="Segoe UI, sans-serif">PDF Diva</text>
+      <text x="234" y="123" font-size="7.5" fill="#6F6A63" font-family="Segoe UI, sans-serif">Other app</text>
+      <!-- shoulder -->
+      <path d="M0 180 L0 96 C24 92 50 110 58 140 L66 180 Z" fill="#141312"/>
+    </svg>
+    <div class="head"><span class="num">2</span><span class="time">0:04–0:09</span></div>
+    <div class="shot">Over the shoulder, laptop screen</div>
+    <p class="action">Right-click the PDF → Open with → PDF Diva. The reader opens with its thumbnails. (Or drag the PDF onto the window.)</p>
+  </section>
+
+  <!-- 3 -->
+  <section class="frame">
+    <svg viewBox="0 0 320 180" role="img" aria-label="Frame 3: the reader open, the pointer clicks Present">
+      <rect width="320" height="180" fill="#3A3836"/>
+      <rect x="40" y="8" width="240" height="132" rx="4" fill="#1D1C1B" stroke="#2B2926" stroke-width="2"/>
+      <rect x="46" y="14" width="228" height="120" fill="#242321"/>
+      <rect x="46" y="14" width="228" height="16" fill="#2E2C2A"/>
+      <rect x="226" y="17" width="44" height="10" rx="3" fill="#E8BA30"/>
+      <text x="248" y="24.5" text-anchor="middle" font-size="6.5" font-weight="700" fill="#1A1206" font-family="Segoe UI, sans-serif">Present</text>
+      <g><use href="#slide" x="52" y="36" width="34" height="19"/><use href="#slide2" x="52" y="60" width="34" height="19"/><use href="#slide" x="52" y="84" width="34" height="19" opacity=".6"/></g>
+      <rect x="51" y="35" width="36" height="21" fill="none" stroke="#E8BA30" stroke-width="1.5"/>
+      <use href="#slide" x="100" y="40" width="160" height="90"/>
+      <!-- pointer -->
+      <path d="M252 26 L252 42 L256 38 L259 45 L262 44 L259 37 L264 37 Z" fill="#fff" stroke="#000" stroke-width="1"/>
+      <!-- keyboard base + finger on trackpad -->
+      <path d="M26 142 L294 142 L312 176 L8 176 Z" fill="#8C8781" stroke="#2B2926" stroke-width="2"/>
+      <rect x="124" y="152" width="72" height="20" rx="3" fill="#7A756F" stroke="#2B2926" stroke-width="1.5"/>
+      <path d="M200 180 L170 162 C164 158 168 152 174 155 L214 176 L216 180 Z" fill="#E9D7C4" stroke="#2B2926" stroke-width="2"/>
+    </svg>
+    <div class="head"><span class="num">3</span><span class="time">0:09–0:12</span></div>
+    <div class="shot">Close-up, hand and screen</div>
+    <p class="action">Click Present.</p>
+  </section>
+
+  <!-- 4 -->
+  <section class="frame">
+    <svg viewBox="0 0 320 180" role="img" aria-label="Frame 4: wide shot, the slide on the hall screen through the booth window, speaker view on the laptop in the foreground">
+      <rect width="320" height="180" fill="#2B2926"/>
+      <!-- window to the hall -->
+      <rect x="10" y="8" width="300" height="112" fill="#141720"/>
+      <use href="#slide" x="132" y="18" width="128" height="72"/>
+      <path d="M126 94 L266 94" stroke="#3A3F4D" stroke-width="2"/>
+      <g fill="#0B0D12"><circle cx="40" cy="120" r="10"/><circle cx="68" cy="122" r="10"/><circle cx="96" cy="120" r="10"/><circle cx="124" cy="122" r="10"/><circle cx="152" cy="120" r="10"/><circle cx="180" cy="122" r="10"/><circle cx="208" cy="120" r="10"/><circle cx="236" cy="122" r="10"/><circle cx="264" cy="120" r="10"/><circle cx="292" cy="122" r="10"/></g>
+      <rect x="10" y="8" width="300" height="112" fill="none" stroke="#5A5550" stroke-width="6"/>
+      <!-- desk + laptop -->
+      <rect y="124" width="320" height="56" fill="#46423E"/>
+      <path d="M22 84 L132 84 L132 148 L22 148 Z" fill="#1D1C1B" stroke="#000" stroke-width="2"/>
+      <use href="#speaker" x="27" y="88" width="100" height="56"/>
+      <path d="M14 150 L140 150 L148 164 L6 164 Z" fill="#8C8781" stroke="#000" stroke-width="2"/>
+      <rect x="0" y="152" width="320" height="28" fill="rgba(0,0,0,.55)"/>
+      <text x="196" y="171" text-anchor="middle" font-size="12" font-weight="600" fill="#fff" font-family="Segoe UI, sans-serif">The slide on the projector.</text>
+    </svg>
+    <div class="head"><span class="num">4</span><span class="time">0:12–0:18</span></div>
+    <div class="shot">Wide — the shot that explains the product</div>
+    <p class="action">Through the booth window, the slide fills the audience screen; the laptop shows the speaker view in the foreground. Hold still.</p>
+    <p class="cap">The slide on the projector.</p>
+  </section>
+
+  <!-- 5 -->
+  <section class="frame">
+    <svg viewBox="0 0 320 180" role="img" aria-label="Frame 5: close-up of the speaker view, a hand with a presentation remote in the foreground">
+      <rect width="320" height="180" fill="#2B2926"/>
+      <rect x="22" y="6" width="264" height="152" rx="4" fill="#111" stroke="#000" stroke-width="2"/>
+      <use href="#speaker" x="28" y="12" width="252" height="140"/>
+      <!-- remote in hand -->
+      <g transform="rotate(-18 262 150)">
+        <rect x="236" y="120" width="26" height="58" rx="11" fill="#2B2926" stroke="#000" stroke-width="2"/>
+        <circle cx="249" cy="136" r="5" fill="#C2185B"/>
+        <rect x="243" y="148" width="12" height="6" rx="2" fill="#5A5550"/><rect x="243" y="158" width="12" height="6" rx="2" fill="#5A5550"/>
+      </g>
+      <path d="M232 180 C230 160 240 150 256 150 C272 150 290 160 300 180 Z" fill="#E9D7C4" stroke="#2B2926" stroke-width="2"/>
+      <rect x="0" y="152" width="220" height="28" fill="rgba(0,0,0,.55)"/>
+      <text x="110" y="171" text-anchor="middle" font-size="12" font-weight="600" fill="#fff" font-family="Segoe UI, sans-serif">Next slide and timer for the speaker.</text>
+    </svg>
+    <div class="head"><span class="num">5</span><span class="time">0:18–0:25</span></div>
+    <div class="shot">Close-up on the laptop, remote in the foreground</div>
+    <p class="action">Two clicks on the remote: “Page 2 of 8”, “Page 3 of 8”; the timer runs. The remote must not hide the timer or the page count.</p>
+    <p class="cap">Next slide and timer for the speaker.</p>
+  </section>
+
+  <!-- 6 -->
+  <section class="frame">
+    <svg viewBox="0 0 320 180" role="img" aria-label="Frame 6: press B, the audience screen goes black, press again, the slide is back">
+      <rect width="320" height="180" fill="#141720"/>
+      <rect x="14" y="22" width="132" height="76" fill="#000" stroke="#3A3F4D" stroke-width="2"/>
+      <use href="#slide" x="174" y="22" width="132" height="74"/>
+      <rect x="174" y="22" width="132" height="74" fill="none" stroke="#3A3F4D" stroke-width="2"/>
+      <g font-family="Segoe UI, sans-serif" font-weight="700" text-anchor="middle">
+        <rect x="68" y="108" width="24" height="24" rx="4" fill="#ECE9E5" stroke="#000" stroke-width="2"/><text x="80" y="125" font-size="13" fill="#2B2926">B</text>
+        <rect x="228" y="108" width="24" height="24" rx="4" fill="#ECE9E5" stroke="#000" stroke-width="2"/><text x="240" y="125" font-size="13" fill="#2B2926">B</text>
+      </g>
+      <path d="M150 60 L168 60 M162 54 L168 60 L162 66" fill="none" stroke="#E8BA30" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <rect x="0" y="152" width="320" height="28" fill="rgba(0,0,0,.55)"/>
+      <text x="160" y="171" text-anchor="middle" font-size="12" font-weight="600" fill="#fff" font-family="Segoe UI, sans-serif">Black screen with one key.</text>
+    </svg>
+    <div class="head"><span class="num">6</span><span class="time">0:25–0:29</span></div>
+    <div class="shot">Medium, audience screen</div>
+    <p class="action">Press B: the audience screen goes black. Press it again: the slide is back. One continuous shot (the drawing shows the two moments).</p>
+    <p class="cap">Black screen with one key.</p>
+  </section>
+
+  <!-- 7 -->
+  <section class="frame">
+    <svg viewBox="0 0 320 180" role="img" aria-label="Frame 7: the video cable is pulled out of the laptop; the laptop shows the slide; when it is plugged back, each screen returns to its role">
+      <rect width="320" height="180" fill="#2B2926"/>
+      <!-- audience screen, no signal -->
+      <rect x="168" y="14" width="140" height="80" fill="#000" stroke="#5A5550" stroke-width="3"/>
+      <text x="238" y="58" text-anchor="middle" font-size="8" fill="#6F6A63" font-family="Segoe UI, sans-serif">no signal</text>
+      <!-- laptop showing the slide fullscreen -->
+      <path d="M20 46 L132 46 L132 112 L20 112 Z" fill="#000" stroke="#000" stroke-width="2"/>
+      <use href="#slide" x="24" y="50" width="104" height="58"/>
+      <path d="M12 114 L140 114 L148 128 L4 128 Z" fill="#8C8781" stroke="#000" stroke-width="2"/>
+      <!-- cable pulled out from the laptop side -->
+      <path d="M150 121 L144 121" stroke="#2B2926" stroke-width="3"/>
+      <rect x="138" y="117" width="7" height="8" fill="#C9C5BF" stroke="#000" stroke-width="1.5"/>
+      <rect x="160" y="114" width="16" height="12" rx="2" fill="#1D1C1B" stroke="#000" stroke-width="1.5"/>
+      <path d="M176 120 C210 120 214 140 250 140 C280 140 290 112 300 96" fill="none" stroke="#1D1C1B" stroke-width="4"/>
+      <path d="M152 110 L168 104 M164 100 L168 104 L163 108" fill="none" stroke="#E8BA30" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <use href="#hand" x="160" y="122" width="58" height="36" transform="scale(-1 1) translate(-378 0)"/>
+      <rect x="0" y="152" width="320" height="28" fill="rgba(0,0,0,.55)"/>
+      <text x="160" y="171" text-anchor="middle" font-size="12" font-weight="600" fill="#fff" font-family="Segoe UI, sans-serif">A cable comes loose. It carries on.</text>
+    </svg>
+    <div class="head"><span class="num">7</span><span class="time">0:29–0:36</span></div>
+    <div class="shot">Medium, laptop and audience screen in frame</div>
+    <p class="action">Pull the video cable out at the laptop end. While it's out, the laptop shows the slide fullscreen. Plug it back in: the slide returns to the audience screen, the speaker view to the laptop, same page. Real time.</p>
+    <p class="cap">A cable comes loose. It carries on.</p>
+  </section>
+
+  <!-- 8 -->
+  <section class="frame">
+    <svg viewBox="0 0 320 180" role="img" aria-label="Frame 8: end card with the app icon, name, tagline and website">
+      <rect width="320" height="180" fill="#1D1C1B"/>
+      <path d="M160 22 L168 44 L191 44 L172.5 57.5 L179.5 80 L160 66.5 L140.5 80 L147.5 57.5 L129 44 L152 44 Z" fill="#E8BA30"/>
+      <g text-anchor="middle" font-family="Segoe UI, sans-serif">
+        <text x="160" y="108" font-size="22" font-weight="700" fill="#ECE9E5">PDF Diva</text>
+        <text x="160" y="126" font-size="11" fill="#ECE9E5">A presenter view for any PDF.</text>
+        <text x="160" y="148" font-size="10" fill="#E8BA30">pdfdiva.nilovelez.com</text>
+        <text x="160" y="164" font-size="9" fill="#A8A39C">Free and open source</text>
+      </g>
+    </svg>
+    <div class="head"><span class="num">8</span><span class="time">0:36–0:40</span></div>
+    <div class="shot">End card (made in the edit)</div>
+    <p class="action">App icon, name, tagline, website. Dark background, holds at least 3 s.</p>
+  </section>
+
+</main>
+<footer>Captions: Segoe UI Semibold, white on a dark translucent bar, lower third. Calm tone: describe what happens, no slogans.</footer>
+</body>
+</html>
