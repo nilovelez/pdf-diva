@@ -13,6 +13,7 @@ A partir de aquí, promoción y mantenimiento; no hay más hitos de funciones pr
 
 ## Diario
 
+- 2026-10-11: probado en Linux que PDF Diva sale en «Abrir con…» sin hacerse visor predeterminado de PDF.
 - 2026-10-11: la Store aprueba la 1.4.0.
 
 - 2026-10-10: Nilo publica la release v1.4.0 en GitHub y envía la 1.4.0 a la Store; la web enlaza las descargas de Windows, Mac y Linux.
