@@ -150,6 +150,23 @@ p { margin: 0; }
 .card h3 { font-size: 19px; font-weight: 600; }
 .card p { color: var(--muted); }
 
+/* The problem: centred text on the band. */
+.problem h2 { max-width: 760px; font-size: clamp(30px, 4vw, 40px); line-height: 1.15; font-weight: 700; }
+.problem p { max-width: 680px; color: var(--muted); font-size: 18px; }
+.problem p:last-child { color: var(--text); font-weight: 600; }
+
+/* The plan: three numbered steps. */
+.plan { padding-block: 88px; }
+.steps { list-style: none; margin: 0; padding: 0; counter-reset: step;
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
+.steps li { counter-increment: step; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 24px;
+  display: flex; flex-direction: column; gap: 10px; }
+.steps li::before { content: counter(step); display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%;
+  background: var(--accent); color: var(--on-accent); font-weight: 700; font-size: 18px; }
+.steps h3 { font-size: 19px; font-weight: 600; }
+.steps p { color: var(--muted); }
+.promise { color: var(--muted); font-size: 16px; }
+
 .split { display: flex; flex-wrap: wrap; gap: 48px; align-items: flex-start; padding-block: 88px; }
 .split .section-head { flex: 1 1 300px; }
 .table-box { flex: 2 1 480px; min-width: 0; overflow-x: auto; }
