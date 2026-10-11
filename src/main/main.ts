@@ -29,7 +29,7 @@ import {
 } from './settings';
 import { createWindow } from './windows';
 
-const WEBSITE_URL = 'https://nilovelez.github.io/pdf-diva/';
+const WEBSITE_URL = 'https://pdfdiva.nilovelez.com/';
 
 // The PDF to present is the last one that opened fine; `pending` is the last one read, which may
 // still fail. The launcher reports the id it opened, so a slow open can never swap in another file.
