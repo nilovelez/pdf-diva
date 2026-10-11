@@ -1,17 +1,19 @@
 ---
-estado: bloqueado
+estado: activo
 siguiente_paso: Mantenimiento y promoción. Después del 19 de octubre, comprobar que el build de Linux sigue bien con Ubuntu 26 (o fijar ubuntu-24.04).
-bloqueo: "Microsoft: certificación de la 1.4.0 en la Store."
-actualizado: 2026-10-10
+bloqueo: ""
+actualizado: 2026-10-11
 ---
 
 # Estado
 
-La v1.4.0 (hito 10, el último de funciones) está publicada en GitHub y la web enlaza las descargas de los tres sistemas; en la Store está en certificación. Incluye: builds de Windows (instalador NSIS y MSIX para la Store), Mac (`.dmg` universal con firma ad hoc, probado por Nilo en un MacBook con Apple silicon y un monitor externo) y Linux (`.deb` para Debian y Ubuntu, probado en Linux Mint 22.3 y Ubuntu 24.04 con X11), y siete idiomas nuevos (catalán, alemán, francés, italiano, neerlandés, portugués y andaluz EPA, este solo a mano). Riesgo conocido: Linux con Wayland y XWayland en equipos reales, sin probar.
+La v1.4.0 (hito 10, el último de funciones) está publicada en GitHub y la web enlaza las descargas de los tres sistemas; la Store la aprobó el 11 de octubre. Incluye: builds de Windows (instalador NSIS y MSIX para la Store), Mac (`.dmg` universal con firma ad hoc, probado por Nilo en un MacBook con Apple silicon y un monitor externo) y Linux (`.deb` para Debian y Ubuntu, probado en Linux Mint 22.3 y Ubuntu 24.04 con X11), y siete idiomas nuevos (catalán, alemán, francés, italiano, neerlandés, portugués y andaluz EPA, este solo a mano). Riesgo conocido: Linux con Wayland y XWayland en equipos reales, sin probar.
 
 A partir de aquí, promoción y mantenimiento; no hay más hitos de funciones previstos.
 
 ## Diario
+
+- 2026-10-11: la Store aprueba la 1.4.0.
 
 - 2026-10-10: Nilo publica la release v1.4.0 en GitHub y envía la 1.4.0 a la Store; la web enlaza las descargas de Windows, Mac y Linux.
 
