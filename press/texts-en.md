@@ -12,44 +12,44 @@ PDF Diva is a free, open-source presenter view for PDF files, for Windows, Mac a
 
 ## Short (about 50 words)
 
-PDF Diva presents any PDF like a PowerPoint deck: the slide fills the projector, while your screen shows the current slide, the next one, a timer and the page count. It works with any presentation remote, needs no setup and never connects to the internet. Free and open source, for Windows, Mac and Linux.
+Sooner or later, a speaker hands you a PDF. PDF Diva presents it like any slide deck: the slide on the projector, and the current slide, the next one and a timer on the speaker's screen. It works with any presentation remote and needs no setup. Free and open source, for Windows, Mac and Linux.
 
 ## Medium (about 100 words)
 
-PDF Diva is the app you keep installed for when a speaker turns up with a PDF on a USB stick.
+Sooner or later, a speaker hands you a PDF. PDF viewers can go fullscreen, but they have no presenter view, so the speaker ends up reading the slides off the screen behind them.
 
-Open the PDF, press Present, and the slide goes full screen on the projector. Your own screen shows the current slide, the next one, a timer and "Page 3 of 30". It works with any presentation remote, blacks out the screen with one key, and keeps the show running if a display cable comes loose.
+PDF Diva presents a PDF like any slide deck. The audience sees the slide; the speaker sees the current slide, the next one, a timer and the page count. It works with any presentation remote, blacks out the screen with one key and keeps going if a display cable comes loose.
 
-There's nothing else to install: the PDF renderer is built in. No account, no ads, no telemetry, and it works offline. Free and open source, for Windows, Mac and Linux.
+It needs no setup and no other software. No account, no telemetry, no internet connection. Free and open source, for Windows, Mac and Linux.
 
 ## Long (about 250 words)
 
-Every venue technician knows the moment: the next speaker hands over a USB stick, and the talk is a PDF. PDF viewers can go full screen, but they don't give you what PowerPoint does: the slide on the projector and a presenter view on your own screen.
+Anyone who runs presentations for others knows the situation: the next talk is a PDF. PDF viewers can go fullscreen, but they have no presenter view. Either the speaker turns around to read the slides off the screen, or the displays get mirrored and the audience sees the viewer's toolbars.
 
-PDF Diva does exactly that, and nothing more. Open the PDF, press Present, and the slide fills the projector. The presenter view shows the current slide, the next one, a timer and the page count, sized to stay readable from a distance and in a dark booth. Any standard presentation remote works, because it uses the same keys as PowerPoint: Page Up, Page Down, the arrow keys, F5 to start, B to black out the screen.
+PDF Diva is a small app that does one thing: it presents a PDF like any slide deck. The audience sees the slide. The speaker sees the current slide, the next one, a timer and the page count, large enough to read from a distance and in a dark room. It uses the standard presentation keys (Page Up, Page Down, the arrow keys, F5 to start, B for a black screen), so any presentation remote works.
 
-It was built for the people who run the room. You choose what each display shows (a speaker view for the technician, another for the speaker, the slide for the audience) and you can change it during the show without stopping it. If a cable comes loose, the presentation keeps going and the windows move back into place when the display returns. Password-protected PDFs open too.
+It was designed with venue technicians and video operators in mind. Each display can show the slide or a speaker view (for example, one for the technician and one for the speaker), and that can be changed during the talk without stopping it. If a display is disconnected, the presentation carries on, and the windows go back in place when it returns. Password-protected PDFs open too.
 
-PDF Diva starts fast and needs no setup. The PDF renderer is built in, so it doesn't depend on Acrobat or Office being installed. It has no account, no ads and no telemetry, and it never connects to the internet.
+PDF Diva starts fast and needs no setup. The PDF renderer is built in, so it doesn't depend on other software on the computer. It has no account and no telemetry, it never connects to the internet, and installing it doesn't change the default PDF viewer.
 
-It's free and open source (GPL-3.0), available for Windows (Microsoft Store or installer), macOS 13 or later, and Debian and Ubuntu. The interface is in eight languages.
+It's free and open source (GPL-3.0), for Windows (Microsoft Store or installer), macOS 13 or later, and Debian and Ubuntu. The interface is available in eight languages.
 
 ## Key features
 
-- Presenter view: current slide, next slide, timer and "Page 3 of 30".
+- Speaker view: current slide, next slide, timer and "Page 3 of 30".
 - Works with any presentation remote (Page Up/Down, arrow keys, F5).
-- Choose what each display shows, even during the show: several speaker views, or the slide mirrored on every screen.
+- Choose what each display shows, even during a talk: several speaker views, or the slide on every screen.
 - Keeps going when a display is unplugged and plugged back in.
 - Black screen with one key (B).
 - Sharp on 4K projectors and screens.
 - Opens password-protected PDFs.
-- Built-in PDF renderer: no Acrobat or Office needed.
-- Offline, no account, no ads, no telemetry.
+- Built-in PDF renderer: no other software needed.
+- Works offline. No account, no ads, no telemetry.
 - Interface in English, Spanish, Catalan, Dutch, French, German, Italian and Portuguese.
 
 ## Who it's for
 
-Venue and AV technicians, streaming and video operators, stage managers: anyone who runs presentations for other people and needs a PDF to behave like a slide deck, reliably and without surprises.
+Venue and AV technicians, streaming and video operators, stage managers: anyone who runs presentations for other people and needs a PDF to work like a slide deck.
 
 ## Fact sheet
 

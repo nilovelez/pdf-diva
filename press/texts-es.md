@@ -12,44 +12,44 @@ PDF Diva es una vista del orador gratuita y de código abierto para presentar ar
 
 ## Breve (unas 50 palabras)
 
-PDF Diva presenta cualquier PDF como si fuera un PowerPoint: la diapositiva ocupa todo el proyector y en tu pantalla ves la diapositiva actual, la siguiente, un cronómetro y el número de página. Funciona con cualquier pasador de diapositivas, no necesita configuración y nunca se conecta a internet. Gratuita y de código abierto, para Windows, Mac y Linux.
+Tarde o temprano, un ponente te da un PDF. PDF Diva te deja usarlo como cualquier presentación: la diapositiva en el proyector y, en la pantalla del ponente, la diapositiva actual, la siguiente y un cronómetro. Funciona con cualquier pasador de diapositivas y no necesita configuración. Gratuita y de código abierto, para Windows, Mac y Linux.
 
 ## Media (unas 100 palabras)
 
-PDF Diva es la aplicación que tienes instalada por si un ponente llega con su presentación en PDF en un pendrive.
+Tarde o temprano, un ponente te da un PDF. Los visores de PDF tienen pantalla completa, pero no vista del orador, así que el ponente acaba leyendo las diapositivas en la pantalla que tiene detrás.
 
-Abres el PDF, pulsas «Presentar» y la diapositiva sale a pantalla completa en el proyector. En tu pantalla ves la diapositiva actual, la siguiente, un cronómetro y «3 de 30». Funciona con cualquier pasador, pone la pantalla en negro con una tecla y la presentación sigue aunque se suelte un cable de vídeo.
+PDF Diva te deja usar un PDF como cualquier presentación. El público ve la diapositiva; el ponente ve la diapositiva actual, la siguiente, un cronómetro y el número de página. Funciona con cualquier pasador, pone la pantalla en negro con una tecla y sigue funcionando si se suelta un cable de vídeo.
 
-No hace falta instalar nada más: lleva su propio visor de PDF. Sin cuenta, sin anuncios, sin telemetría y sin conexión a internet. Gratuita y de código abierto, para Windows, Mac y Linux.
+No necesita configuración ni otros programas. Sin cuenta, sin telemetría y sin conexión a internet. Gratuita y de código abierto, para Windows, Mac y Linux.
 
 ## Larga (unas 250 palabras)
 
-Cualquier técnico de sala conoce el momento: el siguiente ponente te da un pendrive y su presentación es un PDF. Los visores de PDF tienen pantalla completa, pero no lo que ofrece PowerPoint: la diapositiva en el proyector y una vista del orador en tu pantalla.
+Quien lleva presentaciones de otras personas conoce la situación: la siguiente charla es un PDF. Los visores de PDF tienen pantalla completa, pero no vista del orador. O el ponente se gira para leer las diapositivas en la pantalla, o se duplican las pantallas y el público ve las barras del visor.
 
-PDF Diva hace exactamente eso y nada más. Abres el PDF, pulsas «Presentar» y la diapositiva ocupa el proyector. La vista del orador muestra la diapositiva actual, la siguiente, un cronómetro y el número de página, con un tamaño pensado para leerse a distancia y en una cabina a oscuras. Funciona con cualquier pasador de diapositivas, porque usa las mismas teclas que PowerPoint: Av Pág, Re Pág, las flechas, F5 para empezar y B para poner la pantalla en negro.
+PDF Diva es una aplicación pequeña que hace una sola cosa: te deja usar un PDF como cualquier presentación. El público ve la diapositiva. El ponente ve la diapositiva actual, la siguiente, un cronómetro y el número de página, con un tamaño que se lee a distancia y con poca luz. Usa las teclas habituales de las presentaciones (Av Pág, Re Pág, las flechas, F5 para empezar y B para la pantalla en negro), así que funciona con cualquier pasador.
 
-Está hecha para quienes llevan la sala. Eliges qué muestra cada monitor (una vista del orador para el técnico, otra para el ponente y la diapositiva para el público) y puedes cambiarlo en plena presentación sin pararla. Si se suelta un cable, la presentación sigue y las ventanas vuelven a su sitio cuando el monitor reaparece. También abre PDF protegidos con contraseña.
+Está pensada para técnicos de sala y operadores de vídeo. Cada monitor puede mostrar la diapositiva o una vista del orador (por ejemplo, una para el técnico y otra para el ponente), y se puede cambiar durante la charla sin pararla. Si se desconecta un monitor, la presentación sigue, y las ventanas vuelven a su sitio cuando el monitor reaparece. También abre PDF protegidos con contraseña.
 
-PDF Diva arranca rápido y no necesita configuración. Lleva su propio visor de PDF, así que no depende de que el equipo tenga Acrobat u Office. No tiene cuenta, ni anuncios, ni telemetría, y nunca se conecta a internet.
+PDF Diva arranca rápido y no necesita configuración. Lleva su propio visor de PDF, así que no depende de otros programas del equipo. No tiene cuenta ni telemetría, nunca se conecta a internet e instalarla no cambia el visor de PDF predeterminado.
 
-Es gratuita y de código abierto (GPL-3.0), y está disponible para Windows (en la Microsoft Store o con instalador), macOS 13 o posterior, y Debian y Ubuntu. La interfaz está en ocho idiomas.
+Es gratuita y de código abierto (GPL-3.0), para Windows (en la Microsoft Store o con instalador), macOS 13 o posterior, y Debian y Ubuntu. La interfaz está en ocho idiomas.
 
 ## Funciones principales
 
 - Vista del orador: diapositiva actual, siguiente, cronómetro y «3 de 30».
 - Funciona con cualquier pasador de diapositivas (Av Pág, Re Pág, flechas, F5).
-- Eliges qué muestra cada monitor, incluso durante la presentación: varias vistas del orador, o la diapositiva duplicada en todas las pantallas.
+- Eliges qué muestra cada monitor, incluso durante una charla: varias vistas del orador, o la diapositiva en todas las pantallas.
 - Sigue funcionando si se desconecta un monitor y se vuelve a conectar.
 - Pantalla en negro con una tecla (B).
 - Nítida en proyectores y pantallas 4K.
 - Abre PDF protegidos con contraseña.
-- Visor de PDF integrado: no necesita Acrobat ni Office.
-- Sin conexión, sin cuenta, sin anuncios y sin telemetría.
+- Visor de PDF integrado: no necesita otros programas.
+- Funciona sin conexión. Sin cuenta, sin anuncios y sin telemetría.
 - Interfaz en español, inglés, catalán, alemán, francés, italiano, neerlandés y portugués.
 
 ## Para quién es
 
-Técnicos de sala y de audiovisuales, operadores de streaming y vídeo, regidores: cualquiera que lleve presentaciones de otras personas y necesite que un PDF se comporte como una presentación, de forma fiable y sin sorpresas.
+Técnicos de sala y de audiovisuales, operadores de streaming y vídeo, regidores: cualquiera que lleve presentaciones de otras personas y necesite que un PDF funcione como una presentación.
 
 ## Ficha
 
