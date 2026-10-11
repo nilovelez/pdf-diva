@@ -13,9 +13,9 @@ Since v1.1.0 the app is in English and Spanish (it follows the Windows language,
 | Price | Free, no in-app purchases |
 | Markets | All |
 | Age rating (IARC questionnaire) | No violence, no user interaction, no data sharing, no purchases → expected: 3+ / Everyone |
-| Privacy policy URL | https://nilovelez.github.io/pdf-diva/privacy.html (generated from `PRIVACY.md` on every website deploy) |
+| Privacy policy URL | https://pdfdiva.nilovelez.com/privacy.html (generated from `PRIVACY.md` on every website deploy) |
 | Store listing (live, v1.0.0 approved) | https://apps.microsoft.com/detail/9nh5x0qbmhq1 |
-| Website | https://nilovelez.github.io/pdf-diva/ |
+| Website | https://pdfdiva.nilovelez.com/ |
 | Support contact | https://github.com/nilovelez/pdf-diva/issues |
 | Copyright | Nilo Vélez |
 | Additional license terms | GNU General Public License v3.0 or later: https://www.gnu.org/licenses/gpl-3.0.html |

@@ -13,6 +13,7 @@ A partir de aquí, promoción y mantenimiento; no hay más hitos de funciones pr
 
 ## Diario
 
+- 2026-10-11: la web pasa a pdfdiva.nilovelez.com (las direcciones antiguas redirigen).
 - 2026-10-11: probado en Linux que PDF Diva sale en «Abrir con…» sin hacerse visor predeterminado de PDF.
 - 2026-10-11: la Store aprueba la 1.4.0.
 

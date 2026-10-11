@@ -1,6 +1,6 @@
 # PDF Diva
 
-**A presenter view for any PDF.** · [Website](https://nilovelez.github.io/pdf-diva/)
+**A presenter view for any PDF.** · [Website](https://pdfdiva.nilovelez.com/)
 
 A desktop app to present PDFs like PowerPoint's presenter view: the audience sees the slide full screen on the projector, and you see the current slide, the next one, a timer and the controls on your own screen.
 
@@ -171,7 +171,7 @@ The gear button on the right of the reader toolbar opens **Settings**. Changes a
 
 ## Privacy
 
-PDF Diva collects no data and never connects to the internet. See the [privacy policy](https://nilovelez.github.io/pdf-diva/privacy.html).
+PDF Diva collects no data and never connects to the internet. See the [privacy policy](https://pdfdiva.nilovelez.com/privacy.html).
 
 ## License
 

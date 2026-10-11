@@ -1,6 +1,6 @@
 # Website maintenance
 
-The PDF Diva website is a static site published with GitHub Pages: <https://nilovelez.github.io/pdf-diva/>. It has no framework, no build step and no dependencies. This file is what you need to keep it running.
+The PDF Diva website is a static site published with GitHub Pages: <https://pdfdiva.nilovelez.com/>. It has no framework, no build step and no dependencies. This file is what you need to keep it running.
 
 ## Rules
 
@@ -41,11 +41,13 @@ node scripts/build-privacy.mjs
 npx serve site
 ```
 
-The privacy URL `https://nilovelez.github.io/pdf-diva/privacy.html` is used in the Microsoft Store listing. Do not rename it.
+The privacy URL `https://pdfdiva.nilovelez.com/privacy.html` is used in the Microsoft Store listing. Do not rename it. Store submissions up to 1.4.0 used the old address, `https://nilovelez.github.io/pdf-diva/privacy.html`, which still works through GitHub's redirect.
 
 ## Deployment
 
 `.github/workflows/pages.yml` runs on every push to `main` that touches `site/`, `PRIVACY.md`, `scripts/build-privacy.mjs` or the workflow itself (and manually with "Run workflow"). It runs the privacy script and uploads `site/`. GitHub Pages is set to Source = GitHub Actions in the repository settings.
+
+The site is served at the custom domain `pdfdiva.nilovelez.com` (since 2026-10-11): a DNS CNAME record `pdfdiva` → `nilovelez.github.io.`, the domain `nilovelez.com` verified in the GitHub account's Pages settings, and the custom domain set in the repository's Pages settings with HTTPS enforced. With Actions deployments no `CNAME` file is needed. GitHub redirects the old `nilovelez.github.io/pdf-diva/` addresses to the new domain, so links in older app versions keep working.
 
 ## Images
 
