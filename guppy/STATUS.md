@@ -1,6 +1,6 @@
 ---
 estado: activo
-siguiente_paso: Mantenimiento y promoción. Después del 19 de octubre, comprobar que el build de Linux sigue bien con Ubuntu 26 (o fijar ubuntu-24.04).
+siguiente_paso: Promoción, mantenimiento y hito 11 (refinamiento, v1.5.0; lista en BACKLOG.md). Después del 19 de octubre, comprobar que el build de Linux sigue bien con Ubuntu 26 (o fijar ubuntu-24.04).
 bloqueo: ""
 actualizado: 2026-10-12
 ---
@@ -9,10 +9,11 @@ actualizado: 2026-10-12
 
 La v1.4.0 (hito 10, el último de funciones) está publicada en GitHub y la web enlaza las descargas de los tres sistemas; la Store la aprobó el 11 de octubre. Incluye: builds de Windows (instalador NSIS y MSIX para la Store), Mac (`.dmg` universal con firma ad hoc, probado por Nilo en un MacBook con Apple silicon y un monitor externo) y Linux (`.deb` para Debian y Ubuntu, probado en Linux Mint 22.3 y Ubuntu 24.04 con X11), y siete idiomas nuevos (catalán, alemán, francés, italiano, neerlandés, portugués y andaluz EPA, este solo a mano). Riesgo conocido: Linux con Wayland y XWayland en equipos reales, sin probar.
 
-A partir de aquí, promoción y mantenimiento; no hay más hitos de funciones previstos.
+A partir de aquí, promoción y mantenimiento; no hay más hitos de funciones previstos. En paralelo, el hito 11 reúne cambios menores de pulido (v1.5.0).
 
 ## Diario
 
+- 2026-10-12: se abre el hito 11, refinamiento: cambios menores que pide Nilo, apuntados en `BACKLOG.md`.
 - 2026-10-12: empieza la promoción: textos de prensa y BrandScript (StoryBrand) en `press/`, y la portada de la web reescrita siguiendo esa historia.
 - 2026-10-11: la web pasa a pdfdiva.nilovelez.com (las direcciones antiguas redirigen).
 - 2026-10-11: probado en Linux que PDF Diva sale en «Abrir con…» sin hacerse visor predeterminado de PDF.

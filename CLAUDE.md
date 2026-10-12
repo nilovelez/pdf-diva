@@ -176,7 +176,7 @@ No hay tests automáticos, salvo una prueba de humo de la app empaquetada (`scri
 
 ## Plan por hitos
 
-Hitos 1 a 10 hechos (v0.1.0 a v1.4.0). No hay más hitos de funciones previstos: a partir de aquí, promoción y mantenimiento.
+Hitos 1 a 10 hechos (v0.1.0 a v1.4.0). No hay más hitos de funciones previstos: a partir de aquí, promoción, mantenimiento y refinamiento (hito 11).
 
 1. **Esqueleto**: proyecto Electron + TypeScript que abre una ventana.
 2. **Visor básico**: abrir un PDF y renderizar una página con PDF.js; navegar con teclado.
@@ -188,6 +188,7 @@ Hitos 1 a 10 hechos (v0.1.0 a v1.4.0). No hay más hitos de funciones previstos:
 8. **Abrir PDFs desde el sistema**: que PDF Diva aparezca en «Abrir con…» y el usuario pueda elegirla como aplicación predeterminada para PDFs (Windows: NSIS y MSIX; Mac y Linux en el hito 10).
 9. **Multimonitor y mejora de interfaz** (opiniones reales de usuarios): primero, que la interfaz se adapte mejor a distintas resoluciones y densidades de pantalla (empezando por la vista del orador en resoluciones grandes); después, cambiar el comportamiento con tres monitores (dos vistas del orador, técnico y ponente, y una salida al público). Se prueba con los dos adaptadores DisplayPort (3 pantallas reales en Marcianito).
 10. **Mac y Linux**: builds de Mac (`.dmg` universal, firma ad hoc) y Linux (`.deb`) en GitHub Actions, y siete idiomas nuevos. En Linux solo se da soporte a **Debian y Ubuntu**.
+11. **Refinamiento** (v1.5.0): cambios menores de pulido que pide el usuario, sin funciones nuevas. No bloquea la promoción ni el mantenimiento; la lista está en `guppy/BACKLOG.md`.
 
 ## Fuera de alcance (por ahora)
 
