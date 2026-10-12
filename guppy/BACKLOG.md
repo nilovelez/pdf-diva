@@ -7,6 +7,7 @@ Pendientes de PDF Diva, del más próximo al menos urgente. Lo que ya está publ
 Cambios menores sin prisa; no bloquean la promoción ni el mantenimiento.
 
 - [ ] **Vista del orador: borde no uniforme.** El marco de la diapositiva actual y la siguiente es más ancho por los lados que arriba y abajo. Causa: `aspect-ratio: 16 / 9` se aplica con el relleno incluido (`box-sizing: border-box` en `#current` y `#next`), así que el hueco interior es más ancho que 16:9. Arreglo: que el 16:9 sea del contenido (`content-box`).
+- [ ] **Ajustes: selector de tema más visual.** El control segmentado (Sistema / Claro / Oscuro) se ve poco y la opción elegida apenas se distingue. Propuesta: tres tarjetas con una miniatura de ventana dibujada en CSS con los colores de cada tema (Sistema = mitad clara y mitad oscura), con el nombre debajo; la elegida, con borde de acento y marca. Ahora que «Configurar monitores» va en su propia ventana, el diálogo de ajustes tiene sitio.
 
 ## Tras la v1.4.0
 
