@@ -2,6 +2,12 @@
 
 Pendientes de PDF Diva, del más próximo al menos urgente. Lo que ya está publicado sale de aquí y queda en el CHANGELOG.
 
+## Hito 11: refinamiento (v1.5.0)
+
+Cambios menores sin prisa; no bloquean la promoción ni el mantenimiento.
+
+- [ ] **Vista del orador: borde no uniforme.** El marco de la diapositiva actual y la siguiente es más ancho por los lados que arriba y abajo. Causa: `aspect-ratio: 16 / 9` se aplica con el relleno incluido (`box-sizing: border-box` en `#current` y `#next`), así que el hueco interior es más ancho que 16:9. Arreglo: que el 16:9 sea del contenido (`content-box`).
+
 ## Tras la v1.4.0
 
 - [ ] **Runner de Linux**: `ubuntu-latest` pasa a Ubuntu 26 desde el 19 de octubre de 2026; comprobar que el build sigue bien o fijar `ubuntu-24.04`.
