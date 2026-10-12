@@ -1,6 +1,6 @@
 ---
 estado: activo
-siguiente_paso: Promoción, mantenimiento y hito 11 (refinamiento, v1.5.0; lista en BACKLOG.md). Después del 19 de octubre, comprobar que el build de Linux sigue bien con Ubuntu 26 (o fijar ubuntu-24.04).
+siguiente_paso: Promoción y mantenimiento. El hito 11 (refinamiento, v1.5.0; lista en BACKLOG.md) espera a tener más opiniones reales de usuarios. Después del 19 de octubre, comprobar que el build de Linux sigue bien con Ubuntu 26 (o fijar ubuntu-24.04).
 bloqueo: ""
 actualizado: 2026-10-12
 ---
@@ -13,7 +13,7 @@ A partir de aquí, promoción y mantenimiento; no hay más hitos de funciones pr
 
 ## Diario
 
-- 2026-10-12: se abre el hito 11, refinamiento: cambios menores que pide Nilo, apuntados en `BACKLOG.md`.
+- 2026-10-12: se abre el hito 11, refinamiento: tres cambios menores apuntados en `BACKLOG.md`. Se harán cuando haya más opiniones reales de usuarios.
 - 2026-10-12: empieza la promoción: textos de prensa y BrandScript (StoryBrand) en `press/`, y la portada de la web reescrita siguiendo esa historia.
 - 2026-10-11: la web pasa a pdfdiva.nilovelez.com (las direcciones antiguas redirigen).
 - 2026-10-11: probado en Linux que PDF Diva sale en «Abrir con…» sin hacerse visor predeterminado de PDF.
