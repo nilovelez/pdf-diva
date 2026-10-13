@@ -7,6 +7,16 @@ Until version 1.0.0 the interface was in Spanish only; entries up to that versio
 
 ## [Unreleased]
 
+## [1.5.0] - 2026-10-13
+
+### Changed
+- **Settings > Theme** shows each option as a small picture of the speaker view in that theme, so the choice is easier to see.
+- The Windows installer has its own side image.
+
+### Fixed
+- The dark frame around the current and next slide in the speaker view is now the same width on every side.
+- In the reader, the highlight of the current thumbnail is centred on the thumbnail again.
+
 ## [1.4.0] - 2026-10-10
 
 ### Added

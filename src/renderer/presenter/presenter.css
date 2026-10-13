@@ -109,13 +109,15 @@ body {
   min-width: 0;
 }
 
+/* The 16:9 is the slide area inside the padding (content-box), so the dark frame around a 16:9
+   slide is the same width on every side. */
 #current {
   position: relative;
-  box-sizing: border-box;
+  box-sizing: content-box;
   aspect-ratio: 16 / 9;
   /* On short windows, leave room for the button row instead of overflowing:
-     top bar, #main padding, #maincol gap and #row */
-  max-height: calc(100vh - var(--bar) - (32px + 12px + 48px) * var(--k));
+     top bar, #main padding, #maincol gap, #row and this box's own padding */
+  max-height: calc(100vh - var(--bar) - (32px + 12px + 48px + 24px) * var(--k));
   display: grid;
   place-items: center;
   padding: calc(12px * var(--k));
@@ -228,7 +230,7 @@ body {
 
 /* Clicking the next-slide preview advances */
 #next {
-  box-sizing: border-box;
+  box-sizing: content-box;
   aspect-ratio: 16 / 9;
   display: grid;
   place-items: center;

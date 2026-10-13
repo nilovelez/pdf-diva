@@ -195,9 +195,26 @@ window.addEventListener('keydown', (event) => {
 
 // ---- Settings dialog ----
 
+const themeCards = [...settingsDialog.querySelectorAll<HTMLButtonElement>('.theme-card')];
+
+/** Draws the speaker view miniature in each theme card ("System" gets a light and a dark one). */
+function fillThemePreviews(): void {
+  const template = byId('speaker-preview') as HTMLTemplateElement;
+  settingsDialog.querySelectorAll<HTMLElement>('[data-preview]').forEach((preview) => {
+    for (const theme of preview.dataset.preview?.split(' ') ?? []) {
+      const mini = template.content.firstElementChild?.cloneNode(true) as HTMLElement;
+      mini.classList.add(theme);
+      preview.append(mini);
+    }
+  });
+}
+
 function fillSettings(settings: Settings): void {
-  settingsDialog.querySelectorAll<HTMLButtonElement>('[data-theme]').forEach((button) => {
-    button.setAttribute('aria-pressed', String(button.dataset.theme === settings.theme));
+  // A radio group: only the chosen card is in the tab order; the arrow keys move between cards.
+  themeCards.forEach((card) => {
+    const chosen = card.dataset.theme === settings.theme;
+    card.setAttribute('aria-checked', String(chosen));
+    card.tabIndex = chosen ? 0 : -1;
   });
   // Each language is listed by its own name, so it can be found whatever the UI language is.
   languageSelect.replaceChildren(
@@ -225,11 +242,22 @@ languageSelect.addEventListener('change', () => {
     .setSettings({ language: languageSelect.value as LanguageSetting })
     .then(applyLanguage);
 });
-settingsDialog.querySelectorAll<HTMLButtonElement>('[data-theme]').forEach((button) => {
-  button.addEventListener('click', () => {
-    void window.presenter
-      .setSettings({ theme: button.dataset.theme as ThemeSetting })
-      .then(fillSettings);
+function chooseTheme(card: HTMLButtonElement): void {
+  void window.presenter
+    .setSettings({ theme: card.dataset.theme as ThemeSetting })
+    .then(fillSettings);
+}
+
+themeCards.forEach((card, index) => {
+  card.addEventListener('click', () => chooseTheme(card));
+  card.addEventListener('keydown', (event) => {
+    const step = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[event.key];
+    if (!step) return;
+    event.preventDefault();
+    const next = themeCards[(index + step + themeCards.length) % themeCards.length];
+    if (!next) return;
+    next.focus();
+    chooseTheme(next);
   });
 });
 settingsDialog.querySelectorAll('[data-close]').forEach((button) => {
@@ -238,6 +266,7 @@ settingsDialog.querySelectorAll('[data-close]').forEach((button) => {
 
 // ---- Wiring ----
 
+fillThemePreviews();
 paintIcons();
 keepFocusOffButtons();
 

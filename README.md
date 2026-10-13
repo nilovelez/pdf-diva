@@ -10,7 +10,7 @@ It doesn't need Acrobat or any other installed program: PDFs are rendered with a
 
 ## Status
 
-**Version 1.4.0.** You present with a speaker view (current slide, next slide and timer), choose what each monitor shows (several speaker views, or the slide mirrored on every screen), change it on the fly and keep going if a cable comes loose. Password-protected PDFs open too. It runs on Windows, macOS and Linux (Debian and Ubuntu). See the [changelog](CHANGELOG.md) for what each version includes.
+**Version 1.5.0.** You present with a speaker view (current slide, next slide and timer), choose what each monitor shows (several speaker views, or the slide mirrored on every screen), change it on the fly and keep going if a cable comes loose. Password-protected PDFs open too. It runs on Windows, macOS and Linux (Debian and Ubuntu). See the [changelog](CHANGELOG.md) for what each version includes.
 
 The interface is in **English, Spanish, Catalan, Dutch, French, German, Italian and Portuguese**, plus Andalûh. It uses the system language when PDF Diva has it, and English otherwise; you can change it in the settings. Want PDF Diva in your language? See [Translating PDF Diva](docs/translating.md).
 
