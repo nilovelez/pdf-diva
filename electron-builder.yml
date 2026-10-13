@@ -56,7 +56,7 @@ mac:
       rank: Alternate
 
 dmg:
-  artifactName: PDF-Diva-${version}.${ext}
+  artifactName: PDF-Diva-macOS-${version}.${ext}
 
 linux:
   target:
@@ -72,7 +72,7 @@ linux:
     - application/pdf
 
 deb:
-  artifactName: PDF-Diva-${version}-amd64.${ext}
+  artifactName: PDF-Diva-Linux-x64-${version}.${ext}
 
 win:
   target:
@@ -83,7 +83,7 @@ win:
       to: document_icon.ico
 
 nsis:
-  artifactName: PDF-Diva-Setup-${version}.${ext}
+  artifactName: PDF-Diva-Windows-${version}.${ext}
   # Per-user install: no administrator rights needed.
   oneClick: false
   perMachine: false

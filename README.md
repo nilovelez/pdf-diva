@@ -33,7 +33,7 @@ On Windows there are two ways to install PDF Diva. Both are free and install the
 
 Use this if the Microsoft Store is blocked on your computer.
 
-1. Download `PDF-Diva-Setup-<version>.exe` from the [latest release](https://github.com/nilovelez/pdf-diva/releases/latest).
+1. Download `PDF-Diva-Windows-<version>.exe` from the [latest release](https://github.com/nilovelez/pdf-diva/releases/latest).
 2. Run it. The app installs for your user only and doesn't ask for administrator rights.
 3. Windows may show **Windows protected your PC** (*Windows protegió su PC*), because the installer isn't digitally signed. Click **More info** (*Más información*) and then **Run anyway** (*Ejecutar de todas formas*).
 
@@ -43,7 +43,7 @@ To update, download and run the new installer: your settings are kept.
 
 ### On a Mac
 
-1. Download `PDF-Diva-<version>.dmg` from the [latest release](https://github.com/nilovelez/pdf-diva/releases/latest), open it and drag **PDF Diva** to **Applications**.
+1. Download `PDF-Diva-macOS-<version>.dmg` from the [latest release](https://github.com/nilovelez/pdf-diva/releases/latest), open it and drag **PDF Diva** to **Applications**.
 2. Open PDF Diva from Applications. The first time, macOS says it can't verify the developer, because the app isn't notarized by Apple. Click **Done** (or **Cancel**).
 3. Open *System Settings > Privacy & Security*, scroll down to the message about PDF Diva and click **Open Anyway**. Confirm with your password. On macOS 13 and 14 you can instead Control-click the app in Applications and choose **Open**.
 
@@ -51,11 +51,11 @@ macOS only asks once. To update, replace the app in Applications with the new on
 
 ### On Linux (Debian and Ubuntu)
 
-1. Download `PDF-Diva-<version>-amd64.deb` from the [latest release](https://github.com/nilovelez/pdf-diva/releases/latest).
+1. Download `PDF-Diva-Linux-x64-<version>.deb` from the [latest release](https://github.com/nilovelez/pdf-diva/releases/latest).
 2. Install it from a terminal in the download folder:
 
    ```bash
-   sudo apt install ./PDF-Diva-<version>-amd64.deb
+   sudo apt install ./PDF-Diva-Linux-x64-<version>.deb
    ```
 
    Opening the file with your desktop's software installer works too.

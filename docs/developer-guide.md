@@ -75,10 +75,10 @@ All UI text is in `locales/<code>.json`: flat keys grouped by screen (`reader.pa
 | `npm run build` | esbuild bundles into `dist/` |
 | `npm run typecheck` / `npm run lint` | `tsc --noEmit` / ESLint (must pass before every commit) |
 | `npm run pack` | Unpacked packaged app in `release/win-unpacked/` (quick check) |
-| `npm run dist` | NSIS installer: `release/PDF-Diva-Setup-<version>.exe` |
+| `npm run dist` | NSIS installer: `release/PDF-Diva-Windows-<version>.exe` |
 | `npm run dist:store` | MSIX package: `release/PDF-Diva-<version>.appx` (unsigned: the Store signs it) |
-| `npm run dist:mac` | macOS only: universal dmg, `release/PDF-Diva-<version>.dmg` (normally built by GitHub Actions) |
-| `npm run dist:linux` | Linux only: `release/PDF-Diva-<version>-amd64.deb` (normally built by GitHub Actions) |
+| `npm run dist:mac` | macOS only: universal dmg, `release/PDF-Diva-macOS-<version>.dmg` (normally built by GitHub Actions) |
+| `npm run dist:linux` | Linux only: `release/PDF-Diva-Linux-x64-<version>.deb` (normally built by GitHub Actions) |
 
 There are no automated tests apart from `scripts/smoke-test.mjs` (`node scripts/smoke-test.mjs <app executable>`), a short end-to-end run that the Mac and Linux builds run in CI and that also works on Windows. Behaviour is checked by running the real app and driving it through the Chromium DevTools protocol (see "Testing" below).
 

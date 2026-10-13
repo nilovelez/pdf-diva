@@ -60,7 +60,7 @@ The site is served at the custom domain `pdfdiva.nilovelez.com` (since 2026-10-1
 ## Releasing a new version
 
 1. In `site/index.html`, change the version in the `meta` line under the hero buttons.
-2. Update the download buttons, three in the hero and three in the closing section ("Windows installer", "macOS", "Linux (.deb)"). They point to the exact files on the release, `https://github.com/nilovelez/pdf-diva/releases/download/vX.Y.Z/` followed by `PDF-Diva-Setup-X.Y.Z.exe`, `PDF-Diva-X.Y.Z.dmg` and `PDF-Diva-X.Y.Z-amd64.deb`.
+2. Update the download buttons, three in the hero and three in the closing section ("Windows installer", "macOS", "Linux (.deb)"). They point to the exact files on the release, `https://github.com/nilovelez/pdf-diva/releases/download/vX.Y.Z/` followed by `PDF-Diva-Windows-X.Y.Z.exe`, `PDF-Diva-macOS-X.Y.Z.dmg` and `PDF-Diva-Linux-x64-X.Y.Z.deb`.
 3. Check that the three files exist on the GitHub release before pushing these changes (the user creates the release, so this push comes after it).
 
 The Microsoft Store badges (hero and closing section) link to the live listing, `https://apps.microsoft.com/detail/9nh5x0qbmhq1`. They need no change per release.
