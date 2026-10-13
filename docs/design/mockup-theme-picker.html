@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mockup: theme picker</title>
+<style>
+/* Mockup for milestone 11: a more visual theme picker in Settings.
+   Tokens copied from src/renderer/shared/theme.css; dialog sizes from shared/dialog.css and launcher.css. */
+:root {
+  --ui: "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif;
+  --radius-sm: 6px; --radius-md: 8px; --radius-lg: 14px;
+  --page-bg: #e6e3df; --page-text: #1f1d1b; --page-muted: #645f59;
+  color-scheme: light dark;
+}
+@media (prefers-color-scheme: dark) { :root { --page-bg: #141312; --page-text: #ece9e5; --page-muted: #a8a39c; } }
+
+/* App themes, applied to a dialog (and to each mini window). */
+.t-light {
+  --bg: #fbfaf8; --surface: #f4f2ef; --surface-2: #ebe8e4; --line: #ddd9d3; --text: #1f1d1b; --muted: #645f59;
+  --accent: #c2185b; --on-accent: #ffffff; --accent-soft: #f9e8ef; --hover: #ece9e5; --reader-stage: #e6e3df;
+  --paper-shadow: rgb(31 29 27 / 0.22); color-scheme: light;
+}
+.t-dark {
+  --bg: #1d1c1b; --surface: #242321; --surface-2: #2e2c2a; --line: #3c3a37; --text: #ece9e5; --muted: #a8a39c;
+  --accent: #e8ba30; --on-accent: #1a1206; --accent-soft: #3e351e; --hover: #33312f; --reader-stage: #141312;
+  --paper-shadow: rgb(0 0 0 / 0.6); color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--page-bg); color: var(--page-text); font: 14px/1.45 var(--ui); }
+.wrap { max-width: 1060px; margin: 0 auto; padding: 24px 16px 56px; display: grid; gap: 28px; }
+h1 { font-size: 22px; margin: 0; }
+.intro { color: var(--page-muted); margin: 6px 0 0; padding-left: 20px; max-width: 80ch; }
+.intro li { margin: 3px 0; }
+.case h2 { font-size: 15px; margin: 0 0 4px; }
+.case > p { margin: 0 0 10px; color: var(--page-muted); max-width: 80ch; }
+.stage { display: flex; flex-wrap: wrap; justify-content: center; align-items: start; gap: 20px; padding: 24px 12px;
+  border-radius: var(--radius-lg); background: rgb(128 128 128 / .1); }
+.col { display: grid; gap: 8px; justify-items: center; }
+.caption { font-size: 12.5px; color: var(--page-muted); }
+
+/* Settings dialog, as in the app (480 px wide). */
+.dialog { width: 480px; max-width: 100%; display: grid; gap: 18px; padding: 22px 24px 20px; background: var(--bg); color: var(--text);
+  border: 1px solid var(--line); border-radius: var(--radius-lg); box-shadow: 0 16px 48px rgb(0 0 0 / .25); }
+.dialog header { display: flex; align-items: center; gap: 10px; }
+.dialog header h3 { margin: 0; font-size: 18px; flex: 1; }
+.dialog header .x { width: 28px; height: 28px; display: grid; place-items: center; border-radius: var(--radius-sm); color: var(--muted); }
+.ico { width: 20px; height: 20px; fill: currentColor; }
+.field { display: grid; gap: 6px; }
+.field > span { font-weight: 600; }
+.field small { color: var(--muted); font-size: 13px; line-height: 1.4; }
+.fake-select { padding: 8px 10px; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--surface); }
+.actions { display: flex; justify-content: flex-end; }
+.btn { display: inline-flex; align-items: center; padding: 7px 14px; border: 1px solid var(--line); border-radius: var(--radius-sm);
+  background: var(--bg); color: var(--text); font: inherit; }
+
+/* Current control (for comparison). */
+.segmented { display: inline-flex; justify-self: start; gap: 2px; padding: 3px; border: 1px solid var(--line);
+  border-radius: var(--radius-md); background: var(--surface); }
+.segmented span { padding: 5px 14px; border-radius: var(--radius-sm); }
+.segmented .on { background: var(--bg); box-shadow: 0 0 0 1px var(--line); font-weight: 600; }
+
+/* Proposed control: three cards, each with a small window drawn in CSS in that theme's colours. */
+.theme-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.theme-card { position: relative; display: grid; gap: 8px; justify-items: center; padding: 8px 8px 9px; min-width: 0;
+  border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--surface); color: var(--text);
+  font: inherit; cursor: pointer; text-align: center; }
+.theme-card:hover { background: var(--hover); }
+.theme-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.theme-card[aria-checked="true"] { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); background: var(--accent-soft); }
+.theme-card .name { overflow-wrap: anywhere; }
+.theme-card[aria-checked="true"] .name { font-weight: 600; }
+.check { position: absolute; top: 3px; right: 3px; width: 20px; height: 20px; display: none; place-items: center;
+  border-radius: 50%; background: var(--accent); color: var(--on-accent); box-shadow: 0 0 0 2px var(--bg); }
+.check svg { width: 12px; height: 12px; fill: currentColor; }
+.theme-card[aria-checked="true"] .check { display: grid; }
+
+.preview { position: relative; width: 100%; aspect-ratio: 16 / 10; }
+.mini { position: absolute; inset: 0; display: grid; grid-template-rows: 20% 1fr; overflow: hidden;
+  border: 1px solid var(--line); border-radius: 5px; background: var(--bg); }
+.mini .bar { display: flex; align-items: center; gap: 4%; padding: 0 6%; background: var(--surface); border-bottom: 1px solid var(--line); }
+.mini .bar i { height: 34%; width: 14%; border-radius: 2px; background: var(--surface-2); }
+.mini .bar i.go { background: var(--accent); }
+.mini .body { display: grid; grid-template-columns: 24% 1fr; min-height: 0; }
+.mini .thumbs { display: grid; align-content: start; gap: 8%; padding: 10% 18%; background: var(--surface); border-right: 1px solid var(--line); }
+.mini .thumbs i { aspect-ratio: 4 / 3; border-radius: 1px; background: #fbfaf8; box-shadow: 0 0 0 1px var(--line); }
+.mini .thumbs i.on { box-shadow: 0 0 0 1.5px var(--accent); }
+.mini .stagearea { display: grid; place-items: center; background: var(--reader-stage); }
+/* The PDF page keeps its own colours whatever the theme. */
+.mini .page { width: 72%; aspect-ratio: 4 / 3; display: grid; align-content: start; gap: 9%; padding: 9% 10%;
+  background: #fbfaf8; box-shadow: 0 1px 3px var(--paper-shadow); }
+.mini .page i { height: 7px; width: 70%; background: #3a3633; border-radius: 1px; }
+.mini .page i + i { height: 3px; width: 90%; background: #b3ada6; }
+.mini .page i + i + i { width: 60%; }
+/* System: light and dark split on the diagonal. */
+.preview.split .mini.t-dark { clip-path: polygon(100% 0, 100% 100%, 0 100%); }
+
+.notes { margin: 0; padding-left: 20px; color: var(--page-muted); max-width: 80ch; }
+.notes li { margin: 3px 0; }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-gear" viewBox="0 0 256 256"><path d="M128 80a48 48 0 1 0 48 48 48.05 48.05 0 0 0-48-48Zm0 80a32 32 0 1 1 32-32 32 32 0 0 1-32 32Zm88-29.84q.06-2.16 0-4.32l14.92-18.64a8 8 0 0 0 1.48-7.06 107.6 107.6 0 0 0-10.88-26.25 8 8 0 0 0-6-3.93l-23.72-2.64q-1.48-1.56-3-3L186 40.54a8 8 0 0 0-3.94-6 107.29 107.29 0 0 0-26.25-10.86 8 8 0 0 0-7.06 1.48L130.16 40q-2.16-.06-4.32 0L107.2 25.11a8 8 0 0 0-7.06-1.48A107.6 107.6 0 0 0 73.89 34.51a8 8 0 0 0-3.93 6L67.32 64.27q-1.56 1.49-3 3L40.54 70a8 8 0 0 0-6 3.94 107.71 107.71 0 0 0-10.87 26.25 8 8 0 0 0 1.49 7.06L40 125.84q-.06 2.16 0 4.32L25.11 148.8a8 8 0 0 0-1.48 7.06 107.6 107.6 0 0 0 10.88 26.25 8 8 0 0 0 6 3.93l23.72 2.64q1.49 1.56 3 3L70 215.46a8 8 0 0 0 3.94 6 107.71 107.71 0 0 0 26.25 10.87 8 8 0 0 0 7.06-1.49L125.84 216q2.16.06 4.32 0l18.64 14.92a8 8 0 0 0 7.06 1.48 107.21 107.21 0 0 0 26.25-10.88 8 8 0 0 0 3.93-6l2.64-23.72q1.56-1.48 3-3L215.46 186a8 8 0 0 0 6-3.94 107.71 107.71 0 0 0 10.87-26.25 8 8 0 0 0-1.49-7.06Z"/></symbol>
+  <symbol id="i-check" viewBox="0 0 256 256"><path d="M232.49 80.49l-128 128a12 12 0 0 1-17 0l-56-56a12 12 0 1 1 17-17L96 183 215.51 63.51a12 12 0 0 1 17 17Z"/></symbol>
+</svg>
+
+<template id="mini">
+  <div class="mini"><div class="bar"><i></i><i></i><i class="go"></i></div>
+    <div class="body"><div class="thumbs"><i class="on"></i><i></i><i></i></div><div class="stagearea"><div class="page"><i></i><i></i><i></i></div></div></div></div>
+</template>
+
+<div class="wrap">
+  <div>
+    <h1>Theme picker (milestone 11 mockup)</h1>
+    <ul class="intro">
+      <li>The segmented control (System / Light / Dark) becomes <b>three cards</b>, each with a small reader window drawn in CSS with that theme's colours. <b>System</b> is split on the diagonal: light and dark.</li>
+      <li>The chosen card has an accent border, a soft accent background, a check mark and its name in bold. The theme still applies instantly, with no Apply button.</li>
+      <li>Same texts as today (no new strings to translate). The cards share the width equally, so longer names wrap instead of breaking the layout.</li>
+      <li>The dialog below works: click a card (or use the arrow keys) and the dialog changes theme. System follows your own system theme.</li>
+    </ul>
+  </div>
+
+  <section class="case">
+    <h2>Proposed</h2>
+    <p>Interactive. The accent changes with the theme: fuchsia in light, gold in dark.</p>
+    <div class="stage"><div class="dialog" id="live"></div></div>
+  </section>
+
+  <section class="case">
+    <h2>Proposed, both themes side by side</h2>
+    <p>Static: Light chosen in the light theme, Dark chosen in the dark theme.</p>
+    <div class="stage">
+      <div class="col"><div class="dialog t-light" data-static="light"></div><span class="caption">Light theme</span></div>
+      <div class="col"><div class="dialog t-dark" data-static="dark"></div><span class="caption">Dark theme</span></div>
+    </div>
+  </section>
+
+  <section class="case">
+    <h2>Today (for comparison)</h2>
+    <p>The chosen option is only a slightly lighter box with bold text.</p>
+    <div class="stage">
+      <div class="col"><div class="dialog t-light" data-before="light"></div><span class="caption">Light theme</span></div>
+      <div class="col"><div class="dialog t-dark" data-before="dark"></div><span class="caption">Dark theme</span></div>
+    </div>
+  </section>
+
+  <section class="case">
+    <h2>Implementation notes (for later)</h2>
+    <ul class="notes">
+      <li>Only <code>launcher/index.html</code> and <code>launcher.css</code> change; <code>launcher.ts</code> keeps the same <code>data-theme</code> buttons, switching <code>aria-pressed</code> for <code>role="radio"</code> + <code>aria-checked</code> in a <code>role="radiogroup"</code>, with arrow keys.</li>
+      <li>The mini windows are plain CSS (no images), with the light and dark tokens scoped to each card, so they always show their own theme whatever the app theme is.</li>
+      <li>The PDF page in the preview keeps its paper colour in both themes, as in the real reader.</li>
+    </ul>
+  </section>
+</div>
+
+<script>
+const THEMES = [['system', 'System'], ['light', 'Light'], ['dark', 'Dark']];
+const HINT = '“System” follows the theme of the operating system. The audience screen is always black.';
+const systemDark = matchMedia('(prefers-color-scheme: dark)');
+
+function header() {
+  return `<header><svg class="ico"><use href="#i-gear"/></svg><h3>Settings</h3><span class="x">✕</span></header>`;
+}
+function tail() {
+  return `<div class="field"><span>Language</span><div class="fake-select">System</div>
+      <small>“System” uses the language of the operating system if PDF Diva has it, and English otherwise.</small></div>
+    <div class="actions"><span class="btn">Close</span></div>`;
+}
+function miniWindow(theme) {
+  const node = document.getElementById('mini').content.firstElementChild.cloneNode(true);
+  node.classList.add(`t-${theme}`);
+  return node;
+}
+
+function renderCards(dialog, chosen, onChange) {
+  dialog.innerHTML = `${header()}
+    <div class="field"><span id="${dialog.id || 'x'}-label">Theme</span>
+      <div class="theme-cards" role="radiogroup" aria-label="Theme"></div><small>${HINT}</small></div>${tail()}`;
+  const group = dialog.querySelector('.theme-cards');
+  for (const [value, label] of THEMES) {
+    const card = document.createElement('button');
+    card.type = 'button';
+    card.className = 'theme-card';
+    card.setAttribute('role', 'radio');
+    card.dataset.theme = value;
+    const preview = document.createElement('span');
+    preview.className = 'preview' + (value === 'system' ? ' split' : '');
+    if (value === 'system') preview.append(miniWindow('light'), miniWindow('dark'));
+    else preview.append(miniWindow(value));
+    card.innerHTML = `<span class="check"><svg><use href="#i-check"/></svg></span>`;
+    card.prepend(preview);
+    card.insertAdjacentHTML('beforeend', `<span class="name">${label}</span>`);
+    group.append(card);
+  }
+  const cards = [...group.children];
+  function select(value, focus) {
+    cards.forEach((c) => {
+      const on = c.dataset.theme === value;
+      c.setAttribute('aria-checked', String(on));
+      c.tabIndex = on ? 0 : -1;
+      if (on && focus) c.focus();
+    });
+    onChange?.(value);
+  }
+  group.addEventListener('click', (e) => { const c = e.target.closest('.theme-card'); if (c) select(c.dataset.theme, false); });
+  group.addEventListener('keydown', (e) => {
+    const step = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[e.key];
+    if (!step) return;
+    e.preventDefault();
+    const i = cards.findIndex((c) => c.getAttribute('aria-checked') === 'true');
+    select(cards[(i + step + cards.length) % cards.length].dataset.theme, true);
+  });
+  select(chosen, false);
+}
+
+// Interactive dialog: its theme follows the chosen card.
+const live = document.getElementById('live');
+let liveChoice = 'system';
+function applyLive() {
+  const theme = liveChoice === 'system' ? (systemDark.matches ? 'dark' : 'light') : liveChoice;
+  live.classList.remove('t-light', 't-dark');
+  live.classList.add(`t-${theme}`);
+}
+renderCards(live, liveChoice, (v) => { liveChoice = v; applyLive(); });
+systemDark.addEventListener('change', applyLive);
+
+document.querySelectorAll('[data-static]').forEach((d) => renderCards(d, d.dataset.static));
+
+document.querySelectorAll('[data-before]').forEach((d) => {
+  const chosen = d.dataset.before;
+  d.innerHTML = `${header()}
+    <div class="field"><span>Theme</span><div class="segmented">${THEMES.map(([v, l]) =>
+      `<span class="${v === chosen ? 'on' : ''}">${l}</span>`).join('')}</div><small>${HINT}</small></div>${tail()}`;
+});
+</script>
+</body>
+</html>
