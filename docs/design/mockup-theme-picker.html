@@ -19,12 +19,12 @@
 .t-light {
   --bg: #fbfaf8; --surface: #f4f2ef; --surface-2: #ebe8e4; --line: #ddd9d3; --text: #1f1d1b; --muted: #645f59;
   --accent: #c2185b; --on-accent: #ffffff; --accent-soft: #f9e8ef; --hover: #ece9e5; --reader-stage: #e6e3df;
-  --paper-shadow: rgb(31 29 27 / 0.22); color-scheme: light;
+  --presenter-stage: #0b0c0e; --paper-shadow: rgb(31 29 27 / 0.22); color-scheme: light;
 }
 .t-dark {
   --bg: #1d1c1b; --surface: #242321; --surface-2: #2e2c2a; --line: #3c3a37; --text: #ece9e5; --muted: #a8a39c;
   --accent: #e8ba30; --on-accent: #1a1206; --accent-soft: #3e351e; --hover: #33312f; --reader-stage: #141312;
-  --paper-shadow: rgb(0 0 0 / 0.6); color-scheme: dark;
+  --presenter-stage: #000000; --paper-shadow: rgb(0 0 0 / 0.6); color-scheme: dark;
 }
 
 * { box-sizing: border-box; }
@@ -77,22 +77,30 @@ h1 { font-size: 22px; margin: 0; }
 .theme-card[aria-checked="true"] .check { display: grid; }
 
 .preview { position: relative; width: 100%; aspect-ratio: 16 / 10; }
-.mini { position: absolute; inset: 0; display: grid; grid-template-rows: 20% 1fr; overflow: hidden;
-  border: 1px solid var(--line); border-radius: 5px; background: var(--bg); }
-.mini .bar { display: flex; align-items: center; gap: 4%; padding: 0 6%; background: var(--surface); border-bottom: 1px solid var(--line); }
-.mini .bar i { height: 34%; width: 14%; border-radius: 2px; background: var(--surface-2); }
-.mini .bar i.go { background: var(--accent); }
-.mini .body { display: grid; grid-template-columns: 24% 1fr; min-height: 0; }
-.mini .thumbs { display: grid; align-content: start; gap: 8%; padding: 10% 18%; background: var(--surface); border-right: 1px solid var(--line); }
-.mini .thumbs i { aspect-ratio: 4 / 3; border-radius: 1px; background: #fbfaf8; box-shadow: 0 0 0 1px var(--line); }
-.mini .thumbs i.on { box-shadow: 0 0 0 1.5px var(--accent); }
-.mini .stagearea { display: grid; place-items: center; background: var(--reader-stage); }
+/* A speaker view in miniature, with the layout of presenter.css: top bar (timer, black screen, exit),
+   current slide with previous / "3 of 30" / next below it, and the next slide on the right. */
+.mini { position: absolute; inset: 0; overflow: hidden; border: 1px solid var(--line); border-radius: 5px; background: var(--surface); }
+/* Every piece is placed in % of the mini window (16:10), which stays exact at this tiny size. */
+.mini i { position: absolute; display: block; }
+.mini .top { left: 0; top: 0; width: 100%; height: 16%; background: var(--bg); border-bottom: 1px solid var(--line); }
+.mini .clock { left: 5%; top: 5.5%; width: 20%; height: 5%; border-radius: 1px; background: var(--text); }
+.mini .tool { top: 4%; width: 11%; height: 8%; border: 1px solid var(--line); border-radius: 2px; background: var(--bg); }
+.mini .tool.a { right: 18%; }
+.mini .tool.b { right: 5%; }
+.mini .slide { border-radius: 2px; background: var(--presenter-stage); }
+.mini .slide.cur { left: 5%; top: 24%; width: 60%; height: 54%; }
+.mini .slide.nxt { left: 70%; top: 24%; width: 25%; height: 22.5%; }
+.mini .nav { top: 83%; width: 17%; height: 8%; border: 1px solid var(--line); border-radius: 2px; background: var(--bg); }
+.mini .nav.prev { left: 5%; }
+.mini .nav.go { left: 48%; border-color: var(--accent); background: var(--accent); }
+.mini .count { left: 29%; top: 86%; width: 12%; height: 2.5%; border-radius: 1px; background: var(--muted); }
+.mini .label { left: 76%; top: 50%; width: 13%; height: 2%; background: var(--muted); }
 /* The PDF page keeps its own colours whatever the theme. */
-.mini .page { width: 72%; aspect-ratio: 4 / 3; display: grid; align-content: start; gap: 9%; padding: 9% 10%;
-  background: #fbfaf8; box-shadow: 0 1px 3px var(--paper-shadow); }
-.mini .page i { height: 7px; width: 70%; background: #3a3633; border-radius: 1px; }
-.mini .page i + i { height: 3px; width: 90%; background: #b3ada6; }
-.mini .page i + i + i { width: 60%; }
+.mini .page { left: 7%; top: 7%; width: 86%; height: 86%; background: #fbfaf8; }
+.mini .page i { left: 10%; height: 13%; border-radius: 1px; }
+.mini .page .t { top: 18%; width: 55%; background: #3a3633; }
+.mini .page .l1 { top: 46%; width: 80%; height: 7%; background: #b3ada6; }
+.mini .page .l2 { top: 62%; width: 55%; height: 7%; background: #b3ada6; }
 /* System: light and dark split on the diagonal. */
 .preview.split .mini.t-dark { clip-path: polygon(100% 0, 100% 100%, 0 100%); }
 
@@ -107,15 +115,20 @@ h1 { font-size: 22px; margin: 0; }
 </svg>
 
 <template id="mini">
-  <div class="mini"><div class="bar"><i></i><i></i><i class="go"></i></div>
-    <div class="body"><div class="thumbs"><i class="on"></i><i></i><i></i></div><div class="stagearea"><div class="page"><i></i><i></i><i></i></div></div></div></div>
+  <div class="mini">
+    <i class="top"></i><i class="clock"></i><i class="tool a"></i><i class="tool b"></i>
+    <i class="slide cur"><i class="page"><i class="t"></i><i class="l1"></i><i class="l2"></i></i></i>
+    <i class="nav prev"></i><i class="count"></i><i class="nav go"></i>
+    <i class="slide nxt"><i class="page"><i class="t"></i><i class="l1"></i><i class="l2"></i></i></i>
+    <i class="label"></i>
+  </div>
 </template>
 
 <div class="wrap">
   <div>
     <h1>Theme picker (milestone 11 mockup)</h1>
     <ul class="intro">
-      <li>The segmented control (System / Light / Dark) becomes <b>three cards</b>, each with a small reader window drawn in CSS with that theme's colours. <b>System</b> is split on the diagonal: light and dark.</li>
+      <li>The segmented control (System / Light / Dark) becomes <b>three cards</b>, each with a small speaker view drawn in CSS (the screen where the theme matters most) with that theme's colours. <b>System</b> is split on the diagonal: light and dark.</li>
       <li>The chosen card has an accent border, a soft accent background, a check mark and its name in bold. The theme still applies instantly, with no Apply button.</li>
       <li>Same texts as today (no new strings to translate). The cards share the width equally, so longer names wrap instead of breaking the layout.</li>
       <li>The dialog below works: click a card (or use the arrow keys) and the dialog changes theme. System follows your own system theme.</li>
@@ -151,7 +164,7 @@ h1 { font-size: 22px; margin: 0; }
     <ul class="notes">
       <li>Only <code>launcher/index.html</code> and <code>launcher.css</code> change; <code>launcher.ts</code> keeps the same <code>data-theme</code> buttons, switching <code>aria-pressed</code> for <code>role="radio"</code> + <code>aria-checked</code> in a <code>role="radiogroup"</code>, with arrow keys.</li>
       <li>The mini windows are plain CSS (no images), with the light and dark tokens scoped to each card, so they always show their own theme whatever the app theme is.</li>
-      <li>The PDF page in the preview keeps its paper colour in both themes, as in the real reader.</li>
+      <li>The PDF page in the preview keeps its paper colour in both themes, and the slide areas stay near-black, as in the real speaker view.</li>
     </ul>
   </section>
 </div>
