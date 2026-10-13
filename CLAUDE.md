@@ -164,10 +164,10 @@ npm run build        # compilar con esbuild a dist/
 npm run typecheck    # tsc --noEmit (debe pasar antes de cada commit)
 npm run lint         # ESLint (debe pasar antes de cada commit)
 npm run pack         # app empaquetada sin instalar, en release/win-unpacked/
-npm run dist         # instalador NSIS: release/PDF-Diva-Setup-<versión>.exe
+npm run dist         # instalador NSIS: release/PDF-Diva-Windows-<versión>.exe
 npm run dist:store   # paquete MSIX sin firmar: release/PDF-Diva-<versión>.appx
-npm run dist:mac     # solo en un Mac (lo hace GitHub Actions): release/PDF-Diva-<versión>.dmg
-npm run dist:linux   # solo en Linux (lo hace GitHub Actions): release/PDF-Diva-<versión>-amd64.deb
+npm run dist:mac     # solo en un Mac (lo hace GitHub Actions): release/PDF-Diva-macOS-<versión>.dmg
+npm run dist:linux   # solo en Linux (lo hace GitHub Actions): release/PDF-Diva-Linux-x64-<versión>.deb
 ```
 
 En Windows no existe `python3`: para scripts de Python usar `python` o `py`.
@@ -176,7 +176,7 @@ No hay tests automáticos, salvo una prueba de humo de la app empaquetada (`scri
 
 ## Plan por hitos
 
-Hitos 1 a 10 hechos (v0.1.0 a v1.4.0). No hay más hitos de funciones previstos: a partir de aquí, promoción, mantenimiento y refinamiento (hito 11).
+Hitos 1 a 11 hechos (v0.1.0 a v1.5.0). No hay más hitos de funciones previstos: a partir de aquí, promoción y mantenimiento; los cambios menores que pida el usuario se apuntan en `guppy/BACKLOG.md`.
 
 1. **Esqueleto**: proyecto Electron + TypeScript que abre una ventana.
 2. **Visor básico**: abrir un PDF y renderizar una página con PDF.js; navegar con teclado.
@@ -188,7 +188,7 @@ Hitos 1 a 10 hechos (v0.1.0 a v1.4.0). No hay más hitos de funciones previstos:
 8. **Abrir PDFs desde el sistema**: que PDF Diva aparezca en «Abrir con…» y el usuario pueda elegirla como aplicación predeterminada para PDFs (Windows: NSIS y MSIX; Mac y Linux en el hito 10).
 9. **Multimonitor y mejora de interfaz** (opiniones reales de usuarios): primero, que la interfaz se adapte mejor a distintas resoluciones y densidades de pantalla (empezando por la vista del orador en resoluciones grandes); después, cambiar el comportamiento con tres monitores (dos vistas del orador, técnico y ponente, y una salida al público). Se prueba con los dos adaptadores DisplayPort (3 pantallas reales en Marcianito).
 10. **Mac y Linux**: builds de Mac (`.dmg` universal, firma ad hoc) y Linux (`.deb`) en GitHub Actions, y siete idiomas nuevos. En Linux solo se da soporte a **Debian y Ubuntu**.
-11. **Refinamiento** (v1.5.0): cambios menores de pulido que pide el usuario, sin funciones nuevas. No bloquea la promoción ni el mantenimiento; la lista está en `guppy/BACKLOG.md`.
+11. **Refinamiento** (v1.5.0): cambios menores de pulido que pidió el usuario, sin funciones nuevas: selector de tema con tarjetas, marco uniforme en la vista del orador, miniaturas del lector centradas e imagen propia en el instalador de Windows.
 
 ## Fuera de alcance (por ahora)
 
