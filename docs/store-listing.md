@@ -4,6 +4,8 @@ Text and settings for the PDF Diva listing in Partner Center. Keep this file in 
 
 Since v1.1.0 the app is in English and Spanish (it follows the Windows language, English otherwise), and both listings say so. The Spanish listing was the first one published; both are full listings now. Since v1.4.0 the app has seven more languages (ca, de, fr, it, nl, pt and Andalûh); the listings mention them, but the MSIX still declares only es-ES and en-US (`appx.languages`), because Partner Center asks for a full listing for every language the package declares.
 
+**Pending for the next submission:** Partner Center still has the old `nilovelez.github.io/pdf-diva` addresses for the privacy policy and the website (they redirect). Change them to the ones in the table below.
+
 ## Product setup
 
 | Field | Value |
