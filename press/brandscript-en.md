@@ -1,6 +1,6 @@
 # PDF Diva: BrandScript (English)
 
-The core message of PDF Diva, following the StoryBrand framework (SB7, Donald Miller). The customer is the hero; PDF Diva is the guide. Every promotional text, the website and the Store listing should follow this story.
+The core message of PDF Diva, following the StoryBrand framework (SB7, Donald Miller). The customer is the hero; PDF Diva is the guide. The PDF is the star of the show: the technician makes it shine from the booth. Every promotional text, the website and the Store listing should follow this story.
 
 ## One-liner
 
@@ -69,4 +69,4 @@ The person who runs the room: venue and AV technicians, streaming and video oper
 - Talk about the technician and their problem first, then about PDF Diva.
 - Every text answers three questions fast: what is it, how does it make my life better, how do I get it.
 - Website header: what it offers (a presenter view for any PDF), how it helps (the talk runs like a PowerPoint), how to get it (download button, visible without scrolling).
-- Keep the tone of the product: the humor lives in the name; the message is clear and calm, not hype.
+- Keep the tone of the product: the message is clear and calm, not hype. The name carries the character: the PDF is the star. Let it show in small nods at the edges (the closing line, the end card, the example slides), one or two per piece, never in the headline or in the problem.

@@ -1,6 +1,6 @@
 # PDF Diva: BrandScript (español)
 
-El mensaje central de PDF Diva, siguiendo el método StoryBrand (SB7, de Donald Miller). El cliente es el héroe; PDF Diva es el guía. Todos los textos de promoción, la web y la ficha de la Store deberían seguir esta historia.
+El mensaje central de PDF Diva, siguiendo el método StoryBrand (SB7, de Donald Miller). El cliente es el héroe; PDF Diva es el guía. El PDF es la estrella del espectáculo: el técnico la hace brillar desde la cabina. Todos los textos de promoción, la web y la ficha de la Store deberían seguir esta historia.
 
 ## One-liner
 
@@ -69,4 +69,4 @@ Quien lleva la sala: técnicos de sala y de audiovisuales, operadores de streami
 - Habla primero del técnico y de su problema, y después de PDF Diva.
 - Cada texto responde rápido a tres preguntas: qué es, cómo me mejora la vida, cómo lo consigo.
 - Cabecera de la web: qué ofrece (una vista del orador para cualquier PDF), cómo ayuda (la charla sale como con un PowerPoint), cómo conseguirla (botón de descarga, visible sin hacer scroll).
-- Mantén el tono del producto: el humor está en el nombre; el mensaje es claro y tranquilo, sin exageraciones.
+- Mantén el tono del producto: el mensaje es claro y tranquilo, sin exageraciones. El nombre aporta el carácter: que el PDF sea la estrella. Se deja ver en pequeños guiños en los márgenes (la frase de cierre, el rótulo final, las diapositivas de ejemplo), uno o dos por pieza, nunca en el titular ni en el problema.
