@@ -87,10 +87,23 @@
         </header>
         <div class="field">
           <span data-i18n="settings.theme"></span>
-          <div class="segmented" role="group" data-i18n-label="settings.theme">
-            <button type="button" data-theme="system" aria-pressed="false" data-i18n="settings.theme.system"></button>
-            <button type="button" data-theme="light" aria-pressed="false" data-i18n="settings.theme.light"></button>
-            <button type="button" data-theme="dark" aria-pressed="false" data-i18n="settings.theme.dark"></button>
+          <!-- Each card shows a small speaker view in its theme (filled from #speaker-preview). -->
+          <div class="theme-cards" role="radiogroup" data-i18n-label="settings.theme">
+            <button type="button" class="theme-card" role="radio" aria-checked="false" data-theme="system">
+              <span class="preview" data-preview="light dark"></span>
+              <span class="icon check" data-icon="check-bold"></span>
+              <span class="name" data-i18n="settings.theme.system"></span>
+            </button>
+            <button type="button" class="theme-card" role="radio" aria-checked="false" data-theme="light">
+              <span class="preview" data-preview="light"></span>
+              <span class="icon check" data-icon="check-bold"></span>
+              <span class="name" data-i18n="settings.theme.light"></span>
+            </button>
+            <button type="button" class="theme-card" role="radio" aria-checked="false" data-theme="dark">
+              <span class="preview" data-preview="dark"></span>
+              <span class="icon check" data-icon="check-bold"></span>
+              <span class="name" data-i18n="settings.theme.dark"></span>
+            </button>
           </div>
           <small data-i18n="settings.theme.hint"></small>
         </div>
@@ -125,6 +138,18 @@
         </div>
       </form>
     </div>
+
+    <!-- A speaker view in miniature for the theme cards: top bar, current slide with the
+         navigation row below it, and the next slide on the right. -->
+    <template id="speaker-preview">
+      <span class="mini" aria-hidden="true">
+        <span class="top"></span><span class="clock"></span><span class="tool a"></span><span class="tool b"></span>
+        <span class="slide cur"><span class="page"><span class="t"></span><span class="l1"></span><span class="l2"></span></span></span>
+        <span class="nav prev"></span><span class="count"></span><span class="nav go"></span>
+        <span class="slide nxt"><span class="page"><span class="t"></span><span class="l1"></span><span class="l2"></span></span></span>
+        <span class="label"></span>
+      </span>
+    </template>
 
     <p id="notice" role="alert" hidden></p>
     <script src="launcher.js"></script>

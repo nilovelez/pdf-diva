@@ -286,27 +286,235 @@ body.dragging #reader {
   border-color: var(--accent);
 }
 
-.segmented {
-  display: inline-flex;
-  justify-self: start;
-  gap: 2px;
-  padding: 3px;
+/* Theme picker: three cards with a small speaker view in each theme */
+.theme-cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.theme-card {
+  position: relative;
+  display: grid;
+  gap: 8px;
+  justify-items: center;
+  padding: 8px 8px 9px;
   border: 1px solid var(--line);
   border-radius: var(--radius-md);
   background: var(--surface);
+  text-align: center;
 }
 
-.segmented button {
-  padding: 5px 14px;
-  border: 0;
-  border-radius: var(--radius-sm);
-  background: transparent;
+.theme-card:hover {
+  background: var(--hover);
 }
 
-.segmented button[aria-pressed='true'] {
-  background: var(--bg);
-  box-shadow: 0 0 0 1px var(--line);
+.theme-card:focus-visible {
+  outline-offset: 2px;
+}
+
+.theme-card[aria-checked='true'] {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent);
+  background: var(--accent-soft);
+}
+
+.theme-card .name {
+  overflow-wrap: anywhere;
+}
+
+.theme-card[aria-checked='true'] .name {
   font-weight: 600;
+}
+
+.theme-card .check {
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--on-accent);
+  box-shadow: 0 0 0 2px var(--bg);
+}
+
+.theme-card .check svg {
+  width: 12px;
+  height: 12px;
+}
+
+.theme-card[aria-checked='false'] .check {
+  display: none;
+}
+
+.preview {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+}
+
+/* Each miniature has its own theme's colours, whatever the app theme is
+   (the same values as theme.css; keep them in sync). */
+.mini.light {
+  --bg: #fbfaf8;
+  --surface: #f4f2ef;
+  --line: #ddd9d3;
+  --text: #1f1d1b;
+  --muted: #645f59;
+  --accent: #c2185b;
+  --presenter-stage: #0b0c0e;
+}
+
+.mini.dark {
+  --bg: #1d1c1b;
+  --surface: #242321;
+  --line: #3c3a37;
+  --text: #ece9e5;
+  --muted: #a8a39c;
+  --accent: #e8ba30;
+  --presenter-stage: #000000;
+}
+
+/* "System": light and dark, split on the diagonal. */
+.preview .mini.light + .mini.dark {
+  clip-path: polygon(100% 0, 100% 100%, 0 100%);
+}
+
+/* Every piece is placed in % of the miniature (16:10), which stays exact at this small size. */
+.mini {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  background: var(--surface);
+}
+
+.mini span {
+  position: absolute;
+}
+
+.mini .top {
+  inset: 0 0 auto;
+  height: 16%;
+  background: var(--bg);
+  border-bottom: 1px solid var(--line);
+}
+
+.mini .clock {
+  left: 5%;
+  top: 5.5%;
+  width: 20%;
+  height: 5%;
+  border-radius: 1px;
+  background: var(--text);
+}
+
+.mini .tool {
+  top: 4%;
+  width: 11%;
+  height: 8%;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  background: var(--bg);
+}
+
+.mini .tool.a {
+  right: 18%;
+}
+
+.mini .tool.b {
+  right: 5%;
+}
+
+.mini .slide {
+  border-radius: 2px;
+  background: var(--presenter-stage);
+}
+
+.mini .slide.cur {
+  left: 5%;
+  top: 24%;
+  width: 60%;
+  height: 54%;
+}
+
+.mini .slide.nxt {
+  left: 70%;
+  top: 24%;
+  width: 25%;
+  height: 22.5%;
+}
+
+.mini .nav {
+  top: 83%;
+  width: 17%;
+  height: 8%;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  background: var(--bg);
+}
+
+.mini .nav.prev {
+  left: 5%;
+}
+
+.mini .nav.go {
+  left: 48%;
+  border-color: var(--accent);
+  background: var(--accent);
+}
+
+.mini .count {
+  left: 29%;
+  top: 86%;
+  width: 12%;
+  height: 2.5%;
+  border-radius: 1px;
+  background: var(--muted);
+}
+
+.mini .label {
+  left: 76%;
+  top: 50%;
+  width: 13%;
+  height: 2%;
+  background: var(--muted);
+}
+
+/* The PDF page keeps its paper colour in both themes. */
+.mini .page {
+  inset: 7%;
+  background: #fbfaf8;
+}
+
+.mini .page span {
+  left: 10%;
+  border-radius: 1px;
+}
+
+.mini .page .t {
+  top: 18%;
+  width: 55%;
+  height: 13%;
+  background: #3a3633;
+}
+
+.mini .page .l1,
+.mini .page .l2 {
+  height: 7%;
+  background: #b3ada6;
+}
+
+.mini .page .l1 {
+  top: 46%;
+  width: 80%;
+}
+
+.mini .page .l2 {
+  top: 62%;
+  width: 55%;
 }
 
 .error {

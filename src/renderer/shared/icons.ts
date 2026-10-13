@@ -3,6 +3,7 @@
 import arrowCounterClockwise from '../../../resources/icons/arrow-counter-clockwise.svg';
 import caretLeft from '../../../resources/icons/caret-left.svg';
 import caretRight from '../../../resources/icons/caret-right.svg';
+import checkBold from '../../../resources/icons/check-bold.svg';
 import eyeSlash from '../../../resources/icons/eye-slash.svg';
 import filePdf from '../../../resources/icons/file-pdf.svg';
 import folderOpen from '../../../resources/icons/folder-open.svg';
@@ -19,6 +20,7 @@ const ICONS = {
   'arrow-counter-clockwise': arrowCounterClockwise,
   'caret-left': caretLeft,
   'caret-right': caretRight,
+  'check-bold': checkBold,
   'eye-slash': eyeSlash,
   'file-pdf': filePdf,
   'folder-open': folderOpen,
