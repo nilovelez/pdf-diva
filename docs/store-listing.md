@@ -102,6 +102,10 @@ v1.4.0:
 
 > Nuevos idiomas: catalán, francés, alemán, italiano, neerlandés y portugués, según el idioma de Windows. El andaluz se puede elegir en Ajustes > Idioma. PDF Diva ya está también para Mac y Linux.
 
+v1.5.0:
+
+> En Ajustes, cada tema se muestra con una pequeña imagen de la vista del orador. El marco alrededor de las diapositivas en la vista del orador es igual por todos los lados, y la miniatura seleccionada en el lector vuelve a estar centrada.
+
 ## Listing: English (en-US)
 
 **Short description**
@@ -182,6 +186,10 @@ v1.3.0:
 v1.4.0:
 
 > New languages: Catalan, French, German, Italian, Dutch and Portuguese, following the Windows language. Andalûh can be chosen in Settings > Language. PDF Diva is now also available for Mac and Linux.
+
+v1.5.0:
+
+> In Settings, each theme is shown with a small picture of the speaker view. The frame around the slides in the speaker view is even on every side, and the selected thumbnail in the reader is centred again.
 
 ## Images still needed
 

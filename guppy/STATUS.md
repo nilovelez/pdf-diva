@@ -1,6 +1,6 @@
 ---
 estado: activo
-siguiente_paso: Nilo prueba el instalador de Windows de la 1.5.0 (rama feat/refinement); con su visto bueno, fusionar en main, tag v1.5.0, builds de Store, Mac y Linux. Después del 19 de octubre, comprobar que el build de Linux sigue bien con Ubuntu 26 (o fijar ubuntu-24.04).
+siguiente_paso: Nilo publica la release v1.5.0 en GitHub (instalador, dmg y deb) y envía el .appx a la Store; después, la web enlaza la 1.5.0. Después del 19 de octubre, comprobar que el build de Linux sigue bien con Ubuntu 26 (o fijar ubuntu-24.04).
 bloqueo: ""
 actualizado: 2026-10-13
 ---
@@ -9,10 +9,11 @@ actualizado: 2026-10-13
 
 La v1.4.0 (hito 10, el último de funciones) está publicada en GitHub y la web enlaza las descargas de los tres sistemas; la Store la aprobó el 11 de octubre. Incluye: builds de Windows (instalador NSIS y MSIX para la Store), Mac (`.dmg` universal con firma ad hoc, probado por Nilo en un MacBook con Apple silicon y un monitor externo) y Linux (`.deb` para Debian y Ubuntu, probado en Linux Mint 22.3 y Ubuntu 24.04 con X11), y siete idiomas nuevos (catalán, alemán, francés, italiano, neerlandés, portugués y andaluz EPA, este solo a mano). Riesgo conocido: Linux con Wayland y XWayland en equipos reales, sin probar.
 
-A partir de aquí, promoción y mantenimiento; no hay más hitos de funciones previstos. En paralelo, el hito 11 reúne cambios menores de pulido (v1.5.0).
+A partir de aquí, promoción y mantenimiento; no hay más hitos de funciones previstos. El hito 11 (cambios menores de pulido) es la v1.5.0: etiquetada el 13 de octubre, pendiente de publicar.
 
 ## Diario
 
+- 2026-10-13: v1.5.0 (hito 11) aprobada por Nilo tras probar el instalador, con la imagen lateral nueva del instalador de Windows; tag v1.5.0.
 - 2026-10-13: hito 11 hecho en la rama `feat/refinement` (v1.5.0): marco uniforme en la vista del orador, selector de tema con tarjetas y miniaturas del lector centradas. Instalador de Windows para que Nilo lo pruebe.
 - 2026-10-13: se recupera la idea del nombre (el PDF es la estrella) como guiño puntual: cierre de la web «Let the PDF be the star.», nota en el BrandScript y en los textos de prensa.
 - 2026-10-12: se abre el hito 11, refinamiento: tres cambios menores apuntados en `BACKLOG.md`. Se harán cuando haya más opiniones reales de usuarios.
