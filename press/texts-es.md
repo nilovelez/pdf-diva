@@ -75,5 +75,6 @@ La web y la documentación están en inglés.
 ## Al escribir sobre PDF Diva
 
 - El nombre es **PDF Diva**: dos palabras, con la D mayúscula. No «PDFDiva» ni «PDF diva».
+- Sobre el nombre: en PDF Diva, la estrella es el PDF. La app le da el escenario y el técnico lo lleva desde la cabina.
 - Presenta PDF; no los edita, ni los anota, ni los convierte, y no muestra notas del orador (el formato PDF no tiene un sitio estándar para ellas).
 - En Windows, la descarga recomendada es la de la Microsoft Store. El instalador de GitHub no tiene firma digital, así que Windows muestra un aviso la primera vez.

@@ -2,7 +2,7 @@
 estado: activo
 siguiente_paso: Promoción y mantenimiento. El hito 11 (refinamiento, v1.5.0; lista en BACKLOG.md) espera a tener más opiniones reales de usuarios. Después del 19 de octubre, comprobar que el build de Linux sigue bien con Ubuntu 26 (o fijar ubuntu-24.04).
 bloqueo: ""
-actualizado: 2026-10-12
+actualizado: 2026-10-13
 ---
 
 # Estado
@@ -13,6 +13,7 @@ A partir de aquí, promoción y mantenimiento; no hay más hitos de funciones pr
 
 ## Diario
 
+- 2026-10-13: se recupera la idea del nombre (el PDF es la estrella) como guiño puntual: cierre de la web «Let the PDF be the star.», nota en el BrandScript y en los textos de prensa.
 - 2026-10-12: se abre el hito 11, refinamiento: tres cambios menores apuntados en `BACKLOG.md`. Se harán cuando haya más opiniones reales de usuarios.
 - 2026-10-12: empieza la promoción: textos de prensa y BrandScript (StoryBrand) en `press/`, y la portada de la web reescrita siguiendo esa historia.
 - 2026-10-11: la web pasa a pdfdiva.nilovelez.com (las direcciones antiguas redirigen).

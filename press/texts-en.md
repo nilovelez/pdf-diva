@@ -73,5 +73,6 @@ Venue and AV technicians, streaming and video operators, stage managers: anyone 
 ## Writing about PDF Diva
 
 - The name is **PDF Diva**: two words, capital D. Not "PDFDiva" or "PDF diva".
+- About the name: in PDF Diva the PDF is the star of the show. The app gives it the stage, and the technician runs it from the booth.
 - It presents PDFs; it doesn't edit, annotate or convert them, and it doesn't show speaker notes (PDF files don't have a standard place for them).
 - On Windows, the Microsoft Store is the recommended download. The GitHub installer isn't digitally signed, so Windows shows a warning the first time.
