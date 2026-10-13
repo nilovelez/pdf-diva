@@ -2,7 +2,7 @@
 
 Everything a new developer (or agent) needs that is not obvious from the code. Project rules and conventions are in [`CLAUDE.md`](../CLAUDE.md); user-facing text is in the README and CHANGELOG; the website is covered in [`website.md`](website.md).
 
-State at the time of writing: **v1.4.0**. Milestone 7 (multi-language: English and Spanish) is v1.1.0, milestone 8 (opening PDFs from the system, "Open with…") is v1.2.0, milestone 9 (multi-monitor and UI improvements) is v1.3.0, milestone 10 (Mac and Linux builds, Linux meaning Debian and Ubuntu only, plus seven new languages) is v1.4.0. No more feature milestones are planned: maintenance from here on.
+State at the time of writing: **v1.5.0**. Milestone 7 (multi-language: English and Spanish) is v1.1.0, milestone 8 (opening PDFs from the system, "Open with…") is v1.2.0, milestone 9 (multi-monitor and UI improvements) is v1.3.0, milestone 10 (Mac and Linux builds, Linux meaning Debian and Ubuntu only, plus seven new languages) is v1.4.0. No more feature milestones are planned: maintenance from here on, plus minor polish (milestone 11, v1.5.0).
 
 ## Architecture
 

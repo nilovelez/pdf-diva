@@ -1,6 +1,6 @@
 ---
 estado: activo
-siguiente_paso: Promoción y mantenimiento. El hito 11 (refinamiento, v1.5.0; lista en BACKLOG.md) espera a tener más opiniones reales de usuarios. Después del 19 de octubre, comprobar que el build de Linux sigue bien con Ubuntu 26 (o fijar ubuntu-24.04).
+siguiente_paso: Nilo prueba el instalador de Windows de la 1.5.0 (rama feat/refinement); con su visto bueno, fusionar en main, tag v1.5.0, builds de Store, Mac y Linux. Después del 19 de octubre, comprobar que el build de Linux sigue bien con Ubuntu 26 (o fijar ubuntu-24.04).
 bloqueo: ""
 actualizado: 2026-10-13
 ---
@@ -13,6 +13,7 @@ A partir de aquí, promoción y mantenimiento; no hay más hitos de funciones pr
 
 ## Diario
 
+- 2026-10-13: hito 11 hecho en la rama `feat/refinement` (v1.5.0): marco uniforme en la vista del orador, selector de tema con tarjetas y miniaturas del lector centradas. Instalador de Windows para que Nilo lo pruebe.
 - 2026-10-13: se recupera la idea del nombre (el PDF es la estrella) como guiño puntual: cierre de la web «Let the PDF be the star.», nota en el BrandScript y en los textos de prensa.
 - 2026-10-12: se abre el hito 11, refinamiento: tres cambios menores apuntados en `BACKLOG.md`. Se harán cuando haya más opiniones reales de usuarios.
 - 2026-10-12: empieza la promoción: textos de prensa y BrandScript (StoryBrand) en `press/`, y la portada de la web reescrita siguiendo esa historia.
