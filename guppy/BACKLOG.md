@@ -10,6 +10,10 @@ Cambios menores sin prisa; no bloquean la promoción ni el mantenimiento. Los tr
 - [x] **Ajustes: selector de tema más visual.** Tres tarjetas con una vista del orador en miniatura en cada tema (Sistema partida en diagonal), según `docs/design/mockup-theme-picker.html`.
 - [x] **Lector: fondo de la miniatura desplazado.** La columna de miniaturas toma el ancho que necesita, con el hueco de la barra de desplazamiento reservado.
 
+## Siguiente versión
+
+- [ ] **Nombres de archivo más claros en las descargas.** Ahora son `PDF-Diva-Setup-1.5.0.exe`, `PDF-Diva-1.5.0.dmg` y `PDF-Diva-1.5.0-amd64.deb`, y a quien no es técnico no le dicen para qué sistema son. Propuesta de Nilo: `PDF-Diva-Windows-1.5.0.exe`, `PDF-Diva-MacOs-1.5.0.dmg` y `PDF-Diva-Linux-amd64-1.5.0.deb`; el formato final está por decidir. Se cambia el `artifactName` de `nsis`, `mac`/`dmg` y `linux`/`deb` en `electron-builder.yml`, y los nombres que citan el README, la web (enlaces de descarga) y las notas de la release. Los workflows usan comodines (`release/*.dmg`, `release/*.deb`), así que no cambian. El `.appx` no lo ve el usuario (va a la Store) y se queda como está.
+
 ## Tras la v1.4.0
 
 - [ ] **Runner de Linux**: `ubuntu-latest` pasa a Ubuntu 26 desde el 19 de octubre de 2026; comprobar que el build sigue bien o fijar `ubuntu-24.04`.
