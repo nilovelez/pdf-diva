@@ -29,6 +29,14 @@ On Windows there are two ways to install PDF Diva. Both are free and install the
 
 [**Get PDF Diva from the Microsoft Store**](https://apps.microsoft.com/detail/9nh5x0qbmhq1), or search for **PDF Diva** in the Store app and click **Get**. The Store keeps the app up to date.
 
+To install it from a terminal, or in a script for several computers, use winget:
+
+```
+winget install "PDF Diva"
+```
+
+In scripts, the Store ID is more robust than the name: `winget install 9NH5X0QBMHQ1 --accept-package-agreements`.
+
 ### From GitHub
 
 Use this if the Microsoft Store is blocked on your computer.
