@@ -103,9 +103,9 @@ https://www.majorgeeks.com — a small team that installs and tests every progra
 
 ## 4. Softpedia
 
-https://www.softpedia.com — Softpedia's editors often add programs on their own, writing their own description from the website. If PDF Diva isn't there after a few weeks, send them the same e-mail as MajorGeeks, through the contact or submission link on their site (we couldn't check the current one: their submission page blocks automated access). When they list a program, they often e-mail the developer a "100% clean" award; replying isn't needed.
+Not submitted: Softpedia doesn't accept applications with code written by AI (LLMs).
 
 ## After listing
 
 - Check each listing once it's live: name spelled **PDF Diva**, the right icon, links to the website or the Store (not to an old version).
-- When a new version comes out, update Uptodown by hand (AlternativeTo, MajorGeeks and Softpedia track versions themselves or don't show them).
+- When a new version comes out, update Uptodown by hand (AlternativeTo and MajorGeeks track versions themselves or don't show them).
