@@ -13,6 +13,7 @@ La v1.5.0 (hito 11, cambios menores de pulido) está publicada en GitHub desde e
 
 ## Diario
 
+- 2026-10-14: PDF Diva enviada a AlternativeTo; en cola de revisión.
 - 2026-10-14: la Store aprueba la ficha nueva (URL, capturas y tráiler); winget ya muestra las URL nuevas.
 - 2026-10-14: ficha de la Store actualizada por Nilo (capturas de la 1.5.0, URL nuevas de privacidad y web, vídeo como tráiler, en inglés y español), sin cambiar el paquete; en certificación.
 - 2026-10-14: la Store aprueba la 1.5.0. Vídeo de promoción (YouTube, en inglés y español) y su miniatura en `press/videos/`; imagen de Open Graph con la dirección de la web; capturas de la web rehechas con la 1.5.0; instalación con winget en el README y la web; textos para directorios de software en `press/listings.md`.
