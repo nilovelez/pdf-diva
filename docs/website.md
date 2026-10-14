@@ -41,7 +41,7 @@ node scripts/build-privacy.mjs
 npx serve site
 ```
 
-The privacy URL `https://pdfdiva.nilovelez.com/privacy.html` is used in the Microsoft Store listing. Do not rename it. Store submissions up to 1.4.0 used the old address, `https://nilovelez.github.io/pdf-diva/privacy.html`, which still works through GitHub's redirect.
+The privacy URL `https://pdfdiva.nilovelez.com/privacy.html` is used in the Microsoft Store listing. Do not rename it. Store submissions up to 1.5.0 (until the listing update of 2026-10-14) used the old address, `https://nilovelez.github.io/pdf-diva/privacy.html`, which still works through GitHub's redirect.
 
 ## Deployment
 

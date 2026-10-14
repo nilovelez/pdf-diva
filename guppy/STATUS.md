@@ -13,6 +13,7 @@ La v1.5.0 (hito 11, cambios menores de pulido) está publicada en GitHub desde e
 
 ## Diario
 
+- 2026-10-14: ficha de la Store actualizada por Nilo (capturas de la 1.5.0, URL nuevas de privacidad y web, vídeo como tráiler, en inglés y español), sin cambiar el paquete; en certificación.
 - 2026-10-14: la Store aprueba la 1.5.0. Vídeo de promoción (YouTube, en inglés y español) y su miniatura en `press/videos/`; imagen de Open Graph con la dirección de la web; capturas de la web rehechas con la 1.5.0; instalación con winget en el README y la web; textos para directorios de software en `press/listings.md`.
 - 2026-10-13: Nilo publica la release v1.5.0 en GitHub y la envía a la Store; la web enlaza la 1.5.0.
 - 2026-10-13: v1.5.0 (hito 11) aprobada por Nilo tras probar el instalador, con la imagen lateral nueva del instalador de Windows; tag v1.5.0.

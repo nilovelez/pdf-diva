@@ -4,8 +4,6 @@ Text and settings for the PDF Diva listing in Partner Center. Keep this file in 
 
 Since v1.1.0 the app is in English and Spanish (it follows the Windows language, English otherwise), and both listings say so. The Spanish listing was the first one published; both are full listings now. Since v1.4.0 the app has seven more languages (ca, de, fr, it, nl, pt and Andalûh); the listings mention them, but the MSIX still declares only es-ES and en-US (`appx.languages`), because Partner Center asks for a full listing for every language the package declares.
 
-**Pending for the next submission:** Partner Center still has the old `nilovelez.github.io/pdf-diva` addresses for the privacy policy and the website (they redirect). Change them to the ones in the table below.
-
 ## Product setup
 
 | Field | Value |
@@ -193,8 +191,10 @@ v1.5.0:
 
 > In Settings, each theme is shown with a small picture of the speaker view. The frame around the slides in the speaker view is even on every side, and the selected thumbnail in the reader is centred again.
 
-## Images still needed
+## Images and trailer
 
-- **Screenshots**: at least 1, ideally 4. PNG, 1366×768 or larger (1920×1080 recommended), no text overlays required. Suggested: reader with a PDF open; presenter view; audience screen; settings with the monitor selector. Use a sample PDF we own, not a third-party deck.
-- **Package logos** (inside the MSIX, from the design work): Square44x44, Square150x150, Wide310x150, StoreLogo (50×50), with scaled versions.
-- **Store logos** (optional): 1:1 300×300 and 2:3 poster, if the design agent has them.
+Both listings (English and Spanish) have, since the listing update of 2026-10-14 (package unchanged, 1.5.0):
+
+- **Screenshots**: version 1.5.0 at 1920×1080, in each listing's language, from the shared folder `Z:\pdf-diva\capturas-1.5.0\en\` and `\es\` (sample PDFs we own). Retake them when the interface changes visibly.
+- **Trailer**: the promo video from `press/videos/` (39 s, English or Spanish voiceover).
+- **Package logos**: inside the MSIX, from `resources/icons/app/`.
