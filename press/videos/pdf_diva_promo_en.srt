@@ -1,0 +1,40 @@
+1
+00:00:00,594 --> 00:00:05,578
+PDF Diva works…
+just like a regular PDF reader.
+
+2
+00:00:05,974 --> 00:00:08,794
+Open your PDFs, preview them…
+
+3
+00:00:09,207 --> 00:00:12,396
+…and choose the theme you prefer.
+
+4
+00:00:12,852 --> 00:00:16,139
+But the magic starts when you hit Present.
+
+5
+00:00:16,163 --> 00:00:19,107
+With two or more screens,
+you get the presenter view:
+
+6
+00:00:19,131 --> 00:00:24,701
+your current slide, what's coming next,
+the page number and a timer.
+
+7
+00:00:24,809 --> 00:00:27,804
+Wrong screen? Don't worry,
+you choose what goes on each monitor.
+
+8
+00:00:28,132 --> 00:00:32,166
+Control it with your mouse…
+or with ANY presenter remote.
+
+9
+00:00:32,333 --> 00:00:36,617
+

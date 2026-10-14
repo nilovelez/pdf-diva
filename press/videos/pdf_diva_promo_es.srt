@@ -1,0 +1,41 @@
+1
+00:00:00,594 --> 00:00:05,578
+PDF Diva funciona…
+como un lector de PDF cualquiera.
+
+2
+00:00:05,974 --> 00:00:08,794
+Abres tus PDF, los hojeas…
+
+3
+00:00:09,207 --> 00:00:12,396
+…y eliges el tema que prefieras.
+
+4
+00:00:12,852 --> 00:00:16,139
+Pero la magia empieza cuando le das a Presentar.
+
+5
+00:00:16,163 --> 00:00:19,107
+Con dos pantallas o más,
+tienes la vista del orador:
+
+6
+00:00:19,131 --> 00:00:24,701
+la diapositiva actual, la siguiente,
+el número de página y un cronómetro.
+
+7
+00:00:24,809 --> 00:00:27,804
+¿Pantalla equivocada? No pasa nada,
+tú eliges qué sale en cada monitor.
+
+8
+00:00:28,132 --> 00:00:32,166
+Contrólalo con el ratón…
+o con CUALQUIER pasador de diapositivas.
+
+9
+00:00:32,333 --> 00:00:36,617
+PDF Diva.
+La vista del orador para cualquier PDF.
