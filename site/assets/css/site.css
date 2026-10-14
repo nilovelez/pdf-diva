@@ -182,6 +182,12 @@ kbd {
 
 .closing { border-top: 1px solid var(--line); padding-block: 80px; }
 .closing h2 { font-size: clamp(28px, 3.6vw, 36px); }
+.closing .winget { font-size: 15px; }
+/* user-select: all, so one click selects the whole command to copy it. */
+.winget code {
+  font-family: "Cascadia Mono", Consolas, ui-monospace, monospace; font-size: 14px; font-weight: 400; padding: 3px 8px;
+  border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--text); user-select: all; white-space: nowrap;
+}
 
 .site-footer { border-top: 1px solid var(--line); }
 .footer-row { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; padding-block: 28px; font-size: 14px; color: var(--muted); }
