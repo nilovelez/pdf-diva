@@ -1,6 +1,6 @@
 # PDF Diva: press texts (English)
 
-Ready-to-paste texts for blogs, directories, forums and social media. Pick the length that fits. Facts are current for version 1.4.0.
+Ready-to-paste texts for blogs, directories, forums and social media. Pick the length that fits. Facts are current for version 1.5.0.
 
 ## Name and tagline
 
@@ -57,7 +57,7 @@ Venue and AV technicians, streaming and video operators, stage managers: anyone 
 |---|---|
 | Name | PDF Diva |
 | Tagline | A presenter view for any PDF. |
-| Current version | 1.4.0 (October 2026) |
+| Current version | 1.5.0 (October 2026) |
 | Platforms | Windows 10 and 11; macOS 13 or later (Apple silicon and Intel); Debian, Ubuntu and derivatives (64-bit) |
 | Price | Free, no ads, no in-app purchases |
 | License | GPL-3.0-or-later (open source) |

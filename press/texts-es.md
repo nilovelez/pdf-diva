@@ -1,6 +1,6 @@
 # PDF Diva: textos de prensa (español)
 
-Textos listos para pegar en blogs, directorios, foros y redes sociales. Elige la longitud que mejor encaje. Los datos corresponden a la versión 1.4.0.
+Textos listos para pegar en blogs, directorios, foros y redes sociales. Elige la longitud que mejor encaje. Los datos corresponden a la versión 1.5.0.
 
 ## Nombre y lema
 
@@ -57,7 +57,7 @@ Técnicos de sala y de audiovisuales, operadores de streaming y vídeo, regidore
 |---|---|
 | Nombre | PDF Diva |
 | Lema | A presenter view for any PDF. |
-| Versión actual | 1.4.0 (octubre de 2026) |
+| Versión actual | 1.5.0 (octubre de 2026) |
 | Sistemas | Windows 10 y 11; macOS 13 o posterior (Apple silicon e Intel); Debian, Ubuntu y derivadas (64 bits) |
 | Precio | Gratuita, sin anuncios ni compras dentro de la aplicación |
 | Licencia | GPL-3.0-or-later (código abierto) |
