@@ -38,6 +38,12 @@ The obvious extra entry under "Alternative to" is PowerPoint's presenter view, s
 >
 > It needs no setup and no other software: the PDF renderer is built in. No account, no telemetry and no internet connection. Interface in eight languages.
 
+**Platform notes**
+
+- Windows: Windows 10 and 11 (64-bit). Recommended: the Microsoft Store version, which updates itself; it can also be installed with `winget install "PDF Diva"`. There is also an installer on GitHub for computers where the Store is blocked: it installs for the current user without administrator rights, and it isn't digitally signed, so SmartScreen warns the first time (More info > Run anyway).
+- Mac: macOS 13 or later, Apple silicon and Intel (universal app). Download the .dmg from GitHub and drag PDF Diva to Applications. The app isn't notarized by Apple, so the first time macOS blocks it: open System Settings > Privacy & Security and click Open Anyway. It only asks once.
+- Linux: Debian, Ubuntu and derivatives, 64-bit (.deb on GitHub): `sudo apt install ./PDF-Diva-Linux-x64-<version>.deb`. PDF Diva uses X11 to place its windows on each screen; on a Wayland session, choose the Xorg/X11 session at login if the window doesn't appear.
+
 **Features** (if the form asks for them): Presenter view, Multi-monitor support, Presentation remote support, Works offline, No tracking, Dark mode, Password-protected PDFs.
 
 ## 2. Uptodown
