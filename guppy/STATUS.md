@@ -1,6 +1,6 @@
 ---
 estado: activo
-siguiente_paso: Promoción (directorios de software con los textos de press/listings.md, luego comunidades) y mantenimiento. Después del 19 de octubre, comprobar que el build de Linux sigue bien con Ubuntu 26 (o fijar ubuntu-24.04).
+siguiente_paso: Promoción en pausa a propósito: Nilo lo enseña en persona (boca a boca) y más adelante escribirá un artículo en su web. Pendiente cuando se retome: Uptodown y comunidades. Mantenimiento. Después del 19 de octubre, comprobar que el build de Linux sigue bien con Ubuntu 26 (o fijar ubuntu-24.04).
 bloqueo: ""
 actualizado: 2026-10-14
 ---
@@ -13,6 +13,7 @@ La v1.5.0 (hito 11, cambios menores de pulido) está publicada en GitHub desde e
 
 ## Diario
 
+- 2026-10-14: Softpedia descartado (no acepta apps con código escrito por IA). Promoción en pausa: ahora toca enseñarlo en persona.
 - 2026-10-14: correo de envío a MajorGeeks.
 - 2026-10-14: PDF Diva enviada a AlternativeTo; en cola de revisión.
 - 2026-10-14: la Store aprueba la ficha nueva (URL, capturas y tráiler); winget ya muestra las URL nuevas.
