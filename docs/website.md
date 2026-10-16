@@ -51,7 +51,7 @@ The site is served at the custom domain `pdfdiva.nilovelez.com` (since 2026-10-1
 
 ## Images
 
-- **Icons**: the masters live in `resources/icons/app/` (used by the app, the installer and the Store; do not move them). The web copies are `favicon.ico`, `icon-256.png` and `icon_64.png` (as `icon-64.png`).
+- **Icons**: the masters live in `resources/icons/app/` (used by the app, the installer and the Store; do not move them). The web copies are `favicon.ico`, `icon-256.png` `icon_64.png` (as `icon-64.png`) and `icon_128.png` (as `icon-128x128.png`, not used by the pages; it is there to have a public URL for the icon).
 - **`apple-touch-icon.png` (180) and `og.png` (1200×630)**: `og.png` is the dark background `#1D1C1B`, the rounded icon (`resources/icons/app/icon-512.png`), "PDF Diva", the tagline and "Free and open source · pdfdiva.nilovelez.com", in Segoe UI with the site's dark colors. The same design at 1920×1080 is the video thumbnail, `press/videos/pdf_diva_promo.png`. They keep their current design on purpose.
 - **`star-icon.png`**: the small star next to "PDF Diva" in the header.
 - **`ms-store-badge-light.svg` / `ms-store-badge-dark.svg`**: Microsoft's official "Download from the Microsoft Store" badge (en-US), in the hero and the closing section, one per theme (`.only-light` / `.only-dark`), as tall as the buttons next to it. Microsoft's asset, used under its badge guidelines (see `THIRD-PARTY-NOTICES.md`). One edit on purpose: its border uses the site's `--line` colour (`#DDD9D3` light, `#3C3A37` dark) at 0.8 units, which is 1 px at the 55 px height used, so it looks like the buttons next to it. The buttons (`.btn`) have 6 px corners to match the badge's.
