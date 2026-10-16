@@ -1,47 +1,41 @@
----
-estado: activo
-siguiente_paso: Promoción en pausa a propósito: Nilo lo enseña en persona (boca a boca) y más adelante escribirá un artículo en su web. Pendiente cuando se retome: Uptodown y comunidades. Mantenimiento. Después del 19 de octubre, comprobar que el build de Linux sigue bien con Ubuntu 26 (o fijar ubuntu-24.04).
-bloqueo: ""
-actualizado: 2026-10-14
----
+# Status
 
-# Estado
+Version 1.4.0 (milestone 10, the last feature milestone) is published on GitHub and the website links the downloads for all three systems; the Microsoft Store approved it on October 11. It includes: Windows builds (NSIS installer and MSIX for the Store), Mac (universal `.dmg` with ad hoc signing, tested by Nilo on an Apple silicon MacBook with an external monitor) and Linux (`.deb` for Debian and Ubuntu, tested on Linux Mint 22.3 and Ubuntu 24.04 with X11), and seven new languages (Catalan, German, French, Italian, Dutch, Portuguese and Andalusian EPA, the last one only by manual choice). Known risk: Linux with Wayland and XWayland on real hardware, untested.
 
-La v1.4.0 (hito 10, el último de funciones) está publicada en GitHub y la web enlaza las descargas de los tres sistemas; la Store la aprobó el 11 de octubre. Incluye: builds de Windows (instalador NSIS y MSIX para la Store), Mac (`.dmg` universal con firma ad hoc, probado por Nilo en un MacBook con Apple silicon y un monitor externo) y Linux (`.deb` para Debian y Ubuntu, probado en Linux Mint 22.3 y Ubuntu 24.04 con X11), y siete idiomas nuevos (catalán, alemán, francés, italiano, neerlandés, portugués y andaluz EPA, este solo a mano). Riesgo conocido: Linux con Wayland y XWayland en equipos reales, sin probar.
+Version 1.5.0 (milestone 11, minor polish) is published on GitHub since October 13, with clearer file names (`PDF-Diva-Windows/macOS/Linux-x64-<version>`), and the website links it; the Store approved it on October 14. From here on, promotion and maintenance; no more feature milestones are planned.
 
-La v1.5.0 (hito 11, cambios menores de pulido) está publicada en GitHub desde el 13 de octubre, con nombres de archivo más claros (`PDF-Diva-Windows/macOS/Linux-x64-<versión>`), y la web la enlaza; la Store la aprobó el 14 de octubre. A partir de aquí, promoción y mantenimiento; no hay más hitos de funciones previstos.
+Next steps: promotion is paused on purpose: Nilo shows the app in person (word of mouth) and will later write an article on his website. When it resumes: Uptodown and communities. Maintenance continues. After October 19, 2026, check that the Linux build still works on Ubuntu 26 (or pin `ubuntu-24.04`). No blockers.
 
-## Diario
+## Log
 
-- 2026-10-14: Softpedia descartado (no acepta apps con código escrito por IA). Promoción en pausa: ahora toca enseñarlo en persona.
-- 2026-10-14: correo de envío a MajorGeeks.
-- 2026-10-14: PDF Diva enviada a AlternativeTo; en cola de revisión.
-- 2026-10-14: la Store aprueba la ficha nueva (URL, capturas y tráiler); winget ya muestra las URL nuevas.
-- 2026-10-14: ficha de la Store actualizada por Nilo (capturas de la 1.5.0, URL nuevas de privacidad y web, vídeo como tráiler, en inglés y español), sin cambiar el paquete; en certificación.
-- 2026-10-14: la Store aprueba la 1.5.0. Vídeo de promoción (YouTube, en inglés y español) y su miniatura en `press/videos/`; imagen de Open Graph con la dirección de la web; capturas de la web rehechas con la 1.5.0; instalación con winget en el README y la web; textos para directorios de software en `press/listings.md`.
-- 2026-10-13: Nilo publica la release v1.5.0 en GitHub y la envía a la Store; la web enlaza la 1.5.0.
-- 2026-10-13: v1.5.0 (hito 11) aprobada por Nilo tras probar el instalador, con la imagen lateral nueva del instalador de Windows; tag v1.5.0.
-- 2026-10-13: hito 11 hecho en la rama `feat/refinement` (v1.5.0): marco uniforme en la vista del orador, selector de tema con tarjetas y miniaturas del lector centradas. Instalador de Windows para que Nilo lo pruebe.
-- 2026-10-13: se recupera la idea del nombre (el PDF es la estrella) como guiño puntual: cierre de la web «Let the PDF be the star.», nota en el BrandScript y en los textos de prensa.
-- 2026-10-12: se abre el hito 11, refinamiento: tres cambios menores apuntados en `BACKLOG.md`. Se harán cuando haya más opiniones reales de usuarios.
-- 2026-10-12: empieza la promoción: textos de prensa y BrandScript (StoryBrand) en `press/`, y la portada de la web reescrita siguiendo esa historia.
-- 2026-10-11: la web pasa a pdfdiva.nilovelez.com (las direcciones antiguas redirigen).
-- 2026-10-11: probado en Linux que PDF Diva sale en «Abrir con…» sin hacerse visor predeterminado de PDF.
-- 2026-10-11: la Store aprueba la 1.4.0.
+Newest entries first. One per work session, brief.
 
-- 2026-10-10: Nilo publica la release v1.4.0 en GitHub y envía la 1.4.0 a la Store; la web enlaza las descargas de Windows, Mac y Linux.
-
-- 2026-10-10: los idiomas salen por orden alfabético en Ajustes; el tag v1.4.0 se mueve a ese arreglo (la release aún no estaba publicada).
-
-- 2026-10-10: el .dmg funciona a la primera en un MacBook con Apple silicon y monitor externo. feat/mac y feat/linux fusionadas en main, idiomas nuevos registrados, v1.4.0 etiquetada; esperando a que Nilo publique la release.
-
-- 2026-10-09: sesión cerrada; en pausa hasta que Nilo pueda probar el .dmg en un Mac.
-- 2026-10-09: el .deb funciona en Ubuntu 24.04 desde USB en un portátil real (sesión X11); Nilo da por terminadas las pruebas de Linux.
-- 2026-10-09: el .deb pasa todas las pruebas en Linux Mint 22.3 MATE (portátil real); en Ubuntu 24.04 (VirtualBox, Wayland) no abre la ventana, en estudio.
-- 2026-10-09: primer .deb de Linux (rama `feat/linux`), compilado y con la prueba de humo en verde; en manos de Nilo para probarlo.
-- 2026-10-09: el andaluz pasa a `es-x-andaluh.json` (etiqueta BCP 47 válida; nunca automático, se elige a mano).
-- 2026-10-09: andaluz (Andalûh, EPA) en `locales/es-an.json`, sin registrar; backlog al día.
-- 2026-10-09: traducciones fr, de, it, nl, pt (de Portugal) y ca en `locales/`, sin registrar todavía en la app.
-- 2026-10-09: la Store aprueba la 1.3.0; vuelve el botón de la Store a la web.
-- 2026-10-08: backlog movido de docs/developer-guide.md a guppy/BACKLOG.md y puesto al día.
-- 2026-10-08: guppy/STATUS.md creado.
+- 2026-10-16: migrated to the new Guppy format (STATUS.json).
+- 2026-10-14: Softpedia dropped (it doesn't accept apps with AI-written code). Promotion paused: now it's time to show it in person.
+- 2026-10-14: submission e-mail sent to MajorGeeks.
+- 2026-10-14: PDF Diva submitted to AlternativeTo; in the review queue.
+- 2026-10-14: the Store approves the new listing (URLs, screenshots and trailer); winget already shows the new URLs.
+- 2026-10-14: Store listing updated by Nilo (1.5.0 screenshots, new privacy and website URLs, video as trailer, in English and Spanish), without changing the package; in certification.
+- 2026-10-14: the Store approves 1.5.0. Promo video (YouTube, in English and Spanish) and its thumbnail in `press/videos/`; Open Graph image with the website address; website screenshots retaken with 1.5.0; winget install in the README and the website; texts for software directories in `press/listings.md`.
+- 2026-10-13: Nilo publishes the v1.5.0 release on GitHub and submits it to the Store; the website links 1.5.0.
+- 2026-10-13: v1.5.0 (milestone 11) approved by Nilo after testing the installer, with the new sidebar image in the Windows installer; tag v1.5.0.
+- 2026-10-13: milestone 11 done on the `feat/refinement` branch (v1.5.0): uniform frame in the speaker view, theme picker with cards and centered reader thumbnails. Windows installer for Nilo to test.
+- 2026-10-13: the idea behind the name (the PDF is the star) comes back as an occasional nod: website closing line "Let the PDF be the star.", a note in the BrandScript and in the press texts.
+- 2026-10-12: milestone 11, refinement, opens: three minor changes noted in `BACKLOG.md`. They will be done when there is more real user feedback.
+- 2026-10-12: promotion starts: press texts and BrandScript (StoryBrand) in `press/`, and the website home page rewritten following that story.
+- 2026-10-11: the website moves to pdfdiva.nilovelez.com (the old addresses redirect).
+- 2026-10-11: tested on Linux that PDF Diva appears in "Open with…" without becoming the default PDF viewer.
+- 2026-10-11: the Store approves 1.4.0.
+- 2026-10-10: Nilo publishes the v1.4.0 release on GitHub and submits 1.4.0 to the Store; the website links the Windows, Mac and Linux downloads.
+- 2026-10-10: languages are listed alphabetically in Settings; the v1.4.0 tag moves to that fix (the release wasn't published yet).
+- 2026-10-10: the .dmg works first time on an Apple silicon MacBook with an external monitor. feat/mac and feat/linux merged into main, new languages registered, v1.4.0 tagged; waiting for Nilo to publish the release.
+- 2026-10-09: session closed; paused until Nilo can test the .dmg on a Mac.
+- 2026-10-09: the .deb works on Ubuntu 24.04 from USB on a real laptop (X11 session); Nilo considers the Linux tests done.
+- 2026-10-09: the .deb passes all tests on Linux Mint 22.3 MATE (real laptop); on Ubuntu 24.04 (VirtualBox, Wayland) the window doesn't open, under investigation.
+- 2026-10-09: first Linux .deb (`feat/linux` branch), built and with the smoke test green; in Nilo's hands for testing.
+- 2026-10-09: Andalusian moves to `es-x-andaluh.json` (valid BCP 47 tag; never automatic, chosen by hand).
+- 2026-10-09: Andalusian (Andalûh, EPA) in `locales/es-an.json`, not registered; backlog up to date.
+- 2026-10-09: fr, de, it, nl, pt (Portugal) and ca translations in `locales/`, not yet registered in the app.
+- 2026-10-09: the Store approves 1.3.0; the Store button returns to the website.
+- 2026-10-08: backlog moved from docs/developer-guide.md to guppy/BACKLOG.md and brought up to date.
+- 2026-10-08: guppy/STATUS.md created.

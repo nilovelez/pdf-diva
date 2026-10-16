@@ -1,13 +1,13 @@
 # Backlog
 
-Pendientes de PDF Diva, del más próximo al menos urgente. Lo que ya está publicado sale de aquí y queda en el CHANGELOG.
+PDF Diva to-dos, from the nearest to the least urgent. Whatever gets published leaves this list and goes into the CHANGELOG.
 
-## Tras la v1.4.0
+## After v1.4.0
 
-- [ ] **Runner de Linux**: `ubuntu-latest` pasa a Ubuntu 26 desde el 19 de octubre de 2026; comprobar que el build sigue bien o fijar `ubuntu-24.04`.
+- [ ] **Linux runner**: `ubuntu-latest` becomes Ubuntu 26 from October 19, 2026; check that the build still works or pin `ubuntu-24.04`.
 
-## Riesgos conocidos y sin probar
+## Known and untested risks
 
-- **Linux con Wayland + XWayland en un equipo real**: sin probar. En Ubuntu 24.04 en VirtualBox la ventana no se pinta (`dri_gbm.so … Permission denied`, `XGetWindowAttributes failed`), probablemente por el gráfico virtual; en Wayland nativo (`--ozone-platform=wayland`) abre, pero no reparte las ventanas entre monitores. El README recomienda «Ubuntu on Xorg» si la ventana no aparece. Probado y bien con X11: Linux Mint 22.3 MATE (dos pantallas) y Ubuntu 24.04 desde USB, ambos en equipos reales.
-- **Prueba de humo en Linux**: fallo intermitente visto una vez (run 37924875024): tras flecha derecha + Esc, el lector no volvió en la página 2. La prueba distingue ahora si se pierde la pulsación o la vuelta al lector, y espera 1 s antes de pasar página; si se repite, investigar (un pasador no puede perder pulsaciones).
-- **Mac**: probado por Nilo en un MacBook con Apple silicon y un monitor externo, todo bien a la primera (2026-10-10). Sin probar: un Mac Intel y tres monitores.
+- **Linux with Wayland + XWayland on real hardware**: untested. On Ubuntu 24.04 in VirtualBox the window isn't painted (`dri_gbm.so … Permission denied`, `XGetWindowAttributes failed`), probably because of the virtual graphics; on native Wayland (`--ozone-platform=wayland`) it opens, but doesn't spread the windows across displays. The README recommends "Ubuntu on Xorg" if the window doesn't appear. Tested and fine with X11: Linux Mint 22.3 MATE (two displays) and Ubuntu 24.04 from USB, both on real hardware.
+- **Linux smoke test**: intermittent failure seen once (run 37924875024): after right arrow + Esc, the reader didn't come back on page 2. The test now tells apart a lost key press from a failed return to the reader, and waits 1 s before turning the page; if it happens again, investigate (a clicker can't lose key presses).
+- **Mac**: tested by Nilo on an Apple silicon MacBook with an external monitor, all fine first time (2026-10-10). Untested: an Intel Mac and three displays.
