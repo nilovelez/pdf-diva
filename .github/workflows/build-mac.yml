@@ -45,6 +45,8 @@ jobs:
             npm run dist:mac 2>&1 | tee build.log
           else
             echo "::warning title=Not signed::No signing secrets: ad-hoc signature, not notarized"
+            # Missing secrets arrive as empty variables, which electron-builder would read as paths.
+            unset CSC_LINK CSC_KEY_PASSWORD APPLE_API_KEY_ID APPLE_API_ISSUER
             npm run dist:mac -- -c.mac.identity=- -c.mac.hardenedRuntime=false -c.mac.notarize=false 2>&1 | tee build.log
           fi
       - name: Check the app
