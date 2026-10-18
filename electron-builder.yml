@@ -3,7 +3,7 @@
 #   npm run dist:store  -> MSIX package (appx target) for the Microsoft Store
 #   npm run pack        -> unpacked folder, to try the packaged app quickly
 # and one on macOS, built by GitHub Actions (.github/workflows/build-mac.yml):
-#   npm run dist:mac    -> universal .dmg (Apple silicon and Intel), ad-hoc signed
+#   npm run dist:mac    -> universal .dmg (Apple silicon and Intel), signed and notarized
 # and one on Linux, also built by GitHub Actions (.github/workflows/build-linux.yml):
 #   npm run dist:linux  -> .deb for Debian and Ubuntu (x64)
 appId: com.nilovelez.pdfdiva
@@ -42,12 +42,13 @@ mac:
   category: public.app-category.productivity
   icon: resources/icons/app/icon-512.png
   darkModeSupport: true
-  # Ad-hoc signature: free, no Apple account. Apple silicon refuses to run unsigned apps; with
-  # this one macOS only warns that the developer cannot be verified (README explains "Open
-  # Anyway"). Hardened runtime would reject Electron's own frameworks under an ad-hoc signature,
-  # and it is only needed for notarization, which needs a paid Apple account.
-  identity: "-"
-  hardenedRuntime: false
+  # Developer ID signature and notarization, so Gatekeeper opens the app without blocking it.
+  # build-mac.yml passes the certificate (CSC_LINK) and the App Store Connect API key
+  # (APPLE_API_KEY*) from repository secrets. Without them it falls back to an ad-hoc signature,
+  # not notarized, with hardened runtime off (it rejects Electron's frameworks when ad-hoc signed).
+  # The entitlements are electron-builder's defaults for Electron (allow-jit and friends).
+  hardenedRuntime: true
+  notarize: true
   # Lists PDF Diva in "Open With" for PDFs; "Alternate" never makes it the default viewer.
   fileAssociations:
     - ext: pdf

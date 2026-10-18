@@ -1,11 +1,16 @@
 name: Build for macOS
 
-# The Mac build: a universal .dmg (Apple silicon and Intel), ad-hoc signed. It runs for every
-# version tag and on demand; the .dmg is attached to the run (Actions > this run > Artifacts) and
-# added to the GitHub release by hand, like the Windows installer.
+# The Mac build: a universal .dmg (Apple silicon and Intel), signed with a Developer ID and
+# notarized. It runs for every version tag and on demand; the .dmg is attached to the run
+# (Actions > this run > Artifacts) and added to the GitHub release by hand, like the Windows
+# installer. Signing secrets: MAC_CERT_P12 (the .p12, base64), MAC_CERT_PASSWORD,
+# APPLE_API_KEY_P8 (the .p8 file's text), APPLE_API_KEY_ID and APPLE_API_ISSUER. Without them
+# the .dmg is ad-hoc signed and not notarized, as before.
 on:
   push:
     tags: ["v*"]
+    # TEMPORARY, remove before merging: test builds of the signing branch.
+    branches: ["feat/mac-signing"]
   workflow_dispatch:
 
 permissions:
@@ -24,9 +29,24 @@ jobs:
       - run: npm run typecheck
       - run: npm run lint
       - name: Build the dmg
+        env:
+          CSC_LINK: ${{ secrets.MAC_CERT_P12 }}
+          CSC_KEY_PASSWORD: ${{ secrets.MAC_CERT_PASSWORD }}
+          APPLE_API_KEY_P8: ${{ secrets.APPLE_API_KEY_P8 }}
+          APPLE_API_KEY_ID: ${{ secrets.APPLE_API_KEY_ID }}
+          APPLE_API_ISSUER: ${{ secrets.APPLE_API_ISSUER }}
         run: |
           set -o pipefail
-          npm run dist:mac 2>&1 | tee build.log
+          if [ -n "$CSC_LINK" ]; then
+            # electron-builder wants the API key as a file.
+            export APPLE_API_KEY="$RUNNER_TEMP/AuthKey.p8"
+            printf '%s\n' "$APPLE_API_KEY_P8" > "$APPLE_API_KEY"
+            echo "SIGNED=1" >> "$GITHUB_ENV"
+            npm run dist:mac 2>&1 | tee build.log
+          else
+            echo "::warning title=Not signed::No signing secrets: ad-hoc signature, not notarized"
+            npm run dist:mac -- -c.mac.identity=- -c.mac.hardenedRuntime=false -c.mac.notarize=false 2>&1 | tee build.log
+          fi
       - name: Check the app
         run: |
           set -o pipefail
@@ -34,8 +54,14 @@ jobs:
           {
             lipo -archs "$app/Contents/MacOS/PDF Diva"
             codesign --verify --deep --strict --verbose=2 "$app"
+            codesign -dvv "$app" 2>&1 | grep -E '^(Authority|TeamIdentifier|Runtime)'
+            if [ -n "$SIGNED" ]; then
+              xcrun stapler validate "$app"
+              spctl --assess --type execute --verbose=2 "$app"
+            fi
             plutil -p "$app/Contents/Info.plist" | grep -A12 CFBundleDocumentTypes
           } 2>&1 | tee check.log
+          echo "::notice title=Signature::$(grep -E '^(Authority|TeamIdentifier|Runtime)|accepted|rejected|validate action' check.log | awk '{printf "%s%%0A", $0}')"
       # Runs the packaged app on the runner's display: there is no Mac to try it on by hand.
       - name: Smoke test
         run: |
