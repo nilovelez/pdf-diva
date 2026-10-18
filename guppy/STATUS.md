@@ -4,12 +4,15 @@ Version 1.4.0 (milestone 10, the last feature milestone) is published on GitHub 
 
 Version 1.5.0 (milestone 11, minor polish) is published on GitHub since October 13, with clearer file names (`PDF-Diva-Windows/macOS/Linux-x64-<version>`), and the website links it; the Store approved it on October 14. From here on, promotion and maintenance; no more feature milestones are planned.
 
-Next steps: promotion is paused on purpose: Nilo shows the app in person (word of mouth) and will later write an article on his website. When it resumes: Uptodown and communities. Maintenance continues. After October 19, 2026, check that the Linux build still works on Ubuntu 26 (or pin `ubuntu-24.04`). No blockers.
+In progress: signing the Mac `.dmg` with a Developer ID and notarizing it, so macOS opens it without the "Open Anyway" step. Trusted friends with an Apple Developer account lend their signature; the build changes are on the `feat/mac-signing` branch (GitHub Actions reads the certificate and the App Store Connect API key from repository secrets, and falls back to the ad hoc signature without them). Blocked until they send the certificate and the key and Nilo adds the secrets. Then Nilo tests the signed `.dmg` and, if it works, replaces the one in the v1.5.0 release (no new version).
+
+Next steps: promotion is paused on purpose: Nilo shows the app in person (word of mouth) and will later write an article on his website. When it resumes: Uptodown and communities. Maintenance continues. After October 19, 2026, check that the Linux build still works on Ubuntu 26 (or pin `ubuntu-24.04`).
 
 ## Log
 
 Newest entries first. One per work session, brief.
 
+- 2026-10-18: Mac signing and notarization prepared on `feat/mac-signing`; waiting for the certificate and the API key. Guppy icon set (October 16).
 - 2026-10-16: migrated to the new Guppy format (STATUS.json).
 - 2026-10-14: Softpedia dropped (it doesn't accept apps with AI-written code). Promotion paused: now it's time to show it in person.
 - 2026-10-14: submission e-mail sent to MajorGeeks.
