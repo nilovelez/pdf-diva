@@ -12,6 +12,7 @@ Next steps: promotion is paused on purpose: Nilo shows the app in person (word o
 
 Newest entries first. One per work session, brief.
 
+- 2026-10-25: Guppy section of CLAUDE.md updated to the current onboarding template (status dates now refresh every session). Still waiting for the Mac signing certificate.
 - 2026-10-18: Mac signing and notarization prepared on `feat/mac-signing`; waiting for the certificate and the API key. Guppy icon set (October 16).
 - 2026-10-16: migrated to the new Guppy format (STATUS.json).
 - 2026-10-14: Softpedia dropped (it doesn't accept apps with AI-written code). Promotion paused: now it's time to show it in person.
