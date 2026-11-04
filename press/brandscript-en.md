@@ -69,4 +69,6 @@ The person who runs the room: venue and AV technicians, streaming and video oper
 - Talk about the technician and their problem first, then about PDF Diva.
 - Every text answers three questions fast: what is it, how does it make my life better, how do I get it.
 - Website header: what it offers (a presenter view for any PDF), how it helps (the talk runs like a PowerPoint), how to get it (download button, visible without scrolling).
+- Write like a fellow professional who helps, never like an ad (the first rewrite of the website read like a used-car salesman, and the user rejected it). StoryBrand is the hidden structure, never visible as sales copy. No hype hooks ("Press Present.", "Three steps. No setup.", "That's why X exists."). Don't repeat the same fact in one spot. Re-read every text as a technician would.
+- **Never mention PowerPoint on the website** (say "slide decks"). The press texts and this BrandScript do mention it; ask the user before reusing those lines anywhere public.
 - Keep the tone of the product: the message is clear and calm, not hype. The name carries the character: the PDF is the star. Let it show in small nods at the edges (the closing line, the end card, the example slides), one or two per piece, never in the headline or in the problem.

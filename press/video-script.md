@@ -7,7 +7,7 @@ A short demo for the website, the README, the Store listing and community posts.
 | | |
 |---|---|
 | Length | 40 seconds (35–45) |
-| Voice | None. It must work muted: social feeds and the website play video without sound. |
+| Voice | It must work muted: social feeds and the website play video without sound. The published video got a voiceover afterwards, generated in ElevenLabs from the English subtitles with two voices (Castilian Spanish and US English); write the text per subtitle cue so it fits the timings (Spanish runs longer) and use the app's UI terms. |
 | Music | None. If you add some later, it must be royalty-free and credited. |
 | Captions | Burned in, in English, short (7 words at most), at least 2.5 s on screen |
 | Master format | 1920×1080, 30 fps, H.264 MP4 |
