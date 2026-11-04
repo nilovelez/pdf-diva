@@ -14,7 +14,7 @@ Next steps: promotion is paused on purpose: Nilo shows the app in person (word o
 
 Newest entries first. One per work session, brief.
 
-- 2026-11-04: Nilo's new always-on agent machine is Bender (Mac mini M1); PDF Diva stays on Marcianito for builds, Bender for content and Mac tests. Rules, decisions and status that lived only in the agent's local memory moved into the repo (CLAUDE.md, developer guide, `press/`, this file).
+- 2026-11-04: Nilo's new always-on agent machine is Bender (Mac mini M1); PDF Diva stays on Marcianito for builds, Bender for content and Mac tests. Rules, decisions and status that lived only in the agent's local memory moved into the repo (CLAUDE.md, developer guide, `press/`, this file). Temporary files now go in `scratch/pdf-diva/`.
 - 2026-10-25: Guppy section of CLAUDE.md updated to the current onboarding template (status dates now refresh every session). Nilo explained the signing to the friends who lend it (October 24) and e-mailed them the instructions (October 25); still waiting for the certificate and the key.
 - 2026-10-18: Mac signing and notarization prepared on `feat/mac-signing`; waiting for the certificate and the API key. Guppy icon set (October 16).
 - 2026-10-16: migrated to the new Guppy format (STATUS.json).
@@ -46,7 +46,3 @@ Newest entries first. One per work session, brief.
 - 2026-10-09: the Store approves 1.3.0; the Store button returns to the website.
 - 2026-10-08: backlog moved from docs/developer-guide.md to guppy/BACKLOG.md and brought up to date.
 - 2026-10-08: guppy/STATUS.md created.
-
-## Session names used
-
-Short names from sci-fi and pop culture, no repeats: Hercule Poirot, Miss Marple, Sherlock Holmes, Spock, Yoda, Leia, Chewbacca, Gandalf, Ripley, Trinity, Neo, Morpheus, Bender, Marvin, Groot, Data, Kirk, Uhura.
