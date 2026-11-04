@@ -25,7 +25,7 @@ Do not use CHANGELOG.md for this: it is for users. Do not edit `guppy-sync.yml`.
 
 ## Documentación
 
-- Guía técnica (arquitectura, comandos, empaquetado, flujo de publicación, pruebas): [`docs/developer-guide.md`](docs/developer-guide.md). La web se explica en [`docs/website.md`](docs/website.md). Las particularidades del equipo dedicado, Marcianito (compilar MSIX, pruebas con monitores), y los detalles del trabajo en curso están en la memoria del proyecto.
+- Guía técnica (arquitectura, comandos, empaquetado, flujo de publicación, pruebas): [`docs/developer-guide.md`](docs/developer-guide.md). La web se explica en [`docs/website.md`](docs/website.md). El estado y el trabajo en curso, en [`guppy/STATUS.md`](guppy/STATUS.md); la promoción (tono, textos, directorios), en [`press/`](press/).
 
 ## Producto y público (decidido)
 
@@ -177,7 +177,7 @@ npm run dist:linux   # solo en Linux (lo hace GitHub Actions): release/PDF-Diva-
 
 En Windows no existe `python3`: para scripts de Python usar `python` o `py`.
 
-No hay tests automáticos, salvo una prueba de humo de la app empaquetada (`scripts/smoke-test.mjs`) que ejecutan los builds de Mac y Linux en GitHub Actions: se prueba la app real controlándola por el protocolo de DevTools (ver `docs/developer-guide.md`). Para compilar el MSIX hacen falta ajustes (herramientas del SDK y `ELECTRON_BUILDER_CACHE`): están en la memoria del proyecto.
+No hay tests automáticos, salvo una prueba de humo de la app empaquetada (`scripts/smoke-test.mjs`) que ejecutan los builds de Mac y Linux en GitHub Actions: se prueba la app real controlándola por el protocolo de DevTools (ver `docs/developer-guide.md`). Para compilar el MSIX hacen falta ajustes (herramientas del SDK y `ELECTRON_BUILDER_CACHE`): están en `docs/developer-guide.md`.
 
 ## Plan por hitos
 
@@ -211,11 +211,11 @@ Hitos 1 a 11 hechos (v0.1.0 a v1.5.0). No hay más hitos de funciones previstos:
 - Si hay que elegir entre una solución "lista" y una "sencilla de mantener", elegir la sencilla.
 - **Commits modulares**: uno por paso lógico (`chore:`, `feat:`, `fix:`, `docs:`), pequeños y, cuando sea posible, de forma que cada uno compile por sí solo. Nada de un único commit gigante.
 - **Una etiqueta por hito**: al cerrar un hito, tag anotado (`git tag -a v0.5.0 -m "Milestone 5: ..."`) y `package.json` a la misma versión. Hito 1 = v0.1.0, hito 2 = v0.2.0, etc.; v1.0.0 cuando el instalador de Windows (hito 6) esté listo.
-- **Al empezar una sesión nueva**, renombrarla con el nombre de un personaje de ficción (herramienta `set_session_title` de Remote Control; si no está disponible, decirlo y seguir). No repetir nombres: la lista de los ya usados está en la memoria del proyecto (`workflow`); añadir el nuevo.
+- **Al empezar una sesión nueva**, renombrarla con el nombre de un personaje de ficción (herramienta `set_session_title` de Remote Control; si no está disponible, decirlo y seguir). Nombres cortos de ciencia ficción y cultura pop, sin repetir: la lista de los ya usados está al final de `guppy/STATUS.md`; añadir el nuevo.
 - **Una sola sesión** hace todo: código, pruebas, documentación técnica y para usuarios (`CHANGELOG.md`, README, `PRIVACY.md`), la web (`site/`) y los textos de la Store. La documentación para usuarios va en inglés, corta y solo con lo relevante para un usuario (el CHANGELOG sigue Keep a Changelog: Added / Changed / Fixed).
-- **Lista para un relevo en cualquier momento**: el usuario puede parar la sesión y abrir otra nueva. Hacer commit en cuanto un paso compile y push a menudo; el trabajo de un hito a medias va en una rama `feat/...` subida al repo; actualizar la nota de estado de la memoria del proyecto tras cada paso lógico (hecho, en curso, siguiente, esperando al usuario). Lo técnico y estable va en el repo (este archivo, `docs/developer-guide.md`), no solo en la memoria.
+- **Lista para un relevo en cualquier momento**: el usuario puede parar la sesión y abrir otra nueva. Hacer commit en cuanto un paso compile y push a menudo; el trabajo de un hito a medias va en una rama `feat/...` subida al repo; actualizar `guppy/STATUS.md` tras cada paso lógico (hecho, en curso, siguiente, esperando al usuario). Todo lo necesario para retomar el trabajo vive en el repo (este archivo, `docs/developer-guide.md`, `guppy/`, `press/`): decisiones, estado y reglas. La memoria del equipo es solo un apoyo; nada importante puede estar únicamente allí.
 - **Rama `development`**: es del usuario, para sus cambios a mano. Al empezar cada sesión y antes de cada push, `git fetch origin development`; si trae commits que no están en `main`, revisarlos, fusionarlos en `main` con merge (nunca rebase), pasar typecheck y lint, hacer push de `main` y luego avanzar `development` hasta `main` (fast-forward) y subirla. Nunca force-push.
 - **Publicación**: la sesión hace todos los commits y push a `main` (nadie más escribe en `main`). Hay que ejecutar los comandos de git sueltos (`git push origin main`, `git push origin vX.Y.Z`); encadenados o con tuberías los deniega el sistema de permisos. La release de GitHub la crea el **usuario desde la web** (no hay `gh`) y el usuario sube el `.appx` a Partner Center; la sesión le prepara el texto de la release y deja el instalador y el `.appx` en la carpeta compartida.
 - **Flujo por hito**: al terminar un hito, CHANGELOG y README, subir la versión en `package.json`, tag anotado, push de `main` con su tag y PARAR. No empezar el hito siguiente hasta que el usuario haya probado la app en otro equipo y dé el visto bueno. Así se detectan los problemas pronto y no se gasta trabajo en algo sin aprobar.
 - **Confirmar con el usuario** todo cambio de `CLAUDE.md`, de permisos o de ajustes del sistema (resolución, escala, tema de Windows, registro), las dependencias nuevas y cualquier publicación nueva.
-- Marcianito es el equipo dedicado a los agentes. Solo se modifican archivos en Marcianito; en otros equipos desde los que el usuario abra sesiones, solo lectura salvo petición expresa. Los cambios llegan a otros equipos por git.
+- **Equipos**: las compilaciones de Windows (NSIS y MSIX) y las pruebas con varios monitores se hacen en un equipo Windows (Marcianito, que ya no está siempre encendido). Lo que no necesita compilar (documentación, web, promoción, estado) se puede hacer desde cualquier equipo con el repo, por ejemplo Bender (Mac mini, también sirve para probar el `.dmg`).
