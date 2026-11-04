@@ -14,7 +14,7 @@ Next steps: promotion is paused on purpose: Nilo shows the app in person (word o
 
 Newest entries first. One per work session, brief.
 
-- 2026-11-04: Nilo's new always-on agent machine is Bender (Mac mini M1); PDF Diva stays on Marcianito for builds, Bender for content and Mac tests. Rules, decisions and status that lived only in the agent's local memory moved into the repo (CLAUDE.md, developer guide, `press/`, this file). Temporary files now go in `scratch/pdf-diva/`.
+- 2026-11-04: Nilo's new always-on agent machine is Bender (Mac mini M1); PDF Diva stays on Marcianito for builds, Bender for content and Mac tests. Rules, decisions and status that lived only in the agent's local memory moved into the repo (CLAUDE.md, developer guide, `press/`, this file). Temporary files now go in `scratch/pdf-diva/`. The `development` branch is gone: work goes straight to `main`.
 - 2026-10-25: Guppy section of CLAUDE.md updated to the current onboarding template (status dates now refresh every session). Nilo explained the signing to the friends who lend it (October 24) and e-mailed them the instructions (October 25); still waiting for the certificate and the key.
 - 2026-10-18: Mac signing and notarization prepared on `feat/mac-signing`; waiting for the certificate and the API key. Guppy icon set (October 16).
 - 2026-10-16: migrated to the new Guppy format (STATUS.json).
