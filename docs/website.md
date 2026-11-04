@@ -9,7 +9,7 @@ The PDF Diva website is a static site published with GitHub Pages: <https://pdfd
 - Colors come from the app's palette (`src/renderer/shared/theme.css`); do not invent new ones. Accent: fuchsia `#C2185B` in light, gold `#E8BA30` in dark.
 - UI icons are Phosphor Regular, inlined as SVG (credited in `THIRD-PARTY-NOTICES.md`).
 - Everything in the repo is in English.
-- The agent session writes to `main`; manual edits by the user go on the `development` branch and are merged from there (see the release flow in `docs/developer-guide.md`).
+- Changes go to `main` (see the release flow in `docs/developer-guide.md`).
 
 ## Structure
 
