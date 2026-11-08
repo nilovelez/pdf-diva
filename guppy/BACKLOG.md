@@ -2,11 +2,6 @@
 
 PDF Diva to-dos, from the nearest to the least urgent. Whatever gets published leaves this list and goes into the CHANGELOG.
 
-## v1.5.1 (maintenance, asked for by the friends who sign the Mac build)
-
-- [x] **Update Electron** (was 44.5.1; now 45.2.3, the latest stable, same OS requirements).
-- [x] **Electron Fuses**: turn off what the app doesn't use, especially `RunAsNode` (also `NODE_OPTIONS` and the `--inspect` arguments), and check the asar integrity options. electron-builder 26 sets them in `electron-builder.yml` (`electronFuses`), with no new dependency. Make sure the CDP tests still work (`--remote-debugging-port` is a Chromium switch, not affected).
-
 ## After v1.4.0
 
 - [ ] **Linux runner**: `ubuntu-latest` becomes Ubuntu 26 from October 19, 2026; check that the build still works or pin `ubuntu-24.04`.

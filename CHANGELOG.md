@@ -7,6 +7,12 @@ Until version 1.0.0 the interface was in Spanish only; entries up to that versio
 
 ## [Unreleased]
 
+## [1.5.1] - 2026-11-08
+
+### Changed
+- Built on Electron 45, with the latest security fixes. System requirements don't change.
+- The app switches off Electron features it doesn't use (running as a plain Node.js runtime, debugging options), and it refuses to start if its own files have been modified.
+
 ## [1.5.0] - 2026-10-13
 
 ### Changed

@@ -106,6 +106,10 @@ v1.5.0:
 
 > En Ajustes, cada tema se muestra con una pequeña imagen de la vista del orador. El marco alrededor de las diapositivas en la vista del orador es igual por todos los lados, y la miniatura seleccionada en el lector vuelve a estar centrada.
 
+v1.5.1:
+
+> Actualización de seguridad: PDF Diva usa una versión más reciente de Electron, desactiva las funciones que no necesita y no arranca si sus archivos se han modificado. Nada cambia en el uso.
+
 ## Listing: English (en-US)
 
 **Short description**
@@ -190,6 +194,10 @@ v1.4.0:
 v1.5.0:
 
 > In Settings, each theme is shown with a small picture of the speaker view. The frame around the slides in the speaker view is even on every side, and the selected thumbnail in the reader is centred again.
+
+v1.5.1:
+
+> Security update: PDF Diva uses a newer Electron, switches off the features it doesn't need, and won't start if its files have been modified. Nothing changes in how you use it.
 
 ## Images and trailer
 
