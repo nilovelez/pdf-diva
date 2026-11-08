@@ -4,17 +4,19 @@ Version 1.4.0 (milestone 10, the last feature milestone) is published on GitHub 
 
 Version 1.5.0 (milestone 11, minor polish) is published on GitHub since October 13, with clearer file names (`PDF-Diva-Windows/macOS/Linux-x64-<version>`), and the website links it; the Store approved it on October 14. From here on, promotion and maintenance; no more feature milestones are planned.
 
-In progress: version 1.5.1, maintenance asked for by the friends who sign the Mac build: Electron 45.2.3 and Electron fuses (done on `main` and tested on Windows with one and three displays, installer and MSIX included). Next: version bump, CHANGELOG, tag, release. The Mac and Linux builds run when the tag is pushed.
+Version 1.5.1 (maintenance asked for by the friends who sign the Mac build: Electron 45.2.3 and Electron fuses) is tagged since November 8, 2026, tested on Windows with one and three displays (installer, update from 1.5.0 and MSIX included). Waiting for Nilo to publish the GitHub release and submit the `.appx` to the Store, and for the signed `.dmg`; then the website links 1.5.1. The Mac and Linux builds of the tag failed on a GitHub 504 while downloading Electron (a GitHub problem that day, not the code) and must be re-run.
 
 Mac signing (changed on November 8, 2026): the friends (Desafío Digital) sign and notarize in their own private GitHub repository, so the credentials never leave them. Their system checks this repo for new tags twice a day, they approve each version by hand for now, and the signed `.dmg` is published in https://github.com/desafiodigital/pdf-diva-releases; Nilo gets an e-mail with the link and adds it to the release. The first real signature will be 1.5.1. Our own Mac build stays ad hoc signed. The `feat/mac-signing` branch is no longer needed. Once the first signed `.dmg` works (Nilo tests it on Bender, his Mac mini M1): update the README (drop "Open Anyway"), `press/listings.md`, the developer guide ("Distribution decisions" and the macOS bullet), the website if it mentions it, and delete `feat/mac-signing`.
 
 Machines: Windows builds (NSIS, MSIX) and multi-monitor tests run on Marcianito (Windows, no longer on all the time); content work (docs, website, promotion, status) can be done from any machine with the repo, such as Bender.
 
-Next steps: promotion is paused on purpose: Nilo shows the app in person (word of mouth) and will later write an article on his website. When it resumes: Uptodown and communities. Maintenance continues. After October 19, 2026, check that the Linux build still works on Ubuntu 26 (or pin `ubuntu-24.04`).
+Next steps: promotion is paused on purpose: Nilo shows the app in person (word of mouth) and will later write an article on his website. When it resumes: Uptodown and communities. Maintenance continues.
 
 ## Log
 
 Newest entries first. One per work session, brief.
+
+- 2026-11-08: v1.5.1 tagged: Electron 45.2.3 and Electron fuses. The end-to-end tests and test PDFs moved into the repo (`tests/`) and were brought up to date; electron-builder's current Windows toolset replaces the hand-swapped SDK tools, so nothing in scratch is needed any more. The Mac signers now sign in their own repository.
 
 - 2026-11-04: Nilo's new always-on agent machine is Bender (Mac mini M1); PDF Diva stays on Marcianito for builds, Bender for content and Mac tests. Rules, decisions and status that lived only in the agent's local memory moved into the repo (CLAUDE.md, developer guide, `press/`, this file). Temporary files now go in `scratch/pdf-diva/`. The `development` branch is gone: work goes straight to `main`.
 - 2026-10-25: Guppy section of CLAUDE.md updated to the current onboarding template (status dates now refresh every session). Nilo explained the signing to the friends who lend it (October 24) and e-mailed them the instructions (October 25); still waiting for the certificate and the key.
