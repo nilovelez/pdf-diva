@@ -23,6 +23,12 @@ files:
   - package.json
   - "!**/*.map"
 
+# Windows tools (signtool, makeappx, makepri, rcedit) from electron-builder's current bundle
+# (Windows SDK 10.0.26100). The legacy default (winCodeSign 2.6.0) has a makeappx that no longer
+# starts on current Windows 11.
+toolsets:
+  winCodeSign: "1.1.0"
+
 # Electron fuses: switch off what PDF Diva never uses, so the packaged executable can't be
 # turned into a generic Node.js runtime or debugger, and only loads its own, verified app.asar.
 # grantFileProtocolExtraPrivileges stays on: the pages are loaded from file:// and PDF.js
