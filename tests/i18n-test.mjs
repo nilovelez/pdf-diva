@@ -74,15 +74,18 @@ try {
   check('html lang = es', (await L.eval('document.documentElement.lang')) === 'es');
   check('no empty data-i18n', (await L.eval(`[...document.querySelectorAll('[data-i18n]')].filter(e => !e.textContent.trim()).length`)) === 0);
   check('settings button title', (await L.eval(`document.querySelector('#settings-open').title + '|' + document.querySelector('#settings-open').getAttribute('aria-label')`)) === 'Ajustes|Ajustes');
-  check('hint has bold', (await L.eval(`document.querySelector('[data-i18n="settings.speakerMonitor.hint"] b')?.textContent`)) === 'Alternar pantallas');
+  check('settings hint es', (await L.eval(text('[data-i18n="settings.theme.hint"]'))) === '«Sistema» sigue el tema del sistema operativo. La pantalla del público es siempre negra.');
 
-  // 2. Unknown languages → English
-  L = await launch(UD, 'fr-FR,de-DE');
-  check('fr/de system → English', (await L.eval(text('#drop p'))) === 'Click or drop a PDF file to open it', await L.eval(text('#drop p')));
+  // 2. A language PDF Diva doesn't have (Russian) → English
+  L = await launch(UD, 'ru-RU');
+  check('ru system → English', (await L.eval(text('#drop p'))) === 'Click or drop a PDF file to open it', await L.eval(text('#drop p')));
+  check('html lang = en', (await L.eval('document.documentElement.lang')) === 'en');
 
-  // 3. First supported language wins
-  L = await launch(UD, 'fr-FR,es-ES,en-US');
-  check('fr,es,en → Spanish', (await L.eval('document.documentElement.lang')) === 'es');
+  // 3. The first language the app has wins, for any of them (French since 1.4.0)
+  L = await launch(UD, 'ru-RU,fr-FR,es-ES');
+  check('ru,fr,es → French', (await L.eval(text('#drop p'))) === "Cliquez ou déposez un fichier PDF pour l'ouvrir", await L.eval(text('#drop p')));
+  L = await launch(UD, 'ru-RU,es-ES,en-US');
+  check('ru,es,en → Spanish', (await L.eval('document.documentElement.lang')) === 'es');
 
   // 4. Open a PDF, change the language live
   L = await launch(UD, 'es-ES');
@@ -92,13 +95,13 @@ try {
   check('page label es', (await L.eval(text('#page'))) === 'Página 1 de 3', await L.eval(text('#page')));
   await L.eval(`document.querySelector('#settings-open').click()`);
   await sleep(500);
-  check('language options', (await L.eval(`[...document.querySelectorAll('#language option')].map(o => o.value + '=' + o.textContent).join(',')`)) === 'system=Sistema,en=English,es=Español', await L.eval(`[...document.querySelectorAll('#language option')].map(o => o.value + '=' + o.textContent).join(',')`));
+  check('language options', (await L.eval(`[...document.querySelectorAll('#language option')].map(o => o.value + '=' + o.textContent).join(',')`)) === 'system=Sistema,es-x-andaluh=Andalûh,ca=Català,de=Deutsch,en=English,es=Español,fr=Français,it=Italiano,nl=Nederlands,pt=Português', await L.eval(`[...document.querySelectorAll('#language option')].map(o => o.value + '=' + o.textContent).join(',')`));
   check('language select = system', (await L.eval(`document.querySelector('#language').value`)) === 'system');
   await L.eval(`(() => { const s = document.querySelector('#language'); s.value = 'en'; s.dispatchEvent(new Event('change')); })()`);
   await sleep(800);
   check('live: settings title en', (await L.eval(text('#settings-title'))) === 'Settings');
   check('live: page label en', (await L.eval(text('#page'))) === 'Page 1 of 3', await L.eval(text('#page')));
-  check('live: monitor auto option en', (await L.eval(`document.querySelector('#speaker-monitor option').textContent`)) === 'Automatic (the main display)');
+  check('live: theme card en', (await L.eval(text('[data-i18n="settings.theme.light"]'))) === 'Light');
   check('live: select keeps en', (await L.eval(`document.querySelector('#language').value`)) === 'en');
   check('live: html lang en', (await L.eval('document.documentElement.lang')) === 'en');
   check('live: PDF still open', (await L.eval(`!document.querySelector('#reader').hidden`)) === true);
@@ -112,13 +115,16 @@ try {
   const P = await waitFor('presenter');
   await sleep(2000);
   check('presenter: exit en', (await P.eval(text('#exit'))) === 'Exit');
-  check('presenter: pause label en', (await P.eval(text('#pause-label'))) === 'Pause');
+  // The timer buttons are icon-only: their text is the tooltip and the accessible name.
+  const pauseName = `document.querySelector('#pause').title + '|' + document.querySelector('#pause').getAttribute('aria-label')`;
+  check('presenter: pause button en', (await P.eval(pauseName)) === 'Pause|Pause', await P.eval(pauseName));
   check('presenter: count', (await P.eval(`document.querySelector('#count').innerHTML`)) === '<b>1</b> of 3', await P.eval(`document.querySelector('#count').innerHTML`));
   check('presenter: title', (await P.eval('document.title')) === 'PDF Diva - Speaker view');
   check('presenter: next tooltip', (await P.eval(`document.querySelector('#next').title`)) === 'Go to the next slide');
   check('presenter: no empty data-i18n', (await P.eval(`[...document.querySelectorAll('[data-i18n]')].filter(e => !e.textContent.trim()).length`)) === 0);
   await P.eval(`document.querySelector('#pause').click()`);
-  check('presenter: resume label', (await P.eval(text('#pause-label'))) === 'Resume');
+  await sleep(300);
+  check('presenter: resume button en', (await P.eval(pauseName)) === 'Resume|Resume', await P.eval(pauseName));
   await P.eval(`document.querySelector('#exit').click()`);
   await sleep(800);
 

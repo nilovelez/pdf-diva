@@ -1,10 +1,16 @@
-// The reader window is hidden during a presentation and comes back as it was.
+// The reader window is hidden during a presentation (it leaves the window list, as Alt+Tab shows
+// it) and comes back as it was, on the last slide. Uses the real displays: the default roles with
+// 2+ displays, every display as audience (mirror), and one display (DisplaySwitch /internal; it
+// always restores /extend).
 import { ELECTRON, FIXTURES, LAUNCHERS, WORK } from './paths.mjs';
 import { spawn, execFileSync } from 'node:child_process';
 import { mkdirSync, rmSync } from 'node:fs';
 
 const SP = WORK;
 const PRUEBAS = FIXTURES;
+// The reader's window title is "PDF Diva - <path of the PDF>"; visibleTitles() cuts titles at 40.
+const READER = `PDF Diva - ${FIXTURES}`.slice(0, 40);
+const displaySwitch = (mode) => execFileSync('DisplaySwitch.exe', [`/${mode}`]);
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 let failures = 0;
 const check = (n, c, x = '') => { if (!c) failures++; console.log(`${c ? 'OK  ' : 'FAIL'} ${n}${x ? ' — ' + x : ''}`); };
@@ -41,11 +47,19 @@ async function waitFor(name, gone = false) {
   throw new Error(`${name} ${gone ? 'still open' : 'missing'}`);
 }
 
-async function run(label, fake2, button) {
-  const UD = `${SP}\\ud-hide-${label}`;
+// Every display shows the audience view ("Configure displays" in the reader, then Apply).
+const MIRROR = `(async () => {
+  document.querySelector('#configure-displays').click();
+  await new Promise((r) => setTimeout(r, 800));
+  for (const s of document.querySelectorAll('.displays-dialog select')) { s.value = 'audience'; s.dispatchEvent(new Event('change')); }
+  document.querySelector('.displays-dialog .btn.primary').click();
+})()`;
+
+async function run(label, { setup, window = 'presenter' } = {}) {
+  const UD = `${SP}\\ud-hide-${label.replace(/\W+/g, '-')}`;
   rmSync(UD, { recursive: true, force: true }); mkdirSync(UD, { recursive: true });
   kill(); await sleep(500);
-  const env = { ...process.env, TEST_USERDATA: UD, TEST_LANGS: 'en-US', TEST_PDF: `${PRUEBAS}\\test.pdf`, ...(fake2 ? { TEST_FAKE2: '1' } : {}) };
+  const env = { ...process.env, TEST_USERDATA: UD, TEST_LANGS: 'en-US', TEST_PDF: `${PRUEBAS}\\test.pdf` };
   spawn(ELECTRON, [`${LAUNCHERS}\\test-main.cjs`, '--remote-debugging-port=9333'], { env, stdio: 'ignore' });
   const L = await waitFor('launcher');
   await sleep(1000);
@@ -53,12 +67,14 @@ async function run(label, fake2, button) {
   await sleep(2000);
   await L.eval(`document.querySelector('#next').click()`);
   await sleep(500);
-  console.log(`[${label}] before:`, visibleTitles());
-  await L.eval(`document.querySelector('${button}').click()`);
-  const W = await waitFor(button === '#present-mirror' ? 'audience' : 'presenter');
+  if (setup) { await L.eval(setup); await sleep(1000); }
+  check(`[${label}] reader listed before presenting`, visibleTitles().includes(READER), visibleTitles());
+  await L.eval(`document.querySelector('#present').click()`);
+  const W = await waitFor(window);
   await sleep(2500);
   const during = visibleTitles();
-  check(`[${label}] reader hidden while presenting`, !during.includes('PDF Diva - C:') && (await L.eval('document.visibilityState')) === 'hidden', during);
+  check(`[${label}] reader hidden while presenting`, !during.includes(READER) && (await L.eval('document.visibilityState')) === 'hidden', during);
+  if (window === 'audience') check(`[${label}] no speaker view`, !during.includes('Speaker view'), during);
   await W.eval(`window.presenter.sendAction({ type: 'next' })`);
   await sleep(500);
   await W.eval(`window.presenter.sendAction({ type: 'exit' })`);
@@ -66,27 +82,35 @@ async function run(label, fake2, button) {
   await waitFor('audience', true);
   await sleep(1500);
   const after = visibleTitles();
-  check(`[${label}] reader back after exit, on the last slide`, after.includes('PDF Diva - C:') && (await L.eval(`document.querySelector('#page').textContent`)) === 'Page 3 of 3', `${after} ${await L.eval(`document.querySelector('#page').textContent`)}`);
-  return { L, UD, env };
+  const page = await L.eval(`document.querySelector('#page').textContent`);
+  check(`[${label}] reader back after exit, on the last slide`, after.includes(READER) && page === 'Page 3 of 3', `${after} ${page}`);
+  return { L, env };
 }
 
 try {
-  await run('single display, speaker view', false, '#present');
-  await run('2 displays, speaker view', true, '#present-presenter');
-  await run('2 displays, mirror', true, '#present-mirror');
+  await run('default roles, speaker view');
+  await run('mirror, every display audience', { setup: MIRROR, window: 'audience' });
 
   // Opening a PDF from Windows during a presentation still brings the reader back with it.
-  const { L, env } = await run('open-with during show', false, '#present');
+  const { L, env } = await run('open-with during show');
   await L.eval(`document.querySelector('#present').click()`);
   await waitFor('presenter');
   await sleep(2500);
   spawn(ELECTRON, [`${LAUNCHERS}\\test-main.cjs`, `${PRUEBAS}\\The Gold Hour.pdf`], { env, stdio: 'ignore' });
   await waitFor('presenter', true);
   await sleep(2500);
-  check('open-with during a show: reader visible with the new PDF', visibleTitles().includes('PDF Diva - C:') && (await L.eval('document.title')).endsWith('The Gold Hour.pdf'), visibleTitles());
+  check('open-with during a show: reader visible with the new PDF', visibleTitles().includes(READER) && (await L.eval('document.title')).endsWith('The Gold Hour.pdf'), visibleTitles());
+
+  // One display: audience only, no speaker view.
+  kill();
+  displaySwitch('internal');
+  await sleep(9000);
+  await run('one display, audience only', { window: 'audience' });
 } catch (e) {
   failures++; console.log('ERROR', e.message);
 } finally {
   kill();
+  displaySwitch('extend');
+  await sleep(9000);
 }
 console.log(failures ? `${failures} FAILED` : 'ALL OK');

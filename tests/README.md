@@ -14,8 +14,8 @@ Throwaway files (isolated settings folders, copies, screenshots) go to `scratch/
 | `folder-test.mjs` | The Open dialog starts in the last folder (restart, "Open with", broken PDF not remembered, deleted folder), icon-only timer buttons. | any |
 | `open-with-test.mjs` | PDF on the command line, a second launch, a PDF arriving during a presentation, corrupt or missing file, settings open. | any |
 | `long-test.mjs [langs]` | Every text 40 % longer: overflow and wrapped labels. It prints a report per screen instead of OK/FAIL; every line should say "no overflow, nothing wraps". | any |
-| `i18n-test.mjs` | Language from the system, live switch, saved language, speaker view text, password prompt. **Outdated**: 7 FAILs from texts and controls changed in milestones 9–11 (to be updated). | any |
-| `hide-reader-test.mjs` | The reader leaves the window list (Alt+Tab) while presenting and comes back on the last slide. **Outdated**: uses the "Present" buttons removed in milestone 9, 2 FAILs (to be updated). | any |
+| `i18n-test.mjs` | Language from the system (Russian stands for a language the app doesn't have), the first available language wins, live switch, saved language, speaker view text and icon-button names, password prompt. | any |
+| `hide-reader-test.mjs` | The reader leaves the window list (Alt+Tab) while presenting and comes back on the last slide: default roles, mirror (every display audience), a PDF opened from Windows during a show, and one display (`DisplaySwitch`, always restores `/extend`). | 2+ |
 | `site-test.mjs [dark\|light]` | The website (`site/index.html`) with a forced system theme: theme switch and Store badges. | any |
 | `fuses-test.ps1` | Packaged app: `ELECTRON_RUN_AS_NODE` and `--inspect` ignored, a changed `app.asar` refuses to start. | any |
 | `screenshots.mjs <outDir> [page]` | Not a test: the website and Store screenshots, 1920×1080 as a laptop at 150 % with a projector (`launchers/shots-main.cjs`), English and Spanish, light (*The Fuchsia Hour*) and dark (*The Gold Hour*). Needs a 4K display at 150 %. | 3 |
