@@ -147,6 +147,7 @@ pdf-diva/
 ├─ resources/icons/    # iconos de la interfaz (Phosphor); app/ = iconos de la aplicación (.ico, baldosas MSIX)
 ├─ docs/               # developer-guide.md, translating.md, website.md, store-listing.md, maquetas de diseño
 ├─ site/               # la web (GitHub Pages); scripts/ genera su página de privacidad
+├─ tests/              # pruebas de extremo a extremo por CDP (Windows), lanzadores y PDF de prueba (fixtures/)
 └─ .github/workflows/  # despliegue de la web; builds de Mac y Linux (con cada tag v*)
 ```
 
@@ -177,7 +178,7 @@ npm run dist:linux   # solo en Linux (lo hace GitHub Actions): release/PDF-Diva-
 
 En Windows no existe `python3`: para scripts de Python usar `python` o `py`.
 
-No hay tests automáticos, salvo una prueba de humo de la app empaquetada (`scripts/smoke-test.mjs`) que ejecutan los builds de Mac y Linux en GitHub Actions: se prueba la app real controlándola por el protocolo de DevTools (ver `docs/developer-guide.md`). Para compilar el MSIX hacen falta ajustes (herramientas del SDK y `ELECTRON_BUILDER_CACHE`): están en `docs/developer-guide.md`.
+No hay un framework de tests: se prueba la app real controlándola por el protocolo de DevTools. La prueba de humo de la app empaquetada (`scripts/smoke-test.mjs`) la ejecutan los builds de Mac y Linux en GitHub Actions; el resto de pruebas (monitores, escalado, idiomas, «Abrir con…», Fuses, web, capturas) están en `tests/` y se ejecutan a mano en Windows (`tests/README.md` dice qué hace cada una y cuántos monitores necesita). Antes de compilar en Windows, `ELECTRON_BUILDER_CACHE` apunta a `scratch` (detalles en `docs/developer-guide.md`).
 
 ## Plan por hitos
 
@@ -217,4 +218,4 @@ Hitos 1 a 11 hechos (v0.1.0 a v1.5.0). No hay más hitos de funciones previstos:
 - **Flujo por hito**: al terminar un hito, CHANGELOG y README, subir la versión en `package.json`, tag anotado, push de `main` con su tag y PARAR. No empezar el hito siguiente hasta que el usuario haya probado la app en otro equipo y dé el visto bueno. Así se detectan los problemas pronto y no se gasta trabajo en algo sin aprobar.
 - **Confirmar con el usuario** todo cambio de `CLAUDE.md`, de permisos o de ajustes del sistema (resolución, escala, tema de Windows, registro), las dependencias nuevas y cualquier publicación nueva.
 - **Equipos**: las compilaciones de Windows (NSIS y MSIX) y las pruebas con varios monitores se hacen en un equipo Windows (Marcianito, que ya no está siempre encendido). Lo que no necesita compilar (documentación, web, promoción, estado) se puede hacer desde cualquier equipo con el repo, por ejemplo Bender (Mac mini, también sirve para probar el `.dmg`).
-- **Archivos temporales**: todo lo que no va en el repo (cachés de compilación, carpetas de pruebas, herramientas, descargas) va en `scratch/pdf-diva/`, al lado de la carpeta `repos` (en Marcianito, `D:\scratch\pdf-diva`), nunca suelto por el disco. Lo que hay ahí se puede borrar en cualquier migración: que nada imprescindible viva solo allí, y que la forma de recrearlo esté en `docs/developer-guide.md`.
+- **Archivos temporales**: todo lo que no va en el repo (cachés de compilación, carpetas de pruebas, herramientas, descargas) va en `scratch/pdf-diva/`, al lado de la carpeta `repos` (en Marcianito, `D:\scratch\pdf-diva`), nunca suelto por el disco. Si mañana se borra esa carpeta, todo tiene que poder recuperarse: cada cosa o vive en el repo (scripts, pruebas, PDF de prueba) o se regenera con las herramientas del proyecto (npm, electron-builder), y la guía técnica dice cómo. Ahora mismo solo contiene la caché de electron-builder (`eb-cache`) y la carpeta de trabajo de las pruebas (`test-work`).
