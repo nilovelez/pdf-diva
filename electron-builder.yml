@@ -23,6 +23,19 @@ files:
   - package.json
   - "!**/*.map"
 
+# Electron fuses: switch off what PDF Diva never uses, so the packaged executable can't be
+# turned into a generic Node.js runtime or debugger, and only loads its own, verified app.asar.
+# grantFileProtocolExtraPrivileges stays on: the pages are loaded from file:// and PDF.js
+# fetches its cmaps, fonts and wasm from there.
+electronFuses:
+  runAsNode: false
+  enableNodeOptionsEnvironmentVariable: false
+  enableNodeCliInspectArguments: false
+  enableCookieEncryption: true
+  enableEmbeddedAsarIntegrityValidation: true
+  onlyLoadAppFromAsar: true
+  grantFileProtocolExtraPrivileges: true
+
 # License texts that must travel with every build (see CLAUDE.md). Electron itself already
 # adds LICENSE.electron.txt and LICENSES.chromium.html next to the executable.
 extraResources:
