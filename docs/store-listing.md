@@ -195,6 +195,6 @@ v1.5.0:
 
 Both listings (English and Spanish) have, since the listing update of 2026-10-14 (package unchanged, 1.5.0):
 
-- **Screenshots**: version 1.5.0 at 1920×1080, in each listing's language, from the shared folder `Z:\pdf-diva\capturas-1.5.0\en\` and `\es\` (sample PDFs we own). Retake them when the interface changes visibly.
+- **Screenshots**: version 1.5.0 at 1920×1080, in each listing's language, from the shared folder `X:\scratch\pdf-diva\capturas-1.5.0\en\` and `\es\` (sample PDFs we own). Retake them when the interface changes visibly.
 - **Trailer**: the promo video from `press/videos/` (39 s, English or Spanish voiceover).
 - **Package logos**: inside the MSIX, from `resources/icons/app/`.

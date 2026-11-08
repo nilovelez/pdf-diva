@@ -120,7 +120,7 @@ Settled with the user; don't reopen them without a new reason.
 
 ## Testing
 
-Launch the app with `electron . --remote-debugging-port=9333` (or a packaged `.exe` with the same flag), connect to `http://127.0.0.1:9333/json`, and use the DevTools protocol over WebSocket: `Runtime.evaluate` to read/click, `Input.dispatchKeyEvent` for keys, `Input.dispatchDragEvent` with `files: [path]` for real drag and drop. Settings can be isolated with `app.setPath('userData', …)` from a small launcher script. A password-protected PDF can be generated with a few lines of Node (RC4 40-bit, standard security handler). Multi-monitor behaviour is tested by toggling a display (`DisplaySwitch.exe /internal` and `/extend`) while a presentation runs.
+Launch the app with `electron . --remote-debugging-port=9333` (or a packaged `.exe` with the same flag), connect to `http://127.0.0.1:9333/json`, and use the DevTools protocol over WebSocket: `Runtime.evaluate` to read/click, `Input.dispatchKeyEvent` for keys, `Input.dispatchDragEvent` with `files: [path]` for real drag and drop. Settings can be isolated with `app.setPath('userData', …)` from a small launcher script. A password-protected PDF can be generated with a few lines of Node (RC4 40-bit, standard security handler). The agent's ready-made test scripts (displays, scaling, languages, "Open with", fuses) are not in the repo: on the Windows machine they are in `D:\scratch\pdf-diva\harness`, disposable like everything in scratch. Multi-monitor behaviour is tested by toggling a display (`DisplaySwitch.exe /internal` and `/extend`) while a presentation runs.
 
 ## Backlog
 

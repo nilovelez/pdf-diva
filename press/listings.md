@@ -5,7 +5,7 @@ Ready-to-paste texts for software directories, one section per site, in the orde
 ## What to have at hand
 
 - **Icon**: `resources/icons/app/icon-512.png` (512×512 PNG, transparent corners).
-- **Screenshots** (1920×1080, version 1.5.0): `Z:\pdf-diva\capturas-1.5.0\en\` and `\es\`. Best order: `3-speaker-light.png` (speaker view), `2-reader-light.png` (reader), `4-speaker-displays-light.png` (Configure displays), `5-speaker-dark.png` (dark theme), `1-welcome-light.png`.
+- **Screenshots** (1920×1080, version 1.5.0): `X:\scratch\pdf-diva\capturas-1.5.0\en\` and `\es\`. Best order: `3-speaker-light.png` (speaker view), `2-reader-light.png` (reader), `4-speaker-displays-light.png` (Configure displays), `5-speaker-dark.png` (dark theme), `1-welcome-light.png`.
 - **Video**: https://www.youtube.com/watch?v=8Q9_k4RQ5MI (English and Spanish audio and subtitles). Thumbnail: `press/videos/pdf_diva_promo.png`.
 - **Links**: website https://pdfdiva.nilovelez.com/, Microsoft Store https://apps.microsoft.com/detail/9nh5x0qbmhq1, downloads https://github.com/nilovelez/pdf-diva/releases/latest, source https://github.com/nilovelez/pdf-diva.
 - **Developer**: Nilo Vélez. **License**: GPL-3.0-or-later. **Price**: free, no ads, no in-app purchases.
