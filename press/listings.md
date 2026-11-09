@@ -1,6 +1,6 @@
 # PDF Diva: software directory listings
 
-Ready-to-paste texts for software directories, one section per site, in the order we plan to submit them. Facts are current for version 1.5.0. The general press texts are in `texts-en.md` and `texts-es.md`.
+Ready-to-paste texts for software directories, one section per site, in the order we plan to submit them. Facts are current for version 1.5.1. The general press texts are in `texts-en.md` and `texts-es.md`.
 
 ## What to have at hand
 
@@ -41,14 +41,14 @@ The obvious extra entry under "Alternative to" is PowerPoint's presenter view, s
 **Platform notes**
 
 - Windows: Windows 10 and 11, from the Microsoft Store (also `winget install "PDF Diva"`) or with an unsigned installer from GitHub.
-- Mac: macOS 13 or later, Apple silicon and Intel; not notarized, so the first time it needs Open Anyway in Privacy & Security.
+- Mac: macOS 13 or later, Apple silicon and Intel; signed and notarized by Apple.
 - Linux: a .deb for Debian, Ubuntu and derivatives (64-bit), running on X11.
 
 **Features** (if the form asks for them): Presenter view, Multi-monitor support, Presentation remote support, Works offline, No tracking, Dark mode, Password-protected PDFs.
 
 ## 2. Uptodown
 
-https://uptodown.dev (Developers Console) — a big download site, especially in Spanish-speaking countries. Free to register and publish, Windows and Mac. **Add new app**, choose the operating system, upload the file, then fill in the listing. It needs one entry per system: Windows (`PDF-Diva-Windows-1.5.0.exe`) and Mac (`PDF-Diva-macOS-1.5.0.dmg`). Each new version has to be uploaded again from the console.
+https://uptodown.dev (Developers Console) — a big download site, especially in Spanish-speaking countries. Free to register and publish, Windows and Mac. **Add new app**, choose the operating system, upload the file, then fill in the listing. It needs one entry per system: Windows (`PDF-Diva-Windows-1.5.1.exe`) and Mac (`PDF-Diva-macOS-1.5.1.dmg`). Each new version has to be uploaded again from the console.
 
 Uptodown has an edition per language; give it at least English and Spanish:
 
@@ -82,7 +82,7 @@ Uptodown has an edition per language; give it at least English and Spanish:
 
 https://www.majorgeeks.com — a small team that installs and tests every program by hand; most submissions are turned down. Submissions go by e-mail to **mgnews@majorgeeks.com**. Send a short, plain e-mail:
 
-> **Subject:** Software submission: PDF Diva 1.5.0 (free, open source)
+> **Subject:** Software submission: PDF Diva 1.5.1 (free, open source)
 >
 > Hello,
 >
@@ -91,7 +91,7 @@ https://www.majorgeeks.com — a small team that installs and tests every progra
 > It presents a PDF like any slide deck: the slide full screen on the projector, and the current slide, the next one and a timer on the speaker's screen. It works with any presentation remote, lets you choose what each display shows, and keeps going if a display is unplugged. No account, no telemetry and no internet connection.
 >
 > - Website: https://pdfdiva.nilovelez.com/
-> - Download (Windows installer, 64-bit): https://github.com/nilovelez/pdf-diva/releases/download/v1.5.0/PDF-Diva-Windows-1.5.0.exe
+> - Download (Windows installer, 64-bit): https://github.com/nilovelez/pdf-diva/releases/download/v1.5.1/PDF-Diva-Windows-1.5.1.exe
 > - Microsoft Store: https://apps.microsoft.com/detail/9nh5x0qbmhq1
 > - Source code (GPL-3.0): https://github.com/nilovelez/pdf-diva
 > - Requirements: Windows 10 or 11, 64-bit

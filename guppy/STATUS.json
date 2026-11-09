@@ -3,9 +3,9 @@
   "title": "PDF Diva",
   "description": "Free desktop app that gives any PDF a PowerPoint-style presenter view, for event technicians and streaming operators.",
   "status": "active",
-  "status_text": "PDF Diva 1.5.1 (Electron 45, Electron fuses) is tagged. Next: publish it, then the first Mac build signed and notarized by Desafío Digital.",
-  "last_update": "2026-11-08 10:49:40 +0100",
-  "last_update_unix": 1794131380,
+  "status_text": "PDF Diva 1.5.1 is out, with the first Mac build signed and notarized by Desafío Digital; in Microsoft Store certification. Maintenance continues.",
+  "last_update": "2026-11-09 16:13:01 +0100",
+  "last_update_unix": 1794237181,
   "url": "https://github.com/nilovelez/pdf-diva",
   "status_url": "https://raw.githubusercontent.com/nilovelez/pdf-diva/main/guppy/STATUS.md",
   "icon": "https://pdfdiva.nilovelez.com/assets/img/icon-128x128.png"

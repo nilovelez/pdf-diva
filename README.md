@@ -52,10 +52,9 @@ To update, download and run the new installer: your settings are kept.
 ### On a Mac
 
 1. Download `PDF-Diva-macOS-<version>.dmg` from the [latest release](https://github.com/nilovelez/pdf-diva/releases/latest), open it and drag **PDF Diva** to **Applications**.
-2. Open PDF Diva from Applications. The first time, macOS says it can't verify the developer, because the app isn't notarized by Apple. Click **Done** (or **Cancel**).
-3. Open *System Settings > Privacy & Security*, scroll down to the message about PDF Diva and click **Open Anyway**. Confirm with your password. On macOS 13 and 14 you can instead Control-click the app in Applications and choose **Open**.
+2. Open PDF Diva from Applications. The app is signed and notarized by Apple, so the first time macOS only asks you to confirm that you want to open an app downloaded from the internet.
 
-macOS only asks once. To update, replace the app in Applications with the new one: your settings are kept.
+To update, replace the app in Applications with the new one: your settings are kept.
 
 ### On Linux (Debian and Ubuntu)
 
