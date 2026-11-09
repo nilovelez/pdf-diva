@@ -193,7 +193,7 @@ Hitos 1 a 11 hechos (v0.1.0 a v1.5.0). No hay más hitos de funciones previstos:
 7. **Multiidioma**: interfaz traducible, con el español y el inglés como primeros idiomas (el inglés va antes que Mac y Linux).
 8. **Abrir PDFs desde el sistema**: que PDF Diva aparezca en «Abrir con…» y el usuario pueda elegirla como aplicación predeterminada para PDFs (Windows: NSIS y MSIX; Mac y Linux en el hito 10).
 9. **Multimonitor y mejora de interfaz** (opiniones reales de usuarios): primero, que la interfaz se adapte mejor a distintas resoluciones y densidades de pantalla (empezando por la vista del orador en resoluciones grandes); después, cambiar el comportamiento con tres monitores (dos vistas del orador, técnico y ponente, y una salida al público). Se prueba con los dos adaptadores DisplayPort (3 pantallas reales en Marcianito).
-10. **Mac y Linux**: builds de Mac (`.dmg` universal, firma ad hoc) y Linux (`.deb`) en GitHub Actions, y siete idiomas nuevos. En Linux solo se da soporte a **Debian y Ubuntu**.
+10. **Mac y Linux**: builds de Mac (`.dmg` universal; desde la 1.5.1 lo firman y notarizan Desafío Digital en su repositorio) y Linux (`.deb`) en GitHub Actions, y siete idiomas nuevos. En Linux solo se da soporte a **Debian y Ubuntu**.
 11. **Refinamiento** (v1.5.0): cambios menores de pulido que pidió el usuario, sin funciones nuevas: selector de tema con tarjetas, marco uniforme en la vista del orador, miniaturas del lector centradas e imagen propia en el instalador de Windows.
 
 ## Fuera de alcance (por ahora)
