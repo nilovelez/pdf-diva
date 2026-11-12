@@ -16,6 +16,7 @@ The checklist used to test the `.deb` on real machines (Debian, Ubuntu and deriv
    - B or . = black screen; Esc = exit. The reader comes back on the last page.
    - Two displays (extended): audience on one, speaker view on the other. Try "Configure displays" and "Apply" during the presentation, and unplug and replug the display.
    - Note what each screen shows, and anything on the wrong screen, cut off or under a desktop panel.
+   - On Wayland (Ubuntu 26.04 and later) the desktop, not PDF Diva, picks each view's screen, so a view on the wrong screen is expected now and then: check that Super+Shift+← or → moves it to the other screen.
 4. **Opening PDFs from the desktop**
    - Right-click a PDF in the file manager > Open with: PDF Diva is listed and opens it.
    - Installing it did NOT make it the default PDF app (double-clicking a PDF still opens the usual viewer).
