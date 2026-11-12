@@ -2,10 +2,6 @@
 
 PDF Diva to-dos, from the nearest to the least urgent. Whatever gets published leaves this list and goes into the CHANGELOG.
 
-## After v1.4.0
-
-- [ ] **Linux runner**: `ubuntu-latest` becomes Ubuntu 26 from October 19, 2026; check that the build still works or pin `ubuntu-24.04`.
-
 ## Known and untested risks
 
 - **Linux with Wayland + XWayland on real hardware**: untested. On Ubuntu 24.04 in VirtualBox the window isn't painted (`dri_gbm.so … Permission denied`, `XGetWindowAttributes failed`), probably because of the virtual graphics; on native Wayland (`--ozone-platform=wayland`) it opens, but doesn't spread the windows across displays. The README recommends "Ubuntu on Xorg" if the window doesn't appear. Tested and fine with X11: Linux Mint 22.3 MATE (two displays) and Ubuntu 24.04 from USB, both on real hardware.
