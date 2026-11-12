@@ -162,24 +162,69 @@ function createPresentationWindow(
 
 function placeFullScreen(win: BrowserWindow, display: Display): void {
   if (win.isDestroyed()) return;
-  if (isFullScreen(win) && sameBounds(win.getBounds(), display.bounds)) return;
-  if (isFullScreen(win)) setFullScreen(win, false);
-  win.setBounds(display.bounds);
-  setFullScreen(win, true);
-  win.show();
-  checkPlacement(win, display);
+  if (isFullScreen(win) && (isLinux ? onDisplay(win, display) : sameBounds(win.getBounds(), display.bounds))) {
+    return;
+  }
+  const move = (): void => {
+    if (win.isDestroyed()) return;
+    win.setBounds(display.bounds);
+    setFullScreen(win, true);
+    win.show();
+    checkPlacement(win, display);
+  };
+  if (!isFullScreen(win)) {
+    move();
+  } else if (isLinux) {
+    // On Wayland a window moved while it is still leaving full screen stays where it was.
+    afterLeavingFullScreen(win, move);
+  } else {
+    setFullScreen(win, false);
+    move();
+  }
 }
 
 const isLinux = process.platform === 'linux';
-/** Delays before each check of where a window landed; one more placement after each miss. */
-const PLACEMENT_CHECKS_MS = [500, 1000, 2000];
 /** PDF_DIVA_DEBUG_DISPLAYS=1 logs every check, for testing on a new desktop. */
 const debugDisplays = process.env.PDF_DIVA_DEBUG_DISPLAYS === '1';
-
-/** Time for the compositor to take a window out of full screen before it is moved. */
-const LEAVE_FULL_SCREEN_MS = 300;
+/** How long a window may take to go full screen before it is taken as misplaced. */
+const PLACEMENT_CHECKS_MS = [500, 1000, 2000];
+/** How many times a misplaced window is replaced by a new one. */
+const MAX_REPLACEMENTS = 3;
+/** Longest wait for the compositor to confirm a window left full screen. */
+const LEAVE_FULL_SCREEN_TIMEOUT_MS = 1000;
 /** The pending check of each window: a new placement replaces it. */
 const placementTimers = new WeakMap<BrowserWindow, NodeJS.Timeout>();
+/** How many windows came before this one on its display, each replaced for landing elsewhere. */
+const replacements = new WeakMap<BrowserWindow, number>();
+
+/** Takes `win` out of full screen and runs `then` once the compositor has done it. */
+function afterLeavingFullScreen(win: BrowserWindow, then: () => void): void {
+  let done = false;
+  const go = (): void => {
+    if (done) return;
+    done = true;
+    clearTimeout(fallback);
+    then();
+  };
+  const fallback = setTimeout(go, LEAVE_FULL_SCREEN_TIMEOUT_MS);
+  win.once('leave-full-screen', go);
+  setFullScreen(win, false);
+}
+
+/**
+ * Puts a new window on `display` in place of `win`, which landed on another one. On Wayland a new
+ * window lands where it was asked far more often than a window that is moved.
+ */
+function replaceWindow(p: Presentation, win: BrowserWindow, display: Display): void {
+  const kind = p.audiences.get(display.id) === win ? 'audience' : 'presenter';
+  const byDisplay = kind === 'audience' ? p.audiences : p.speakers;
+  const focused = win.isFocused();
+  const next = createPresentationWindow(p, kind, display);
+  replacements.set(next, (replacements.get(win) ?? 0) + 1);
+  if (focused) next.once('show', () => next.focus());
+  byDisplay.set(display.id, next);
+  closeQuietly(p, win);
+}
 
 /**
  * Whether a full-screen window is on `display`. On Wayland the window's origin is always 0,0, so
@@ -195,42 +240,36 @@ function onDisplay(win: BrowserWindow, display: Display): boolean {
 
 /**
  * On Wayland an app cannot place a window: it can only ask for full screen, and the compositor
- * picks the display Chromium believes the window is on, which right after creating it is
- * sometimes the first one. So on Linux, check where each window ended up and place it again if it
- * missed. Only while the window still belongs on that display. A window that is full screen on
- * the wrong display must leave full screen first, and that takes the compositor a moment: moving
- * it at once leaves it where it was.
+ * picks the display Chromium believes the window is on, which is sometimes the first one. So on
+ * Linux, check where each window ended up. A window that is full screen elsewhere, or not full
+ * screen after the last check, is replaced by a new one on its display (moving it fails more
+ * often). Only while the window still belongs on that display.
  */
-function checkPlacement(win: BrowserWindow, display: Display, attempt = 0): void {
+function checkPlacement(win: BrowserWindow, display: Display, check = 0): void {
   if (!isLinux) return;
   clearTimeout(placementTimers.get(win));
-  if (attempt >= PLACEMENT_CHECKS_MS.length) return;
   const timer = setTimeout(() => {
     const p = current;
     if (!p || win.isDestroyed()) return;
     if (p.speakers.get(display.id) !== win && p.audiences.get(display.id) !== win) return;
     const right = onDisplay(win, display);
+    const replaced = replacements.get(win) ?? 0;
     if (debugDisplays) {
       console.log(
-        `PDF Diva: check ${attempt + 1}: wanted display ${display.id}, ` +
+        `PDF Diva: window ${replaced + 1}, check ${check + 1}: wanted display ${display.id}, ` +
           `bounds ${JSON.stringify(win.getBounds())}, full screen ${isFullScreen(win)}, right ${right}`,
       );
     }
     if (right) return;
-    console.log(`PDF Diva: window meant for display ${display.id} missed it; placing it again`);
-    const move = (): void => {
-      if (win.isDestroyed()) return;
-      win.setBounds(display.bounds);
-      setFullScreen(win, true);
-      checkPlacement(win, display, attempt + 1);
-    };
-    if (isFullScreen(win)) {
-      setFullScreen(win, false);
-      placementTimers.set(win, setTimeout(move, LEAVE_FULL_SCREEN_MS));
-    } else {
-      move();
+    const lastCheck = check + 1 >= PLACEMENT_CHECKS_MS.length;
+    if (!isFullScreen(win) && !lastCheck) {
+      checkPlacement(win, display, check + 1); // still on its way to full screen
+      return;
     }
-  }, PLACEMENT_CHECKS_MS[attempt]);
+    if (replaced >= MAX_REPLACEMENTS) return;
+    console.log(`PDF Diva: window meant for display ${display.id} landed elsewhere; replacing it`);
+    replaceWindow(p, win, display);
+  }, PLACEMENT_CHECKS_MS[check]);
   placementTimers.set(win, timer);
 }
 
