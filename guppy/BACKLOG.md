@@ -4,7 +4,7 @@ PDF Diva to-dos, from the nearest to the least urgent. Whatever gets published l
 
 ## Next
 
-- **Ask Electron for full screen on a given display** (decided 2026-11-12: no PR from us, building Electron is out of reach; a feature request instead, then check its issues now and then): let `setFullScreen` (or a new option) take a target display, passing it to Chromium's `Widget::SetFullscreen(bool, target_display_id)`, which on Wayland already becomes `xdg_toplevel.set_fullscreen(output)`. Electron would welcome it (electron/electron#30249, closed as not planned on 2025-05-28: "If you'd like to make a PR for this request we would welcome that"). It is the only way to put each view on its display on Wayland (see "Linux on Wayland" in the developer guide).
+- **Full screen on a given display in Electron**: requested on 2026-11-12 in https://github.com/electron/electron/issues/55761 (no PR from us: building Electron is out of reach). Check it now and then; if Electron adds it, use it on Linux and drop the Super+Shift+arrow note from the README. The request: let `setFullScreen` (or a new option) take a target display, passing it to Chromium's `Widget::SetFullscreen(bool, target_display_id)`, which on Wayland already becomes `xdg_toplevel.set_fullscreen(output)`. Electron would welcome it (electron/electron#30249, closed as not planned on 2025-05-28: "If you'd like to make a PR for this request we would welcome that"). It is the only way to put each view on its display on Wayland (see "Linux on Wayland" in the developer guide).
 
 ## Known and untested risks
 

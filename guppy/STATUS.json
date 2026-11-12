@@ -3,9 +3,9 @@
   "title": "PDF Diva",
   "description": "Free desktop app that gives any PDF a PowerPoint-style presenter view, for event technicians and streaming operators.",
   "status": "active",
-  "status_text": "PDF Diva 1.5.1 is out on GitHub and the Microsoft Store; on Linux it now runs on Wayland. Next: study a patch to Electron to put each window on its display under Wayland.",
-  "last_update": "2026-11-12 17:12:56 +0100",
-  "last_update_unix": 1794499976,
+  "status_text": "PDF Diva 1.5.1 is out on GitHub and the Microsoft Store; on Linux it now runs on Wayland. Maintenance continues; waiting on Electron for full screen on a given display.",
+  "last_update": "2026-11-12 17:25:11 +0100",
+  "last_update_unix": 1794500711,
   "url": "https://github.com/nilovelez/pdf-diva",
   "status_url": "https://raw.githubusercontent.com/nilovelez/pdf-diva/main/guppy/STATUS.md",
   "icon": "https://pdfdiva.nilovelez.com/assets/img/icon-128x128.png"
