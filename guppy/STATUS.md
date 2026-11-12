@@ -11,6 +11,8 @@ Machines: Windows builds (NSIS, MSIX) and multi-monitor tests run on Marcianito 
 
 Next steps: promotion is paused on purpose: Nilo shows the app in person (word of mouth) and will later write an article on his website. When it resumes: Uptodown and communities. Maintenance continues.
 
+In progress (2026-11-12): version 1.5.2 on the `feat/wayland` branch, for Linux on Wayland. On Ubuntu 26.04 from USB (Dell, Iris Xe) the 1.5.1 window never appeared: the app forced X11 and XWayland failed there; native Wayland worked, but now and then both views landed on display 1. The branch lets Electron pick Wayland and puts back misplaced windows. A test `.deb` (built in Actions from the branch, without a tag) is in the shared folder's `instalador-linux\` with `PRUEBAS-LINUX.txt`; waiting for Nilo's test. If it passes: merge into `main`, tag v1.5.2, and build Windows (NSIS and MSIX) and Mac as usual.
+
 ## Log
 
 Newest entries first. One per work session, brief.
