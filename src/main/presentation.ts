@@ -176,32 +176,62 @@ const PLACEMENT_CHECKS_MS = [500, 1000, 2000];
 /** PDF_DIVA_DEBUG_DISPLAYS=1 logs every check, for testing on a new desktop. */
 const debugDisplays = process.env.PDF_DIVA_DEBUG_DISPLAYS === '1';
 
+/** Time for the compositor to take a window out of full screen before it is moved. */
+const LEAVE_FULL_SCREEN_MS = 300;
+/** The pending check of each window: a new placement replaces it. */
+const placementTimers = new WeakMap<BrowserWindow, NodeJS.Timeout>();
+
+/**
+ * Whether a full-screen window is on `display`. On Wayland the window's origin is always 0,0, so
+ * only its size tells: a window the size of another display is on that one; one the size of
+ * `display` is taken as right, since with two displays of the same size there is no telling.
+ */
+function onDisplay(win: BrowserWindow, display: Display): boolean {
+  if (!isFullScreen(win)) return false;
+  const bounds = win.getBounds();
+  if (bounds.width === display.bounds.width && bounds.height === display.bounds.height) return true;
+  return screen.getDisplayMatching(bounds).id === display.id;
+}
+
 /**
  * On Wayland an app cannot place a window: it can only ask for full screen, and the compositor
  * picks the display Chromium believes the window is on, which right after creating it is
  * sometimes the first one. So on Linux, check where each window ended up and place it again if it
- * missed. Only while the window still belongs on that display.
+ * missed. Only while the window still belongs on that display. A window that is full screen on
+ * the wrong display must leave full screen first, and that takes the compositor a moment: moving
+ * it at once leaves it where it was.
  */
 function checkPlacement(win: BrowserWindow, display: Display, attempt = 0): void {
-  if (!isLinux || attempt >= PLACEMENT_CHECKS_MS.length) return;
-  setTimeout(() => {
+  if (!isLinux) return;
+  clearTimeout(placementTimers.get(win));
+  if (attempt >= PLACEMENT_CHECKS_MS.length) return;
+  const timer = setTimeout(() => {
     const p = current;
     if (!p || win.isDestroyed()) return;
     if (p.speakers.get(display.id) !== win && p.audiences.get(display.id) !== win) return;
-    const landed = screen.getDisplayMatching(win.getBounds());
+    const right = onDisplay(win, display);
     if (debugDisplays) {
       console.log(
-        `PDF Diva: check ${attempt + 1}: wanted display ${display.id}, on ${landed.id}, ` +
-          `bounds ${JSON.stringify(win.getBounds())}, full screen ${isFullScreen(win)}`,
+        `PDF Diva: check ${attempt + 1}: wanted display ${display.id}, ` +
+          `bounds ${JSON.stringify(win.getBounds())}, full screen ${isFullScreen(win)}, right ${right}`,
       );
     }
-    if (landed.id === display.id && isFullScreen(win)) return;
-    console.log(`PDF Diva: window meant for display ${display.id} is on ${landed.id}; placing it again`);
-    if (isFullScreen(win)) setFullScreen(win, false);
-    win.setBounds(display.bounds);
-    setFullScreen(win, true);
-    checkPlacement(win, display, attempt + 1);
+    if (right) return;
+    console.log(`PDF Diva: window meant for display ${display.id} missed it; placing it again`);
+    const move = (): void => {
+      if (win.isDestroyed()) return;
+      win.setBounds(display.bounds);
+      setFullScreen(win, true);
+      checkPlacement(win, display, attempt + 1);
+    };
+    if (isFullScreen(win)) {
+      setFullScreen(win, false);
+      placementTimers.set(win, setTimeout(move, LEAVE_FULL_SCREEN_MS));
+    } else {
+      move();
+    }
   }, PLACEMENT_CHECKS_MS[attempt]);
+  placementTimers.set(win, timer);
 }
 
 function placeSpeaker(win: BrowserWindow, display: Display): void {
