@@ -15,7 +15,7 @@ Until version 1.0.0 the interface was in Spanish only; entries up to that versio
 - The Mac app is signed and notarized by Apple, so macOS no longer asks you to allow it in Privacy & Security.
 
 ### Fixed
-- On Linux, PDF Diva runs on Wayland desktops such as Ubuntu 26.04, where its window didn't appear. (The Linux package was replaced on 2026-11-12 with this fix.)
+- On Linux, PDF Diva runs on Wayland desktops such as Ubuntu 26.04, where its window didn't appear.
 
 ## [1.5.0] - 2026-10-13
 
