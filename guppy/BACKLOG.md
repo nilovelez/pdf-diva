@@ -9,5 +9,4 @@ PDF Diva to-dos, from the nearest to the least urgent. Whatever gets published l
 ## Known and untested risks
 
 - **Linux on Wayland**: the compositor, not the app, picks each window's display (on GNOME, the one under the mouse pointer), so a view can open on the wrong display; the README suggests moving it with Super+Shift+arrow. Configure displays doesn't help there: moving a window on Wayland fails too. Seen on Ubuntu 26.04 from USB (Dell laptop plus a 4K display), where the audience window still landed right most times.
-- **Super+Shift+arrow on a full-screen window**: GNOME's shortcut to move a window to the next monitor, which the README suggests; not yet checked on a full-screen PDF Diva window.
 - **Mac**: tested by Nilo on an Apple silicon MacBook with an external monitor, all fine first time (2026-10-10). Untested: an Intel Mac. Three displays on a Mac won't be tested (decided 2026-11-12): Apple silicon Macs rarely drive three, the usual setup is two outputs (the projector, and the technician's and speaker's monitors fed the same picture through a splitter or USB-C adapter), and a window in the wrong place can always be moved with Configure displays.

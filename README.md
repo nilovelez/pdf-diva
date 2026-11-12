@@ -170,7 +170,7 @@ The gear button on the right of the reader toolbar opens **Settings**. Changes a
 
 **Windows warns that the installer is unsafe.** The GitHub installer isn't digitally signed, so Windows SmartScreen shows a warning the first time. Click **More info** and then **Run anyway**. The Microsoft Store version doesn't show this warning.
 
-**On Linux, a view opens on the wrong screen.** On Wayland desktops, such as Ubuntu 26.04, the desktop decides which screen each new window goes to, usually the one with the mouse pointer. Click the view and press **Super+Shift+←** or **→** to move it to the next screen.
+**On Linux, a view opens on the wrong screen.** On Wayland desktops, such as Ubuntu 26.04, a bug in Electron (the framework PDF Diva is built on) means PDF Diva often can't choose the screen for each view. Click the view and press **Super+Shift+←** or **→** (Super is the Windows key) to move it to the other screen.
 
 **On Linux, the PDF Diva window doesn't appear.** PDF Diva uses Wayland or X11 to match your desktop session. Start it from a terminal with the other one, `"/opt/PDF Diva/pdf-diva" --ozone-platform=x11` (or `--ozone-platform=wayland`), and if that doesn't help either, [open an issue](https://github.com/nilovelez/pdf-diva/issues) with what the terminal shows.
 
