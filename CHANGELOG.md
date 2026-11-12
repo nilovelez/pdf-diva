@@ -7,15 +7,15 @@ Until version 1.0.0 the interface was in Spanish only; entries up to that versio
 
 ## [Unreleased]
 
-### Fixed
-- On Linux, PDF Diva now runs on Wayland desktops such as Ubuntu 26.04, where its window didn't appear. If a presentation window opens on the wrong screen, PDF Diva moves it to the right one.
-
 ## [1.5.1] - 2026-11-08
 
 ### Changed
 - Built on Electron 45, with the latest security fixes. System requirements don't change.
 - The app switches off Electron features it doesn't use (running as a plain Node.js runtime, debugging options), and it refuses to start if its own files have been modified.
 - The Mac app is signed and notarized by Apple, so macOS no longer asks you to allow it in Privacy & Security.
+
+### Fixed
+- On Linux, PDF Diva runs on Wayland desktops such as Ubuntu 26.04, where its window didn't appear. (The Linux package was replaced on 2026-11-12 with this fix.)
 
 ## [1.5.0] - 2026-10-13
 

@@ -227,9 +227,9 @@ function keepOffline(): void {
   );
 }
 
-// On Linux, Electron picks Wayland or X11 to match the session. Forcing X11 (XWayland) kept window
-// placement simple, but on Ubuntu 26.04 the window never painted through XWayland; on Wayland,
-// presentation.ts checks where each window landed instead.
+// On Linux, Electron picks Wayland or X11 to match the session. Forcing X11 (XWayland) let the app
+// place each window on its display, but on Ubuntu 26.04 the window never painted through XWayland.
+// On Wayland the compositor picks the display (see "Linux behaviour" in docs/developer-guide.md).
 
 // One instance only: opening a PDF from Windows while PDF Diva runs hands it to the running app.
 if (!app.requestSingleInstanceLock()) {

@@ -1,4 +1,4 @@
-import { type BrowserWindow, type Display, type WebContents, screen } from 'electron';
+import { type BrowserWindow, type Display, type WebContents } from 'electron';
 import {
   IPC,
   type PdfFile,
@@ -139,14 +139,7 @@ function createPresentationWindow(
     ...(kind === 'audience' ? { fullscreen: !isMac, backgroundColor: '#000000' } : {}),
   });
   if (kind === 'audience') {
-    win.once('ready-to-show', () => {
-      if (isMac) {
-        placeFullScreen(win, display);
-      } else {
-        win.show();
-        checkPlacement(win, display);
-      }
-    });
+    win.once('ready-to-show', () => (isMac ? placeFullScreen(win, display) : win.show()));
   } else {
     win.once('ready-to-show', () => {
       readyWindows.add(win);
@@ -162,140 +155,11 @@ function createPresentationWindow(
 
 function placeFullScreen(win: BrowserWindow, display: Display): void {
   if (win.isDestroyed()) return;
-  const move = (): void => {
-    if (win.isDestroyed()) return;
-    win.setBounds(display.bounds);
-    setFullScreen(win, true);
-    win.show();
-    checkPlacement(win, display);
-  };
-  if (!isFullScreen(win)) {
-    move();
-  } else if (isLinux) {
-    // A window already on its display is left alone: on Wayland every move is a gamble. And one
-    // moved while it is still leaving full screen stays where it was.
-    void isOnDisplay(win, display).then((right) => {
-      if (!right && !win.isDestroyed()) afterLeavingFullScreen(win, move);
-    });
-  } else if (!sameBounds(win.getBounds(), display.bounds)) {
-    setFullScreen(win, false);
-    move();
-  }
-}
-
-const isLinux = process.platform === 'linux';
-/** PDF_DIVA_DEBUG_DISPLAYS=1 logs every check, for testing on a new desktop. */
-const debugDisplays = process.env.PDF_DIVA_DEBUG_DISPLAYS === '1';
-/** How long a window may take to go full screen before it is taken as misplaced. */
-const PLACEMENT_CHECKS_MS = [500, 1000, 2000];
-/** How many times a misplaced window is replaced by a new one. */
-const MAX_REPLACEMENTS = 3;
-/** Longest wait for the compositor to confirm a window left full screen. */
-const LEAVE_FULL_SCREEN_TIMEOUT_MS = 1000;
-/** The pending check of each window: a new placement replaces it. */
-const placementTimers = new WeakMap<BrowserWindow, NodeJS.Timeout>();
-/** How many windows came before this one on its display, each replaced for landing elsewhere. */
-const replacements = new WeakMap<BrowserWindow, number>();
-
-/** Takes `win` out of full screen and runs `then` once the compositor has done it. */
-function afterLeavingFullScreen(win: BrowserWindow, then: () => void): void {
-  let done = false;
-  const go = (): void => {
-    if (done) return;
-    done = true;
-    clearTimeout(fallback);
-    then();
-  };
-  const fallback = setTimeout(go, LEAVE_FULL_SCREEN_TIMEOUT_MS);
-  win.once('leave-full-screen', go);
-  setFullScreen(win, false);
-}
-
-/**
- * Puts a new window on `display` in place of `win`, which landed on another one. On Wayland a new
- * window lands where it was asked far more often than a window that is moved.
- */
-function replaceWindow(p: Presentation, win: BrowserWindow, display: Display): void {
-  const kind = p.audiences.get(display.id) === win ? 'audience' : 'presenter';
-  const byDisplay = kind === 'audience' ? p.audiences : p.speakers;
-  const focused = win.isFocused();
-  const next = createPresentationWindow(p, kind, display);
-  replacements.set(next, (replacements.get(win) ?? 0) + 1);
-  if (focused) next.once('show', () => next.focus());
-  byDisplay.set(display.id, next);
-  closeQuietly(p, win);
-}
-
-/** Asks the page which screen its window is on (Window Management API). */
-const CURRENT_SCREEN_JS =
-  'getScreenDetails().then((d) => [d.currentScreen.left, d.currentScreen.top])';
-
-/**
- * The display a window is on. On Wayland the window's own bounds always start at 0,0, but
- * Chromium knows the display from the compositor, and the page can tell through
- * getScreenDetails(): its current screen has the same origin as one of Electron's displays.
- */
-async function displayOf(win: BrowserWindow): Promise<Display | undefined> {
-  try {
-    const [left, top] = (await win.webContents.executeJavaScript(CURRENT_SCREEN_JS)) as [number, number];
-    return screen.getAllDisplays().find((d) => d.bounds.x === left && d.bounds.y === top);
-  } catch {
-    return undefined;
-  }
-}
-
-/**
- * Whether a window is full screen on `display`. If the page can't say which screen it is on, the
- * window's size has to do (one the size of another display is on that one); with two displays
- * of the same size that can't tell, and the window is then taken as right.
- */
-async function isOnDisplay(win: BrowserWindow, display: Display): Promise<boolean> {
-  if (!isFullScreen(win)) return false;
-  const on = await displayOf(win);
-  if (win.isDestroyed()) return false;
-  if (on) return on.id === display.id;
-  const bounds = win.getBounds();
-  if (bounds.width === display.bounds.width && bounds.height === display.bounds.height) return true;
-  return screen.getDisplayMatching(bounds).id === display.id;
-}
-
-/**
- * On Wayland an app cannot place a window: it can only ask for full screen, and the compositor
- * picks the display Chromium believes the window is on, which is sometimes the first one. So on
- * Linux, check where each window ended up. A window that is full screen elsewhere, or not full
- * screen after the last check, is replaced by a new one on its display (moving it fails more
- * often). Only while the window still belongs on that display.
- */
-function checkPlacement(win: BrowserWindow, display: Display, check = 0): void {
-  if (!isLinux) return;
-  clearTimeout(placementTimers.get(win));
-  const timer = setTimeout(async () => {
-    const belongs = (p: Presentation | null): p is Presentation =>
-      p !== null && !win.isDestroyed() && (p.speakers.get(display.id) === win || p.audiences.get(display.id) === win);
-    if (!belongs(current)) return;
-    const right = await isOnDisplay(win, display);
-    const p = current;
-    if (!belongs(p)) return;
-    const replaced = replacements.get(win) ?? 0;
-    if (debugDisplays) {
-      const on = await displayOf(win);
-      console.log(
-        `PDF Diva: window ${replaced + 1}, check ${check + 1}: wanted display ${display.id}, ` +
-          `page says ${on?.id ?? 'unknown'}, bounds ${JSON.stringify(win.getBounds())}, ` +
-          `full screen ${isFullScreen(win)}, right ${right}`,
-      );
-    }
-    if (right) return;
-    const lastCheck = check + 1 >= PLACEMENT_CHECKS_MS.length;
-    if (!isFullScreen(win) && !lastCheck) {
-      checkPlacement(win, display, check + 1); // still on its way to full screen
-      return;
-    }
-    if (replaced >= MAX_REPLACEMENTS) return;
-    console.log(`PDF Diva: window meant for display ${display.id} landed elsewhere; replacing it`);
-    replaceWindow(p, win, display);
-  }, PLACEMENT_CHECKS_MS[check]);
-  placementTimers.set(win, timer);
+  if (isFullScreen(win) && sameBounds(win.getBounds(), display.bounds)) return;
+  if (isFullScreen(win)) setFullScreen(win, false);
+  win.setBounds(display.bounds);
+  setFullScreen(win, true);
+  win.show();
 }
 
 function placeSpeaker(win: BrowserWindow, display: Display): void {

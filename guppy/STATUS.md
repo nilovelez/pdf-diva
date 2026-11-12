@@ -11,12 +11,13 @@ Machines: Windows builds (NSIS, MSIX) and multi-monitor tests run on Marcianito 
 
 Next steps: promotion is paused on purpose: Nilo shows the app in person (word of mouth) and will later write an article on his website. When it resumes: Uptodown and communities. Maintenance continues.
 
-In progress (2026-11-12): version 1.5.2 on the `feat/wayland` branch, for Linux on Wayland. On Ubuntu 26.04 from USB (Dell, Iris Xe) the 1.5.1 window never appeared: the app forced X11 and XWayland failed there; native Wayland worked, but now and then both views landed on display 1. The branch lets Electron pick Wayland and puts back misplaced windows. A test `.deb` (built in Actions from the branch, without a tag) is in the shared folder's `instalador-linux\` with `PRUEBAS-LINUX.txt`; waiting for Nilo's test. If it passes: merge into `main`, tag v1.5.2, and build Windows (NSIS and MSIX) and Mac as usual.
+Linux on Wayland (2026-11-12): on Ubuntu 26.04 from USB the first 1.5.1 `.deb` never showed its window (it forced X11, and XWayland failed there). The fix (let Electron pick Wayland) went into `main` with no new version: the 1.5.1 `.deb` is replaced, and Windows and Mac don't change. On Wayland the desktop, not the app, picks each window's display (GNOME: the one under the pointer); the README explains how to move a view. Next, decided by Nilo: study a PR to Electron to fullscreen a window on a given display (`guppy/BACKLOG.md`).
 
 ## Log
 
 Newest entries first. One per work session, brief.
 
+- 2026-11-12: Linux on Wayland. Ubuntu 26.04 hung the 1.5.1 `.deb` (forced X11 through XWayland); now Electron picks Wayland. Three test rounds of automatic window placement on Wayland all failed; the sources of Electron, Chromium and Mutter show the compositor picks the display (pointer's monitor), so the placement code was dropped, the README tells users how to move a view, and the real fix (a PR to Electron) is in the backlog. Kept as 1.5.1: only the `.deb` is replaced.
 - 2026-11-12: the Linux build already runs on Ubuntu 26.04 (`ubuntu-latest`) and passed for 1.5.1; the `.deb` doesn't depend on the runner's version, so it isn't pinned. Backlog item closed. Three displays on a Mac dropped from the untested risks: rare on Apple silicon, and two outputs cover the usual setup.
 - 2026-11-09: the Store approves 1.5.1.
 - 2026-11-09: v1.5.1 published on GitHub with the first Mac `.dmg` signed and notarized by Desafío Digital, and submitted to the Store. Website, README, CHANGELOG, press texts and developer guide updated. `feat/mac-signing` (the abandoned first signing plan) deleted; `CLAUDE.md` milestone 10 updated.
