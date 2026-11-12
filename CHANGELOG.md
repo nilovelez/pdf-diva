@@ -7,6 +7,9 @@ Until version 1.0.0 the interface was in Spanish only; entries up to that versio
 
 ## [Unreleased]
 
+### Fixed
+- On Linux, PDF Diva now runs on Wayland desktops such as Ubuntu 26.04, where its window didn't appear. If a presentation window opens on the wrong screen, PDF Diva moves it to the right one.
+
 ## [1.5.1] - 2026-11-08
 
 ### Changed
