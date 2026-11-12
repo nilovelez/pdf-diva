@@ -15,7 +15,7 @@ Next steps: promotion is paused on purpose: Nilo shows the app in person (word o
 
 Newest entries first. One per work session, brief.
 
-- 2026-11-12: the Linux build already runs on Ubuntu 26.04 (`ubuntu-latest`) and passed for 1.5.1; the `.deb` doesn't depend on the runner's version, so it isn't pinned. Backlog item closed.
+- 2026-11-12: the Linux build already runs on Ubuntu 26.04 (`ubuntu-latest`) and passed for 1.5.1; the `.deb` doesn't depend on the runner's version, so it isn't pinned. Backlog item closed. Three displays on a Mac dropped from the untested risks: rare on Apple silicon, and two outputs cover the usual setup.
 - 2026-11-09: the Store approves 1.5.1.
 - 2026-11-09: v1.5.1 published on GitHub with the first Mac `.dmg` signed and notarized by Desafío Digital, and submitted to the Store. Website, README, CHANGELOG, press texts and developer guide updated. `feat/mac-signing` (the abandoned first signing plan) deleted; `CLAUDE.md` milestone 10 updated.
 - 2026-11-08: v1.5.1 tagged: Electron 45.2.3 and Electron fuses. The end-to-end tests and test PDFs moved into the repo (`tests/`) and were brought up to date; electron-builder's current Windows toolset replaces the hand-swapped SDK tools, so nothing in scratch is needed any more. The Mac signers now sign in their own repository.
