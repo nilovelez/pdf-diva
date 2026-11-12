@@ -170,7 +170,9 @@ The gear button on the right of the reader toolbar opens **Settings**. Changes a
 
 **Windows warns that the installer is unsafe.** The GitHub installer isn't digitally signed, so Windows SmartScreen shows a warning the first time. Click **More info** and then **Run anyway**. The Microsoft Store version doesn't show this warning.
 
-**On Linux, the PDF Diva window doesn't appear.** On a Wayland session, log out and choose **Ubuntu on Xorg** (or your desktop's X11 session) on the login screen. PDF Diva places its windows on each screen through X11.
+**On Linux, a view opens on the wrong screen.** On Wayland desktops, such as Ubuntu 26.04, the desktop decides which screen each new window goes to, usually the one with the mouse pointer. Click the view and press **Super+Shift+←** or **→** to move it to the next screen, or use **Configure displays**.
+
+**On Linux, the PDF Diva window doesn't appear.** PDF Diva uses Wayland or X11 to match your desktop session. Start it from a terminal with the other one, `"/opt/PDF Diva/pdf-diva" --ozone-platform=x11` (or `--ozone-platform=wayland`), and if that doesn't help either, [open an issue](https://github.com/nilovelez/pdf-diva/issues) with what the terminal shows.
 
 **`npm install` fails while downloading Electron.** Some computers are missing the *Microsoft Visual C++ Redistributable* (x64). Download it from Microsoft's website, install it and run `npm install` again. This is only needed for the development version.
 

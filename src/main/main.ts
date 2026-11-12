@@ -227,13 +227,9 @@ function keepOffline(): void {
   );
 }
 
-// On Linux, run through X11 (XWayland on a Wayland desktop): Wayland does not let an app place its
-// windows, and each presentation window has to go to a given display. An --ozone-platform typed by
-// the user still wins; app.commandLine cannot tell, because Electron adds its own on Wayland.
-const userOzone = process.argv.some((arg) => arg.startsWith('--ozone-platform='));
-if (process.platform === 'linux' && !userOzone) {
-  app.commandLine.appendSwitch('ozone-platform', 'x11');
-}
+// On Linux, Electron picks Wayland or X11 to match the session. Forcing X11 (XWayland) let the app
+// place each window on its display, but on Ubuntu 26.04 the window never painted through XWayland.
+// On Wayland the compositor picks the display (see "Linux behaviour" in docs/developer-guide.md).
 
 // One instance only: opening a PDF from Windows while PDF Diva runs hands it to the running app.
 if (!app.requestSingleInstanceLock()) {

@@ -42,7 +42,7 @@ The obvious extra entry under "Alternative to" is PowerPoint's presenter view, s
 
 - Windows: Windows 10 and 11, from the Microsoft Store (also `winget install "PDF Diva"`) or with an unsigned installer from GitHub.
 - Mac: macOS 13 or later, Apple silicon and Intel; signed and notarized by Apple.
-- Linux: a .deb for Debian, Ubuntu and derivatives (64-bit), running on X11.
+- Linux: a .deb for Debian, Ubuntu and derivatives (64-bit), on Wayland or X11.
 
 **Features** (if the form asks for them): Presenter view, Multi-monitor support, Presentation remote support, Works offline, No tracking, Dark mode, Password-protected PDFs.
 
