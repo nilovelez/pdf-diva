@@ -4,19 +4,20 @@ Version 1.4.0 (milestone 10, the last feature milestone) is published on GitHub 
 
 Version 1.5.0 (milestone 11, minor polish) is published on GitHub since October 13, with clearer file names (`PDF-Diva-Windows/macOS/Linux-x64-<version>`), and the website links it; the Store approved it on October 14. From here on, promotion and maintenance; no more feature milestones are planned.
 
-Version 1.5.1 (maintenance asked for by the friends who sign the Mac build: Electron 45.2.3 and Electron fuses) is published on GitHub since November 9, 2026, with the first Mac `.dmg` signed and notarized by Desafío Digital (checked by Nilo on Bender with `spctl` and `stapler`); the website links it. The Store approved it on November 9.
+Version 1.5.1 (maintenance asked for by the friends who sign the Mac build: Electron 45.2.3 and Electron fuses) is published on GitHub since November 12, 2026 (it had stayed a draft since November 9, so the website's download links didn't work until then), with the first Mac `.dmg` signed and notarized by Desafío Digital (checked by Nilo on Bender with `spctl` and `stapler`); the website links it. The Store approved it on November 9.
 
 Mac signing (changed on November 8, 2026): the friends (Desafío Digital) sign and notarize in their own private GitHub repository, so the credentials never leave them. Their system checks this repo for new tags twice a day (07:23 and 19:23, Spanish time), they approve each version by hand for now, and the signed `.dmg` is published in https://github.com/desafiodigital/pdf-diva-releases; Nilo gets an e-mail with the link and adds it to the release. The first signed version is 1.5.1; the README, press texts and developer guide no longer mention "Open Anyway". Our own Mac build stays ad hoc signed, for testing only.
 Machines: Windows builds (NSIS, MSIX) and multi-monitor tests run on Marcianito (Windows, no longer on all the time); content work (docs, website, promotion, status) can be done from any machine with the repo, such as Bender.
 
 Next steps: promotion is paused on purpose: Nilo shows the app in person (word of mouth) and will later write an article on his website. When it resumes: Uptodown and communities. Maintenance continues.
 
-Linux on Wayland (2026-11-12): on Ubuntu 26.04 from USB the first 1.5.1 `.deb` never showed its window (it forced X11, and XWayland failed there). The fix (let Electron pick Wayland) went into `main` with no new version: the 1.5.1 `.deb` is replaced, and Windows and Mac don't change. On Wayland the desktop, not the app, picks each window's display (GNOME: the one under the pointer); the README explains how to move a view. Next, decided by Nilo: study a PR to Electron to fullscreen a window on a given display (`guppy/BACKLOG.md`).
+Linux on Wayland (2026-11-12): on Ubuntu 26.04 from USB the first 1.5.1 `.deb` never showed its window (it forced X11, and XWayland failed there). The fix (let Electron pick Wayland) went into `main` with no new version: the 1.5.1 release was still a draft, so its `.deb` was swapped before publishing (built from `main`; the `v1.5.1` tag stays on the commit Desafío Digital signed, and Windows and Mac don't change). On Wayland the desktop, not the app, picks each window's display (GNOME: the one under the pointer); the README explains how to move a view. Next, decided by Nilo: study a PR to Electron to fullscreen a window on a given display (`guppy/BACKLOG.md`).
 
 ## Log
 
 Newest entries first. One per work session, brief.
 
+- 2026-11-12: Nilo publishes the v1.5.1 release (it had stayed a draft since November 9) with the new `.deb`; the website's three download links work.
 - 2026-11-12: Linux on Wayland. Ubuntu 26.04 hung the 1.5.1 `.deb` (forced X11 through XWayland); now Electron picks Wayland. Three test rounds of automatic window placement on Wayland all failed; the sources of Electron, Chromium and Mutter show the compositor picks the display (pointer's monitor), so the placement code was dropped, the README tells users how to move a view, and the real fix (a PR to Electron) is in the backlog. Kept as 1.5.1: only the `.deb` is replaced.
 - 2026-11-12: the Linux build already runs on Ubuntu 26.04 (`ubuntu-latest`) and passed for 1.5.1; the `.deb` doesn't depend on the runner's version, so it isn't pinned. Backlog item closed. Three displays on a Mac dropped from the untested risks: rare on Apple silicon, and two outputs cover the usual setup.
 - 2026-11-09: the Store approves 1.5.1.
