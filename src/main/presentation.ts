@@ -162,9 +162,6 @@ function createPresentationWindow(
 
 function placeFullScreen(win: BrowserWindow, display: Display): void {
   if (win.isDestroyed()) return;
-  if (isFullScreen(win) && (isLinux ? onDisplay(win, display) : sameBounds(win.getBounds(), display.bounds))) {
-    return;
-  }
   const move = (): void => {
     if (win.isDestroyed()) return;
     win.setBounds(display.bounds);
@@ -175,9 +172,12 @@ function placeFullScreen(win: BrowserWindow, display: Display): void {
   if (!isFullScreen(win)) {
     move();
   } else if (isLinux) {
-    // On Wayland a window moved while it is still leaving full screen stays where it was.
-    afterLeavingFullScreen(win, move);
-  } else {
+    // A window already on its display is left alone: on Wayland every move is a gamble. And one
+    // moved while it is still leaving full screen stays where it was.
+    void isOnDisplay(win, display).then((right) => {
+      if (!right && !win.isDestroyed()) afterLeavingFullScreen(win, move);
+    });
+  } else if (!sameBounds(win.getBounds(), display.bounds)) {
     setFullScreen(win, false);
     move();
   }
@@ -226,13 +226,34 @@ function replaceWindow(p: Presentation, win: BrowserWindow, display: Display): v
   closeQuietly(p, win);
 }
 
+/** Asks the page which screen its window is on (Window Management API). */
+const CURRENT_SCREEN_JS =
+  'getScreenDetails().then((d) => [d.currentScreen.left, d.currentScreen.top])';
+
 /**
- * Whether a full-screen window is on `display`. On Wayland the window's origin is always 0,0, so
- * only its size tells: a window the size of another display is on that one; one the size of
- * `display` is taken as right, since with two displays of the same size there is no telling.
+ * The display a window is on. On Wayland the window's own bounds always start at 0,0, but
+ * Chromium knows the display from the compositor, and the page can tell through
+ * getScreenDetails(): its current screen has the same origin as one of Electron's displays.
  */
-function onDisplay(win: BrowserWindow, display: Display): boolean {
+async function displayOf(win: BrowserWindow): Promise<Display | undefined> {
+  try {
+    const [left, top] = (await win.webContents.executeJavaScript(CURRENT_SCREEN_JS)) as [number, number];
+    return screen.getAllDisplays().find((d) => d.bounds.x === left && d.bounds.y === top);
+  } catch {
+    return undefined;
+  }
+}
+
+/**
+ * Whether a window is full screen on `display`. If the page can't say which screen it is on, the
+ * window's size has to do (one the size of another display is on that one); with two displays
+ * of the same size that can't tell, and the window is then taken as right.
+ */
+async function isOnDisplay(win: BrowserWindow, display: Display): Promise<boolean> {
   if (!isFullScreen(win)) return false;
+  const on = await displayOf(win);
+  if (win.isDestroyed()) return false;
+  if (on) return on.id === display.id;
   const bounds = win.getBounds();
   if (bounds.width === display.bounds.width && bounds.height === display.bounds.height) return true;
   return screen.getDisplayMatching(bounds).id === display.id;
@@ -248,16 +269,20 @@ function onDisplay(win: BrowserWindow, display: Display): boolean {
 function checkPlacement(win: BrowserWindow, display: Display, check = 0): void {
   if (!isLinux) return;
   clearTimeout(placementTimers.get(win));
-  const timer = setTimeout(() => {
+  const timer = setTimeout(async () => {
+    const belongs = (p: Presentation | null): p is Presentation =>
+      p !== null && !win.isDestroyed() && (p.speakers.get(display.id) === win || p.audiences.get(display.id) === win);
+    if (!belongs(current)) return;
+    const right = await isOnDisplay(win, display);
     const p = current;
-    if (!p || win.isDestroyed()) return;
-    if (p.speakers.get(display.id) !== win && p.audiences.get(display.id) !== win) return;
-    const right = onDisplay(win, display);
+    if (!belongs(p)) return;
     const replaced = replacements.get(win) ?? 0;
     if (debugDisplays) {
+      const on = await displayOf(win);
       console.log(
         `PDF Diva: window ${replaced + 1}, check ${check + 1}: wanted display ${display.id}, ` +
-          `bounds ${JSON.stringify(win.getBounds())}, full screen ${isFullScreen(win)}, right ${right}`,
+          `page says ${on?.id ?? 'unknown'}, bounds ${JSON.stringify(win.getBounds())}, ` +
+          `full screen ${isFullScreen(win)}, right ${right}`,
       );
     }
     if (right) return;
