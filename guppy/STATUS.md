@@ -17,6 +17,7 @@ Linux on Wayland (2026-11-12): on Ubuntu 26.04 from USB the first 1.5.1 `.deb` n
 
 Newest entries first. One per work session, brief.
 
+- 2026-11-25: electron/electron#55761 still open with no reply after two weeks (only the automatic `enhancement` label). Nothing to do; check it again later.
 - 2026-11-12: feature request to Electron for full screen on a given display (electron/electron#55761), instead of a PR.
 - 2026-11-12: Nilo publishes the v1.5.1 release (it had stayed a draft since November 9) with the new `.deb`; the website's three download links work.
 - 2026-11-12: Linux on Wayland. Ubuntu 26.04 hung the 1.5.1 `.deb` (forced X11 through XWayland); now Electron picks Wayland. Three test rounds of automatic window placement on Wayland all failed; the sources of Electron, Chromium and Mutter show the compositor picks the display (pointer's monitor), so the placement code was dropped, the README tells users how to move a view, and the real fix (a PR to Electron) is in the backlog. Kept as 1.5.1: only the `.deb` is replaced.
